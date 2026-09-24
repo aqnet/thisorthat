@@ -30,18 +30,42 @@ create extension if not exists pg_cron;
 -- -----------------------------------------------------------------------------
 -- Types
 -- -----------------------------------------------------------------------------
-create type this_or_that.session_status as enum (
-  'lobby', 'setup', 'entering', 'computer_picking',
-  'matchup_voting', 'matchup_reveal', 'paused', 'results', 'closed'
-);
+do $guard$
+begin
+  if not exists (
+    select 1 from pg_type t join pg_namespace n on n.oid = t.typnamespace
+    where n.nspname = 'this_or_that' and t.typname = 'session_status'
+  ) then
+    create type this_or_that.session_status as enum ('lobby', 'setup', 'entering', 'computer_picking', 'matchup_voting', 'matchup_reveal', 'paused', 'results', 'closed');
+  end if;
+end
+$guard$;
 
-create type this_or_that.size_class     as enum ('small', 'medium', 'large');
-create type this_or_that.matchup_status as enum ('pending', 'voting', 'revealed');
+do $guard$
+begin
+  if not exists (
+    select 1 from pg_type t join pg_namespace n on n.oid = t.typnamespace
+    where n.nspname = 'this_or_that' and t.typname = 'size_class'
+  ) then
+    create type this_or_that.size_class as enum ('small', 'medium', 'large');
+  end if;
+end
+$guard$;
+do $guard$
+begin
+  if not exists (
+    select 1 from pg_type t join pg_namespace n on n.oid = t.typnamespace
+    where n.nspname = 'this_or_that' and t.typname = 'matchup_status'
+  ) then
+    create type this_or_that.matchup_status as enum ('pending', 'voting', 'revealed');
+  end if;
+end
+$guard$;
 
 -- -----------------------------------------------------------------------------
 -- Content: categories and the dictionary
 -- -----------------------------------------------------------------------------
-create table this_or_that.categories (
+create table if not exists this_or_that.categories (
   id              smallint generated always as identity primary key,
   slug            text not null unique,
   name            text not null,
@@ -52,7 +76,7 @@ create table this_or_that.categories (
     check (cardinality(allowed_lengths) > 0 and allowed_lengths <@ array[5, 10, 15]::smallint[])
 );
 
-create table this_or_that.dictionary (
+create table if not exists this_or_that.dictionary (
   id                bigint generated always as identity primary key,
   category_id       smallint not null references this_or_that.categories (id),
   canonical_name    text not null check (char_length(canonical_name) between 1 and 30),
@@ -60,18 +84,18 @@ create table this_or_that.dictionary (
   player_originated boolean not null default false,  -- promoted from unmatched_entries
   created_at        timestamptz not null default now()
 );
-create unique index dictionary_category_name_uq
+create unique index if not exists dictionary_category_name_uq
   on this_or_that.dictionary (category_id, lower(canonical_name));
 
 -- Aliases map to one canonical item (e.g. "NYC" -> "New York City")
-create table this_or_that.dictionary_aliases (
+create table if not exists this_or_that.dictionary_aliases (
   dictionary_id bigint not null references this_or_that.dictionary (id) on delete cascade,
   alias         text   not null check (char_length(alias) between 1 and 30),
   primary key (dictionary_id, alias)
 );
 
 -- Rolling performance per item. Drives the Computer's picks.
-create table this_or_that.item_stats (
+create table if not exists this_or_that.item_stats (
   dictionary_id  bigint primary key references this_or_that.dictionary (id) on delete cascade,
   appearances    integer not null default 0,
   votes_received integer not null default 0,
@@ -80,7 +104,7 @@ create table this_or_that.item_stats (
 );
 
 -- Player entries that didn't match the dictionary: the promotion pipeline
-create table this_or_that.unmatched_entries (
+create table if not exists this_or_that.unmatched_entries (
   category_id           smallint not null references this_or_that.categories (id),
   normalized_text       text not null,
   distinct_player_count integer not null default 1,
@@ -92,7 +116,7 @@ create table this_or_that.unmatched_entries (
 -- -----------------------------------------------------------------------------
 -- Rooms, players, games
 -- -----------------------------------------------------------------------------
-create table this_or_that.sessions (
+create table if not exists this_or_that.sessions (
   id                   uuid primary key default gen_random_uuid(),
   room_code            char(4) not null check (room_code ~ '^[A-HJ-NP-Z]{4}$'),  -- no I or O
   status               this_or_that.session_status not null default 'lobby',
@@ -108,12 +132,12 @@ create table this_or_that.sessions (
   last_activity_at     timestamptz not null default now(),
   closed_at            timestamptz
 );
-create unique index sessions_active_room_code_uq
+create unique index if not exists sessions_active_room_code_uq
   on this_or_that.sessions (room_code) where status <> 'closed';
-create index sessions_due_idx
+create index if not exists sessions_due_idx
   on this_or_that.sessions (phase_deadline) where status <> 'closed' and phase_deadline is not null;
 
-create table this_or_that.players (
+create table if not exists this_or_that.players (
   id              uuid primary key default gen_random_uuid(),
   session_id      uuid not null references this_or_that.sessions (id) on delete cascade,
   user_id         uuid references auth.users (id) on delete set null,  -- anonymous auth uid
@@ -133,25 +157,25 @@ create table this_or_that.players (
   )
 );
 -- Exactly one Computer per room
-create unique index players_one_computer_uq
+create unique index if not exists players_one_computer_uq
   on this_or_that.players (session_id) where is_computer;
 -- Unique names (case-insensitive) among players still in the room
-create unique index players_name_uq
+create unique index if not exists players_name_uq
   on this_or_that.players (session_id, lower(name)) where left_at is null;
 -- Unique seat colors; slots 1-4 also hard-cap the room at 4 seated humans
-create unique index players_color_uq
+create unique index if not exists players_color_uq
   on this_or_that.players (session_id, color_slot) where left_at is null and color_slot is not null;
 -- At most one host
-create unique index players_one_host_uq
+create unique index if not exists players_one_host_uq
   on this_or_that.players (session_id) where is_host and left_at is null;
 -- One active seat per device identity
-create unique index players_user_seat_uq
+create unique index if not exists players_user_seat_uq
   on this_or_that.players (session_id, user_id) where left_at is null and user_id is not null;
-create index players_heartbeat_idx
+create index if not exists players_heartbeat_idx
   on this_or_that.players (session_id, last_seen_at) where left_at is null and not is_computer;
 
 -- One row per game played in a room (Play Again creates a new one)
-create table this_or_that.games (
+create table if not exists this_or_that.games (
   id                     uuid primary key default gen_random_uuid(),
   session_id             uuid not null references this_or_that.sessions (id) on delete cascade,
   number                 smallint not null,
@@ -167,13 +191,22 @@ create table this_or_that.games (
   unique (session_id, number)
 );
 
-alter table this_or_that.sessions
-  add constraint sessions_host_fk foreign key (host_player_id)
-    references this_or_that.players (id) on delete set null deferrable initially deferred,
-  add constraint sessions_current_game_fk foreign key (current_game_id)
-    references this_or_that.games (id) on delete set null deferrable initially deferred;
+do $guard$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'sessions_host_fk') then
+    alter table this_or_that.sessions
+      add constraint sessions_host_fk foreign key (host_player_id)
+        references this_or_that.players (id) on delete set null deferrable initially deferred;
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'sessions_current_game_fk') then
+    alter table this_or_that.sessions
+      add constraint sessions_current_game_fk foreign key (current_game_id)
+        references this_or_that.games (id) on delete set null deferrable initially deferred;
+  end if;
+end
+$guard$;
 
-create table this_or_that.category_votes (
+create table if not exists this_or_that.category_votes (
   game_id     uuid not null references this_or_that.games (id) on delete cascade,
   player_id   uuid not null references this_or_that.players (id) on delete cascade,
   category_id smallint not null references this_or_that.categories (id),
@@ -184,7 +217,7 @@ create table this_or_that.category_votes (
 -- -----------------------------------------------------------------------------
 -- Items, match-ups, votes
 -- -----------------------------------------------------------------------------
-create table this_or_that.favorites (
+create table if not exists this_or_that.favorites (
   id                uuid primary key default gen_random_uuid(),
   game_id           uuid not null references this_or_that.games (id) on delete cascade,
   player_id         uuid not null references this_or_that.players (id) on delete cascade,
@@ -199,12 +232,12 @@ create table this_or_that.favorites (
   unique (game_id, player_id, shuffled_position)
 );
 -- No duplicate canonical items within one player's list
-create unique index favorites_no_dupe_canonical_uq
+create unique index if not exists favorites_no_dupe_canonical_uq
   on this_or_that.favorites (game_id, player_id, canonical_item_id) where canonical_item_id is not null;
-create unique index favorites_no_dupe_text_uq
+create unique index if not exists favorites_no_dupe_text_uq
   on this_or_that.favorites (game_id, player_id, lower(display_text));
 
-create table this_or_that.matchups (
+create table if not exists this_or_that.matchups (
   id           uuid primary key default gen_random_uuid(),
   game_id      uuid not null references this_or_that.games (id) on delete cascade,
   round_number smallint not null check (round_number between 1 and 15),
@@ -216,7 +249,7 @@ create table this_or_that.matchups (
 );
 
 -- Card ids are random and unrelated to favorite ids, so a card can't be joined back to its owner
-create table this_or_that.ballot_cards (
+create table if not exists this_or_that.ballot_cards (
   id           uuid primary key default gen_random_uuid(),
   matchup_id   uuid not null references this_or_that.matchups (id) on delete cascade,
   -- Ballot text is always ALL CAPS so casing can't reveal the author (spec §9.1).
@@ -229,13 +262,13 @@ create table this_or_that.ballot_cards (
 );
 
 -- Usually one owner per card. Shared duplicate items credit several owners.
-create table this_or_that.ballot_card_owners (
+create table if not exists this_or_that.ballot_card_owners (
   ballot_card_id uuid not null references this_or_that.ballot_cards (id) on delete cascade,
   favorite_id    uuid not null references this_or_that.favorites (id) on delete cascade,
   primary key (ballot_card_id, favorite_id)
 );
 
-create table this_or_that.votes (
+create table if not exists this_or_that.votes (
   matchup_id      uuid not null references this_or_that.matchups (id) on delete cascade,
   voter_player_id uuid not null references this_or_that.players (id) on delete cascade,
   ballot_card_id  uuid not null,
@@ -249,7 +282,7 @@ create table this_or_that.votes (
 -- so it can't be expressed as a plain constraint.
 
 -- Final standings per game (written once, at results)
-create table this_or_that.game_results (
+create table if not exists this_or_that.game_results (
   game_id      uuid not null references this_or_that.games (id) on delete cascade,
   player_id    uuid not null references this_or_that.players (id) on delete cascade,
   score        integer not null,
@@ -263,7 +296,7 @@ create table this_or_that.game_results (
 -- -----------------------------------------------------------------------------
 -- Event log and high scores
 -- -----------------------------------------------------------------------------
-create table this_or_that.session_events (
+create table if not exists this_or_that.session_events (
   id              bigint generated always as identity primary key,
   session_id      uuid not null references this_or_that.sessions (id) on delete cascade,
   version         integer not null,
@@ -274,7 +307,7 @@ create table this_or_that.session_events (
   unique (session_id, version)
 );
 
-create table this_or_that.high_scores (
+create table if not exists this_or_that.high_scores (
   id              bigint generated always as identity primary key,
   game_id         uuid references this_or_that.games (id) on delete set null,  -- sessions purge after 7d
   player_name     text not null,
@@ -289,11 +322,11 @@ create table this_or_that.high_scores (
   hidden          boolean not null default false,   -- moderation
   created_at      timestamptz not null default now()
 );
-create index high_scores_weekly_idx
+create index if not exists high_scores_weekly_idx
   on this_or_that.high_scores (list_length, board_week, pct desc, score desc, created_at) where not hidden;
-create index high_scores_all_time_idx
+create index if not exists high_scores_all_time_idx
   on this_or_that.high_scores (list_length, pct desc, score desc, created_at) where not hidden;
-create index high_scores_room_idx
+create index if not exists high_scores_room_idx
   on this_or_that.high_scores (device_group_id, list_length, pct desc, score desc, created_at) where not hidden;
 
 -- -----------------------------------------------------------------------------
@@ -421,11 +454,15 @@ select cron.schedule('this_or_that_dispatch', '1 seconds',
 
 -- Nightly: purge closed rooms after 7 days, and trim pg_cron's run log
 -- (a 1-second job writes ~86k rows a day)
+-- This database is shared with other applications, so the run-log trim is
+-- scoped to this app's own jobs. An unscoped delete would wipe the cron
+-- history of anything else scheduled here.
 select cron.schedule('this_or_that_purge', '17 11 * * *', $$
   delete from this_or_that.sessions
    where status = 'closed' and closed_at < now() - interval '7 days';
   delete from cron.job_run_details
-   where end_time < now() - interval '1 day';
+   where end_time < now() - interval '1 day'
+     and jobid in (select jobid from cron.job where jobname like 'this_or_that\_%');
 $$);
 
 -- -----------------------------------------------------------------------------
@@ -454,6 +491,7 @@ revoke all on function this_or_that.can_join_topic(text) from public;
 grant usage on schema this_or_that to authenticated;   -- needed to call the function; no table grants
 grant execute on function this_or_that.can_join_topic(text) to authenticated;
 
+drop policy if exists "this_or_that: room members receive broadcasts and presence" on realtime.messages;
 create policy "this_or_that: room members receive broadcasts and presence"
   on realtime.messages for select to authenticated
   using (
@@ -461,6 +499,7 @@ create policy "this_or_that: room members receive broadcasts and presence"
     and this_or_that.can_join_topic(realtime.topic())
   );
 
+drop policy if exists "this_or_that: room members track presence" on realtime.messages;
 create policy "this_or_that: room members track presence"
   on realtime.messages for insert to authenticated
   with check (
@@ -514,8 +553,13 @@ do $$
 declare t text;
 begin
   for t in select tablename from pg_tables where schemaname = 'this_or_that' loop
-    execute format(
-      'create policy app_all on this_or_that.%I for all to this_or_that_app using (true) with check (true)', t);
+    if not exists (
+      select 1 from pg_policies
+      where schemaname = 'this_or_that' and tablename = t and policyname = 'app_all'
+    ) then
+      execute format(
+        'create policy app_all on this_or_that.%I for all to this_or_that_app using (true) with check (true)', t);
+    end if;
   end loop;
 end
 $$;
@@ -547,4 +591,5 @@ insert into this_or_that.categories (slug, name, size_class, allowed_lengths) va
   ('drink',               'Drink',               'medium', '{5,10}'),
   ('color',               'Color',               'medium', '{5,10}'),
   ('sport',               'Sport',               'small',  '{5}'),
-  ('movie-genre',         'Movie Genre',         'small',  '{5}');
+  ('movie-genre',         'Movie Genre',         'small',  '{5}')
+on conflict (slug) do nothing;
