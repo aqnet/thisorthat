@@ -1,0 +1,292 @@
+/*
+ * Design system tokens (design spec §3-§5).
+ *
+ * Rule 5 of the core principles: components never reference a theme. They read
+ * the semantic tokens below and nothing else, so adding a theme means adding
+ * one block here and no component changes.
+ *
+ * Structure:
+ *   [data-theme="..."]                          light values
+ *   [data-theme="..."][data-mode="dark"]        explicit dark
+ *   prefers-color-scheme + :not([data-mode="light"])  system dark
+ *
+ * Mode is per device and defaults to system, so the explicit attribute has to
+ * win in both directions -- hence the :not() guard rather than a bare query.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  /* Phone-first: the game is played on a phone held in one hand. */
+  padding:
+    env(safe-area-inset-top, 0px)
+    env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-left, 0px);
+}
+
+/* ---------------------------------------------------------------------------
+ * Duel -- bold and poster-like, with versus energy.
+ * ------------------------------------------------------------------------- */
+
+[data-theme='duel'] {
+  --side-a-fill: #ff5a4e;   /* coral */
+  --side-a-tint: #ffe6e3;
+  --on-side-a: #ffffff;
+
+  --side-b-fill: #2f5bff;   /* cobalt */
+  --side-b-tint: #e2e8ff;
+  --on-side-b: #ffffff;
+
+  --bg: #fff8f0;
+  --surface: #ffffff;
+  --ink: #141414;
+  --ink-muted: #5c5650;
+
+  --spark: #ffd23f;         /* the "or" badge, timers, streaks, reveals */
+  --on-spark: #141414;
+
+  /* Feedback never borrows a side colour -- principle 4. */
+  --majority: #1f8a5f;
+  --minority: #8a6d1f;
+  --tie: #5c5650;
+
+  /* 4 human seats plus the Computer. Paired with a name or initial everywhere,
+     so colour is never the only carrier of identity. */
+  --player-1: #ff5a4e;
+  --player-2: #2f5bff;
+  --player-3: #12a594;
+  --player-4: #b453d8;
+  --player-computer: #6b7280;  /* deliberately neutral and mechanical */
+
+  --showdown: #ff2e88;
+  --on-showdown: #ffffff;
+
+  --font-display: var(--font-big-shoulders), 'Arial Narrow', sans-serif;
+  --font-body: var(--font-archivo), system-ui, sans-serif;
+  --font-numeric: var(--font-archivo), system-ui, sans-serif;
+  --display-min-size: 18px;
+  --display-weight: 800;
+  --display-tracking: 0.01em;
+
+  --radius-card: 10px;
+  --radius-control: 8px;
+  --layout-variant: split;
+
+  /* Snap and slam. */
+  --motion-select: 120ms cubic-bezier(0.2, 0, 0, 1);
+  --motion-reveal: 260ms cubic-bezier(0.2, 0, 0, 1);
+  --motion-showdown: 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark: the former Neon arcade direction. */
+[data-theme='duel'][data-mode='dark'] {
+  --side-a-fill: #ff2e88;   /* magenta */
+  --side-a-tint: #3a0f26;
+  --on-side-a: #ffffff;
+
+  --side-b-fill: #00e5ff;   /* cyan */
+  --side-b-tint: #04303a;
+  --on-side-b: #06202a;
+
+  --bg: #0d0b1a;
+  --surface: #17142a;
+  --ink: #f2f0ff;
+  --ink-muted: #a09ac4;
+
+  --spark: #c6ff00;         /* lime */
+  --on-spark: #10140a;
+
+  --majority: #4ade80;
+  --minority: #fbbf24;
+  --tie: #a09ac4;
+
+  --player-1: #ff2e88;
+  --player-2: #00e5ff;
+  --player-3: #c6ff00;
+  --player-4: #b388ff;
+  --player-computer: #8b93a7;
+
+  --showdown: #c6ff00;
+  --on-showdown: #10140a;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme='duel']:not([data-mode='light']) {
+    --side-a-fill: #ff2e88;
+    --side-a-tint: #3a0f26;
+    --on-side-a: #ffffff;
+    --side-b-fill: #00e5ff;
+    --side-b-tint: #04303a;
+    --on-side-b: #06202a;
+    --bg: #0d0b1a;
+    --surface: #17142a;
+    --ink: #f2f0ff;
+    --ink-muted: #a09ac4;
+    --spark: #c6ff00;
+    --on-spark: #10140a;
+    --majority: #4ade80;
+    --minority: #fbbf24;
+    --tie: #a09ac4;
+    --player-1: #ff2e88;
+    --player-2: #00e5ff;
+    --player-3: #c6ff00;
+    --player-4: #b388ff;
+    --player-computer: #8b93a7;
+    --showdown: #c6ff00;
+    --on-showdown: #10140a;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Candy pop -- rounded and playful, two floating cards with a gap.
+ * ------------------------------------------------------------------------- */
+
+[data-theme='candy'] {
+  --side-a-fill: #ff9f1c;   /* tangerine */
+  --side-a-tint: #ffeccd;
+  --on-side-a: #4a2600;
+
+  --side-b-fill: #9b7bff;   /* lilac */
+  --side-b-tint: #ebe4ff;
+  --on-side-b: #221452;
+
+  --bg: #fff4e6;
+  --surface: #ffffff;
+  --ink: #2b1b3d;
+  --ink-muted: #6b5a7d;
+
+  --spark: #ff7ab6;         /* bubblegum */
+  --on-spark: #3d0f28;
+
+  --majority: #1f8a5f;
+  --minority: #b4701a;
+  --tie: #6b5a7d;
+
+  --player-1: #ff9f1c;
+  --player-2: #9b7bff;
+  --player-3: #1fb8a6;
+  --player-4: #ff7ab6;
+  --player-computer: #8b8697;
+
+  --showdown: #ff7ab6;
+  --on-showdown: #3d0f28;
+
+  --font-display: var(--font-lilita), 'Arial Black', sans-serif;
+  --font-body: var(--font-nunito), system-ui, sans-serif;
+  --font-numeric: var(--font-nunito), system-ui, sans-serif;
+  --display-min-size: 20px;
+  /* Lilita One ships one weight, so emphasis comes from size and colour. */
+  --display-weight: 400;
+  --display-tracking: 0.02em;
+
+  --radius-card: 20px;
+  --radius-control: 14px;
+  --layout-variant: cards;
+
+  /* Squish and overshoot. */
+  --motion-select: 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-reveal: 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-showdown: 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/*
+ * PROVISIONAL. The design spec lists the Candy pop dark palette as an open
+ * item and says it is required before the theme ships. These values keep the
+ * A-warm / B-cool mapping and match the two sides on perceived lightness, but
+ * they have not been through a contrast pass and are not signed off.
+ */
+[data-theme='candy'][data-mode='dark'] {
+  --side-a-fill: #ffb454;
+  --side-a-tint: #3d2a0c;
+  --on-side-a: #2a1700;
+  --side-b-fill: #b9a0ff;
+  --side-b-tint: #241a45;
+  --on-side-b: #170e33;
+  --bg: #1a1226;
+  --surface: #251a35;
+  --ink: #f6eeff;
+  --ink-muted: #b3a2c6;
+  --spark: #ff96c8;
+  --on-spark: #3d0f28;
+  --majority: #4ade80;
+  --minority: #fbbf24;
+  --tie: #b3a2c6;
+  --player-1: #ffb454;
+  --player-2: #b9a0ff;
+  --player-3: #3fd6c2;
+  --player-4: #ff96c8;
+  --player-computer: #9b95a8;
+  --showdown: #ff96c8;
+  --on-showdown: #3d0f28;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme='candy']:not([data-mode='light']) {
+    --side-a-fill: #ffb454;
+    --side-a-tint: #3d2a0c;
+    --on-side-a: #2a1700;
+    --side-b-fill: #b9a0ff;
+    --side-b-tint: #241a45;
+    --on-side-b: #170e33;
+    --bg: #1a1226;
+    --surface: #251a35;
+    --ink: #f6eeff;
+    --ink-muted: #b3a2c6;
+    --spark: #ff96c8;
+    --on-spark: #3d0f28;
+    --majority: #4ade80;
+    --minority: #fbbf24;
+    --tie: #b3a2c6;
+    --player-1: #ffb454;
+    --player-2: #b9a0ff;
+    --player-3: #3fd6c2;
+    --player-4: #ff96c8;
+    --player-computer: #9b95a8;
+    --showdown: #ff96c8;
+    --on-showdown: #3d0f28;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Primitives built only from tokens.
+ * ------------------------------------------------------------------------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+.numeric {
+  font-family: var(--font-numeric);
+  /* Percentages count up during the reveal; tabular stops the jitter. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reduced motion: reveals and showdown intros fall back to fades (§13). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

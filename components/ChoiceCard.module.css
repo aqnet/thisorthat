@@ -1,0 +1,91 @@
+/*
+ * The choice component. It supports exactly two named layout variants,
+ * `split` and `cards` -- themes pick one and never define their own layout
+ * (design spec §2).
+ */
+
+.root {
+  display: grid;
+  width: 100%;
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+/* Duel: edge-to-edge, with the "or" badge sitting on the seam. */
+.split {
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+/* Candy pop: two floating cards with a gap between them. */
+.cards {
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: transparent;
+  overflow: visible;
+}
+
+.side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 28px 14px;
+  min-height: 116px;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-transform: uppercase;
+  /* Never truncate: a 30-character item has to fit (§9.3). */
+  font-size: clamp(var(--display-min-size), 7vw, 34px);
+  line-height: 0.98;
+  overflow-wrap: anywhere;
+  transition: transform var(--motion-select), filter var(--motion-select);
+}
+
+.cards .side {
+  border-radius: var(--radius-card);
+}
+
+.side:active {
+  transform: scale(0.97);
+}
+
+.sideA {
+  background: var(--side-a-fill);
+  color: var(--on-side-a);
+}
+
+.sideB {
+  background: var(--side-b-fill);
+  color: var(--on-side-b);
+}
+
+/* The badge belongs to neither side, so it uses spark -- principle 4. */
+.badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--spark);
+  color: var(--on-spark);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (max-width: 380px) {
+  .side {
+    padding: 22px 10px;
+    min-height: 100px;
+  }
+}
