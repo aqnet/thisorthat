@@ -100,12 +100,16 @@ async function main() {
   console.log('\nschemas present:', schemas.map((r) => r.nspname).join(', ') || '(none)');
   for (const row of existing) console.log(`  ${row.table_schema}: ${row.n} tables`);
 
-  await ensureLedger();
+  // --check must not write anything, so it reads the ledger only if it exists.
+  const [{ ledger }] = await sql`select to_regclass('this_or_that.schema_migrations') as ledger`;
+  if (!checkOnly) await ensureLedger();
   const applied = new Map(
-    (await sql`select filename, checksum from this_or_that.schema_migrations`).map((r) => [
-      r.filename,
-      r.checksum,
-    ]),
+    ledger || !checkOnly
+      ? (await sql`select filename, checksum from this_or_that.schema_migrations`).map((r) => [
+          r.filename,
+          r.checksum,
+        ])
+      : [],
   );
 
   const files = readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith('.sql')).sort();
