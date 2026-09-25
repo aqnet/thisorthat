@@ -134,6 +134,10 @@ export type Intent =
   | { type: 'next'; actorId: string }
   | { type: 'end_game'; actorId: string }
   | { type: 'play_again'; actorId: string }
+  /** §5 lobby settings. Host only, lobby only. */
+  | { type: 'update_settings'; actorId: string; relaxedTimers: boolean }
+  /** §5 Cancel Room and §11 Exit / New Room: the host closes the room for everyone. */
+  | { type: 'close_room'; actorId: string }
   | { type: 'heartbeat'; playerId: string }
   /**
    * Server-only. Completes the `computer_picking` step (§14.8): the engine is

@@ -467,6 +467,24 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       return commit(state, now, events);
     }
 
+    case 'update_settings': {
+      if (!isHost(state, intent.actorId)) return fail('not_host');
+      if (state.status !== 'lobby') return fail('wrong_phase');
+      state.relaxedTimers = intent.relaxedTimers;
+      return commit(state, now, events);
+    }
+
+    case 'close_room': {
+      if (!isHost(state, intent.actorId)) return fail('not_host');
+      // Players land on "The host closed the room" with Home and Start your own.
+      state.status = 'closed';
+      state.closedAt = now;
+      state.phaseDeadline = null;
+      state.pausedUntil = null;
+      state.pausedFrom = null;
+      return commit(state, now, events);
+    }
+
     case 'advance':
       return advance(state, now, events);
 
