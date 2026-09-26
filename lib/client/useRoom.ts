@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { getSnapshot, heartbeat } from '@/app/actions';
 import { HEARTBEAT_INTERVAL_MS } from '@/lib/engine/constants';
 import type { ActionResult, RoomSnapshot } from '@/lib/game/snapshot';
+import { createCoalescingRunner, shouldApply, subscribeToRoom, type RealtimeLike } from './roomSync';
 import { accessToken, supabase } from './supabase';
 
 /**
@@ -22,79 +23,73 @@ export function useRoom(roomCode: string) {
   const [toast, setToast] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const versionRef = useRef(-1);
-  const inflight = useRef<Promise<void> | null>(null);
 
-  const again = useRef(false);
+  /** Show a snapshot unless a newer one is already on screen. */
+  const apply = useCallback((next: RoomSnapshot) => {
+    if (!shouldApply(versionRef.current, next.version)) return;
+    versionRef.current = next.version;
+    // §14.3.6: render deadlines against the server's clock, not the phone's.
+    setOffset(next.serverNow - Date.now());
+    setSnapshot(next);
+    setError(null);
+  }, []);
 
-  const refresh = useCallback(async (): Promise<void> => {
-    // Coalesce a burst of broadcasts into as few fetches as possible -- but a
-    // request that arrives mid-fetch may be for a newer version than the one
-    // in flight, so it earns one more fetch afterwards rather than being dropped.
-    if (inflight.current) {
-      again.current = true;
-      return inflight.current;
+  const fetchSnapshot = useCallback(async () => {
+    try {
+      const token = await accessToken();
+      const result = await getSnapshot(token, roomCode);
+      if (!result.ok) {
+        if (result.code === 'not_found') setNotFound(true);
+        else setError(result.message);
+        // Once a room is on screen these errors aren't shown, so the screen
+        // just stops updating. Leave a trace for whoever is debugging it.
+        console.warn(`[room] snapshot refresh failed for ${roomCode}: ${result.message}`);
+        return;
+      }
+      apply(result.snapshot);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Couldn't reach the game");
+      console.warn(`[room] snapshot refresh failed for ${roomCode}:`, e);
     }
-    const fetchOnce = async () => {
-      try {
-        const token = await accessToken();
-        const result = await getSnapshot(token, roomCode);
-        if (!result.ok) {
-          if (result.code === 'not_found') setNotFound(true);
-          else setError(result.message);
-          return;
-        }
-        const next = result.snapshot;
-        if (next.version >= versionRef.current) {
-          versionRef.current = next.version;
-          // §14.3.6: render deadlines against the server's clock, not the phone's.
-          setOffset(next.serverNow - Date.now());
-          setSnapshot(next);
-          setError(null);
-        }
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Couldn't reach the game");
-      }
-    };
-    inflight.current = (async () => {
-      try {
-        do {
-          again.current = false;
-          await fetchOnce();
-        } while (again.current);
-      } finally {
-        inflight.current = null;
-      }
-    })();
-    return inflight.current;
-  }, [roomCode]);
+  }, [roomCode, apply]);
+
+  // A burst of broadcasts costs one fetch, and a request mid-fetch one more.
+  // Built on first use, and always calls the latest fetch through a ref.
+  const fetchRef = useRef(fetchSnapshot);
+  useEffect(() => {
+    fetchRef.current = fetchSnapshot;
+  }, [fetchSnapshot]);
+  const runner = useRef<(() => Promise<void>) | null>(null);
+  const refresh = useCallback(() => {
+    runner.current ??= createCoalescingRunner(() => fetchRef.current());
+    return runner.current();
+  }, []);
 
   // First load, Realtime subscription, heartbeat.
   useEffect(() => {
     let cancelled = false;
-    let channel: ReturnType<ReturnType<typeof supabase>['channel']> | null = null;
+    let channel: Awaited<ReturnType<typeof subscribeToRoom>> = null;
     // Deferred so the first fetch doesn't set state inside the effect body.
     const first = setTimeout(() => void refresh(), 0);
 
     (async () => {
       const token = await accessToken().catch(() => null);
       if (!token || cancelled) return;
-      await supabase().realtime.setAuth(token);
-      channel = supabase()
-        .channel(`room:${roomCode}`, { config: { private: true } })
-        .on('broadcast', { event: 'state' }, ({ payload }) => {
-          const version = (payload as { version?: number })?.version ?? Infinity;
+      channel = await subscribeToRoom({
+        client: supabase() as unknown as RealtimeLike,
+        roomCode,
+        token,
+        isCancelled: () => cancelled,
+        onVersion: (version) => {
           if (version > versionRef.current) void refresh();
-        })
-        .subscribe((status, err) => {
-          // Anything broadcast between the first fetch and this moment was
-          // missed, so catch up once the channel is live.
-          if (status === 'SUBSCRIBED') void refresh();
-          // Without Realtime the room still works, catching up on each
-          // heartbeat -- but every screen lags by up to 10s. Say so.
-          if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-            console.warn(`[room] realtime ${status} for room:${roomCode}`, err?.message ?? '');
-          }
-        });
+        },
+        // Anything broadcast between the first fetch and now was missed.
+        onSubscribed: () => void refresh(),
+        // Without Realtime the room still works, catching up on each
+        // heartbeat -- but every screen lags by up to 10s. Say so.
+        onFailure: (status, err) =>
+          console.warn(`[room] realtime ${status} for room:${roomCode}`, err?.message ?? ''),
+      });
     })();
 
     const beat = async () => {
@@ -121,7 +116,7 @@ export function useRoom(roomCode: string) {
       clearTimeout(first);
       clearInterval(timer);
       document.removeEventListener('visibilitychange', onVisible);
-      if (channel) void supabase().removeChannel(channel);
+      if (channel) void (supabase() as unknown as RealtimeLike).removeChannel(channel);
     };
   }, [roomCode, refresh]);
 
@@ -155,6 +150,9 @@ export function useRoom(roomCode: string) {
         const token = await accessToken();
         const result = await fn(token);
         if (!result.ok) setToast(result.message);
+        // Actions return the caller's fresh view; apply it at once. The
+        // broadcast still updates everyone else.
+        else if ('snapshot' in result && result.snapshot) apply(result.snapshot as RoomSnapshot);
         else void refresh();
         return result;
       } catch {
@@ -165,11 +163,13 @@ export function useRoom(roomCode: string) {
         setPending(false);
       }
     },
-    [refresh],
+    [refresh, apply],
   );
 
   const serverNow = useCallback(() => Date.now() + offset, [offset]);
   const clearToast = useCallback(() => setToast(null), []);
+  /** Show a message in the room's toast, for flows that bypass `act`. */
+  const notify = useCallback((message: string) => setToast(message), []);
 
   return {
     snapshot,
@@ -178,7 +178,9 @@ export function useRoom(roomCode: string) {
     pending,
     toast,
     clearToast,
+    notify,
     act,
+    apply,
     refresh,
     serverNow,
   };

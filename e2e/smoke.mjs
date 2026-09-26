@@ -18,7 +18,7 @@
  * heartbeat; a game still finishes, so without this check a broken Realtime
  * setup would pass.
  *
- * Env: E2E_BASE_URL, E2E_CHROMIUM_PATH (optional; otherwise playwright-core's
+ * Env: E2E_MODE=pick_and_fwd (default: Pick your fav), E2E_BASE_URL, E2E_CHROMIUM_PATH (optional; otherwise playwright-core's
  * installed browser: `npx playwright-core install chromium-headless-shell`),
  * E2E_HEADED=1 to watch it.
  */
@@ -28,6 +28,8 @@ import { chromium } from 'playwright-core';
 const BASE = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
 const OUT = new URL('./.output/', import.meta.url).pathname;
 const LAG_BUDGET_MS = 3_000;
+/** E2E_MODE=pick_and_fwd plays the Pick and fwd mode instead. */
+const MODE = process.env.E2E_MODE === 'pick_and_fwd' ? 'Pick and fwd' : 'Pick your fav';
 mkdirSync(OUT, { recursive: true });
 
 const browser = await chromium.launch({
@@ -58,16 +60,20 @@ async function lag(label, since, locator) {
 
 let code = null;
 let failed = false;
+let closed = false;
 try {
-  // 1. Create session
+  // 1. Create session. A fresh browser has no remembered name yet.
   await host.goto(BASE);
   await host.getByRole('button', { name: 'New Game' }).click();
+  if ((await host.getByPlaceholder('Up to 12 letters').inputValue()) !== '') {
+    throw new Error('a fresh browser should not pre-fill a name');
+  }
   await host.getByPlaceholder('Up to 12 letters').fill('Ana');
   await host.getByRole('button', { name: 'Create room' }).click();
   await host.waitForURL(/\/room\/[A-Z]{4}$/, { timeout: 20_000 });
   code = host.url().slice(-4);
   await host.getByText('Players · 1 of 4').waitFor({ timeout: 15_000 });
-  log(`room ${code} created`);
+  log(`room ${code} created (${MODE})`);
   await shot(host, '1-lobby');
 
   // 2. Lobby
@@ -82,6 +88,9 @@ try {
   since = Date.now();
   await host.getByRole('button', { name: 'Start', exact: true }).click();
   await lag('guest sees setup begin', since, guest.getByText('is choosing'));
+  // Mode first (mode spec §3a), then the category.
+  await host.getByRole('button', { name: new RegExp(`^${MODE}`) }).click();
+  if (MODE === 'Pick and fwd') await guest.getByText('Mode so far: Pick and fwd').waitFor({ timeout: 10_000 });
   await host.getByRole('button', { name: 'Fruit', exact: true }).click();
   await host.getByRole('button', { name: '5', exact: true }).click();
   await host.getByRole('button', { name: 'Fruit · 5 items' }).click();
@@ -131,12 +140,20 @@ try {
     await guest.getByText(`Round ${round} of 5`).waitFor({ timeout: 20_000 });
     if (round === 1) await shot(host, '5-voting');
     if (round === 5) await host.getByText('Final Showdown').waitFor();
+    if (MODE === 'Pick and fwd' && round === 2) {
+      // Round 1's winner is carried onto this ballot, pinned first.
+      await guest.getByText(/👑 Champion/).first().waitFor({ timeout: 5_000 });
+      await shot(guest, '5-champion');
+    }
     await host.locator('button[aria-label^="Vote for"]').first().click();
     since = Date.now();
     await guest.locator('button[aria-label^="Vote for"]').first().click();
     // Resolves as soon as both have voted, not when the 15s timer ends.
     await lag(`round ${round}: host sees the reveal after the last vote`, since, host.getByText(/votes?$/).first());
     if (round === 5) await shot(host, '5-reveal-showdown');
+    if (MODE === 'Pick and fwd' && round === 1) {
+      await host.getByText(/crown|coin flip/).first().waitFor({ timeout: 5_000 });
+    }
     await host.getByRole('button', { name: round < 5 ? /^Next/ : /^See results/ }).click();
   }
 
@@ -148,6 +165,46 @@ try {
   since = Date.now();
   await host.getByRole('button', { name: 'Play again' }).click();
   await lag('guest returns to the lobby on Play Again', since, guest.getByText('Waiting for Ana to start'));
+
+  // 7. Having played a game through, each browser remembers its player's
+  // name: the host's New Game sheet and the guest's Join screen pre-fill it.
+  const hostHome = await host.context().newPage();
+  await hostHome.goto(BASE);
+  await hostHome.getByRole('button', { name: 'New Game' }).click();
+  const hostName = await hostHome.getByPlaceholder('Up to 12 letters').inputValue();
+  await hostHome.getByRole('button', { name: 'Create room' }).click();
+  await hostHome.waitForURL(/\/room\/[A-Z]{4}$/, { timeout: 20_000 });
+  const code2 = hostHome.url().slice(-4);
+  const guestJoin = await guest.context().newPage();
+  await guestJoin.goto(`${BASE}/join/${code2}`);
+  const nameField = guestJoin.getByPlaceholder('Up to 12 letters');
+  await nameField.waitFor();
+  await guestJoin.getByText('From your last game').waitFor({ timeout: 10_000 });
+  const guestName = await nameField.inputValue();
+  if (hostName !== 'Ana' || guestName !== 'Ben') {
+    throw new Error(`remembered names wrong: host "${hostName}", guest "${guestName}"`);
+  }
+  log('names remembered after a finished game: Ana (New Game), Ben (Join)');
+  // Close the second room without joining it.
+  await hostHome.getByRole('button', { name: 'Menu' }).click();
+  await hostHome.getByRole('button', { name: 'Cancel room' }).first().click();
+  await hostHome.getByRole('button', { name: 'Cancel room' }).last().click();
+  await hostHome.waitForURL(`${BASE}/`, { timeout: 10_000 });
+  await Promise.all([hostHome.close(), guestJoin.close()]);
+
+  // 8. Exit from the lobby: confirm, then Home. The guest's seat opens; the
+  // host, now alone, closes the room.
+  await guest.getByRole('button', { name: 'Exit', exact: true }).click();
+  await guest.getByText('Your seat opens up').waitFor();
+  await guest.getByRole('button', { name: 'Yes, exit' }).click();
+  await guest.waitForURL(`${BASE}/`, { timeout: 10_000 });
+  await host.getByText('Players · 1 of 4').waitFor({ timeout: 10_000 });
+  await host.getByRole('button', { name: 'Exit', exact: true }).click();
+  await host.getByText(`room ${code} will close`).waitFor();
+  await host.getByRole('button', { name: 'Yes, exit' }).click();
+  await host.waitForURL(`${BASE}/`, { timeout: 10_000 });
+  closed = true;
+  log('lobby Exit: guest left, then the host closed the empty room');
 } catch (error) {
   failed = true;
   console.error(`\nFAILED: ${error.message.split('\n')[0]}`);
@@ -155,7 +212,7 @@ try {
   await shot(guest, 'failure-guest').catch(() => {});
 } finally {
   // Cancel the room so it doesn't linger in the shared database.
-  if (code) {
+  if (code && !closed) {
     try {
       await host.goto(`${BASE}/room/${code}`);
       await host.getByRole('button', { name: 'Menu' }).click({ timeout: 10_000 });

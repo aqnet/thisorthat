@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createRoom } from '@/app/actions';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { Sheet, styles as game } from '@/components/game/ui';
+import { rememberedName } from '@/lib/client/playerName';
 import { accessToken } from '@/lib/client/supabase';
 import { useTheme } from '@/lib/theme/ThemeProvider';
 import { MODES, THEMES, THEME_BLURBS, THEME_LABELS } from '@/lib/theme/themes';
@@ -26,9 +27,15 @@ export default function HomePage() {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [prefilled, setPrefilled] = useState(false);
 
   const open = (which: 'new' | 'join') => {
     setError(null);
+    if (which === 'new' && !name) {
+      const remembered = rememberedName();
+      setName(remembered);
+      setPrefilled(remembered !== '');
+    }
     setSheet(which);
   };
 
@@ -90,13 +97,18 @@ export default function HomePage() {
             <input
               className={game.input}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                setPrefilled(false);
+              }}
+              onFocus={(e) => prefilled && e.target.select()}
               maxLength={12}
               autoFocus
               autoComplete="nickname"
               placeholder="Up to 12 letters"
             />
           </label>
+          {prefilled && <p className={game.hint}>From your last game. Type to change it.</p>}
           {error && <p className={game.error}>{error}</p>}
           <button className={game.button} disabled={busy || !name.trim()}>
             {busy ? 'Creating…' : 'Create room'}
