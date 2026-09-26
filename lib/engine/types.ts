@@ -14,6 +14,10 @@ export type SessionStatus =
 
 export type MatchupStatus = 'pending' | 'voting' | 'revealed';
 
+/** Game modes (spec v0.7; Pick and fwd mode spec). */
+export const GAME_MODES = ['pick_your_fav', 'pick_and_fwd'] as const;
+export type GameMode = (typeof GAME_MODES)[number];
+
 export interface Player {
   id: string;
   /** null for the Computer, which has no auth identity. */
@@ -58,6 +62,12 @@ export interface BallotCard {
   sortOrder: number;
   /** More than one owner only for shared duplicate items (§9.5). */
   ownerFavoriteIds: string[];
+  /**
+   * Pick and fwd: set on the champion card, the reign it carried onto this
+   * ballot. Absent or null on a fresh card. History only -- the champion is
+   * derived from the round record (champion.ts).
+   */
+  championReign?: number | null;
 }
 
 export interface Matchup {
@@ -76,6 +86,8 @@ export interface Game {
   id: string;
   /** 1-based; Play Again starts game 2 in the same room. */
   number: number;
+  /** Chosen first in setup; defaults to the previous game's mode. */
+  mode: GameMode;
   offeredCategoryIds: number[];
   categoryId: number | null;
   listLength: ListLength | null;
@@ -125,7 +137,9 @@ export type Intent =
   | { type: 'remove_player'; actorId: string; targetPlayerId: string }
   | { type: 'start_game'; actorId: string }
   | { type: 'category_vote'; playerId: string; categoryId: number }
-  | { type: 'confirm_setup'; actorId: string; categoryId: number; listLength: ListLength }
+  /** Mode spec §3: the first setup step. Host only, setup only. */
+  | { type: 'select_mode'; actorId: string; mode: GameMode }
+  | { type: 'confirm_setup'; actorId: string; categoryId: number; listLength: ListLength; mode?: GameMode }
   | { type: 'add_item'; playerId: string; favorite: Favorite }
   | { type: 'remove_item'; playerId: string; favoriteId: string }
   | { type: 'submit_list'; playerId: string }

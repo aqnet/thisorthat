@@ -7,7 +7,12 @@ import {
   beatTheComputer,
   computerWon,
   leaderAfterEachRound,
-  ownCardId,
+  crownHistory,
+  isChampionCard,
+  ownCardIds,
+  publicChampionFavoriteIds,
+  type Champion,
+  type RoundCrown,
   scoreMatchup,
   standings,
   topHuman,
@@ -19,6 +24,7 @@ import {
 import type { CategoryRow } from './repo';
 import type {
   CategoryOption,
+  CrownCallout,
   FunStat,
   RoomSnapshot,
   SnapshotCard,
@@ -55,6 +61,8 @@ export function buildSnapshot(
   userId: string,
   categories: CategoryRow[],
   now: number,
+  /** The game's numeric seed: Pick and fwd's coin flips replay from it. */
+  seed = 1,
 ): RoomSnapshot {
   const seat = viewerSeat(state, userId);
   const isHost = seat !== null && state.hostPlayerId === seat.id;
@@ -85,11 +93,16 @@ export function buildSnapshot(
       isHost && state.status === 'setup'
         ? categories.map(categoryOption).filter((c): c is CategoryOption => c !== null)
         : [],
-    game: buildGame(state, seat, categories),
+    game: buildGame(state, seat, categories, seed),
   };
 }
 
-function buildGame(state: SessionState, seat: Player | null, categories: CategoryRow[]): SnapshotGame | null {
+function buildGame(
+  state: SessionState,
+  seat: Player | null,
+  categories: CategoryRow[],
+  seed: number,
+): SnapshotGame | null {
   const game = state.game;
   if (!game) return null;
 
@@ -98,7 +111,8 @@ function buildGame(state: SessionState, seat: Player | null, categories: Categor
   const favoritesById = new Map(game.favorites.map((f) => [f.id, f]));
   const outcome = matchup && revealed ? scoreMatchup(matchup, game.favorites) : null;
   const topVotes = outcome ? Math.max(0, ...Object.values(outcome.votesByCard)) : 0;
-  const myCard = matchup && seat ? ownCardId(matchup, seat.id, game.favorites) : null;
+  // A player can own two cards in Pick and fwd (the champion and a fresh one).
+  const myCards = new Set(matchup && seat ? ownCardIds(matchup, seat.id, game.favorites) : []);
 
   const cards: SnapshotCard[] =
     matchup?.cards.map((card) => {
@@ -107,13 +121,27 @@ function buildGame(state: SessionState, seat: Player | null, categories: Categor
       return {
         id: card.id,
         displayText: card.displayText,
-        mine: card.id === myCard,
+        mine: myCards.has(card.id),
         ownerIds: revealed ? [...new Set(owners.map((f) => f.playerId))] : null,
         votes: revealed ? votes : null,
         winner: revealed && topVotes > 0 && votes === topVotes,
         auto: revealed && owners.some((f) => f.autoPicked),
+        champion: isChampionCard(card)
+          ? {
+              reign: card.championReign!,
+              ownerIds: [
+                ...new Set(
+                  (revealed ? card.ownerFavoriteIds : publicChampionFavoriteIds(card, matchup!.roundNumber, game.favorites))
+                    .map((id) => favoritesById.get(id)?.playerId)
+                    .filter((id): id is string => Boolean(id)),
+                ),
+              ],
+            }
+          : null,
       };
     }) ?? [];
+
+  const crowns = crownHistory(game, seed);
 
   const playersById = new Map(state.players.map((p) => [p.id, p]));
   const rows: StandingRow[] = standings(state).map((row) => ({
@@ -141,6 +169,7 @@ function buildGame(state: SessionState, seat: Player | null, categories: Categor
 
   return {
     number: game.number,
+    mode: game.mode,
     categoryName,
     listLength,
     round: game.currentRound,
@@ -169,19 +198,72 @@ function buildGame(state: SessionState, seat: Player | null, categories: Categor
     standings: rows,
     roundPoints: outcome?.points ?? null,
     leadChange,
-    results: state.status === 'results' ? buildResults(state, rows) : null,
+    crown: state.status === 'matchup_reveal' ? crownCallout(crowns.find((c) => c.roundNumber === game.currentRound)) : null,
+    results: state.status === 'results' ? buildResults(state, rows, crowns) : null,
   };
 }
 
-function buildResults(state: SessionState, rows: StandingRow[]) {
+/** Mode spec §4.4: the crown callout for the round just revealed. */
+function crownCallout(crown: RoundCrown | undefined): CrownCallout | null {
+  if (!crown?.holder || crown.outcome === 'no_votes') return null;
+  const { holder, previous } = crown;
+  if (crown.retired) return { kind: 'retired', text: holder.displayText, reign: holder.reign, dethroned: null };
+  if (crown.outcome === 'defended') return { kind: 'defended', text: holder.displayText, reign: holder.reign, dethroned: null };
+  return {
+    kind: crown.outcome === 'coin_flip' ? 'coin_flip' : 'new',
+    text: holder.displayText,
+    reign: holder.reign,
+    dethroned: previous?.displayText ?? null,
+  };
+}
+
+function buildResults(state: SessionState, rows: StandingRow[], crowns: RoundCrown[]) {
   const engineRows = standings(state);
   const top = topHuman(engineRows);
   return {
     computerWon: computerWon(engineRows),
     topHumanId: top?.playerId ?? null,
     beatComputerIds: beatTheComputer(engineRows),
-    funStats: funStats(state, rows),
+    funStats: [...funStats(state, rows), ...crownStats(state, rows, crowns)],
   };
+}
+
+/** Mode spec §6: Longest Reign and Giant Slayer, Pick and fwd only. */
+function crownStats(state: SessionState, rows: StandingRow[], crowns: RoundCrown[]): FunStat[] {
+  const names = new Map(rows.map((r) => [r.playerId, r.name]));
+  const byId = new Map(state.game!.favorites.map((f) => [f.id, f]));
+  const ownerNames = (favoriteIds: string[]) =>
+    [...new Set(favoriteIds.map((id) => byId.get(id)?.playerId).filter((id): id is string => !!id))]
+      .map((id) => names.get(id) ?? '?')
+      .join(' & ');
+
+  // The highest reign any champion reached (the first to reach it, on a tie).
+  let longest: { champion: Champion } | null = null;
+  for (const crown of crowns) {
+    if (!crown.holder) continue;
+    if (!longest || crown.holder.reign > longest.champion.reign) longest = { champion: crown.holder };
+  }
+  if (!longest || longest.champion.reign < 2) return [];
+  const stats: FunStat[] = [
+    {
+      label: 'Longest Reign',
+      detail: `${longest.champion.displayText} (${ownerNames(longest.champion.favoriteIds)}) · ${longest.champion.reign} rounds`,
+    },
+  ];
+  // Giant Slayer: the fresh card that took the crown from that champion.
+  const slain = crowns.find(
+    (c) =>
+      (c.outcome === 'new' || c.outcome === 'coin_flip') &&
+      c.previous?.displayText === longest!.champion.displayText &&
+      c.previous.reign === longest!.champion.reign,
+  );
+  if (slain?.holder) {
+    stats.push({
+      label: 'Giant Slayer',
+      detail: `${slain.holder.displayText} (${ownerNames(slain.holder.favoriteIds)}) ended ${longest.champion.displayText}'s reign`,
+    });
+  }
+  return stats;
 }
 
 /** §10 fun stats: cheap to compute from the match-up record, high replay value. */

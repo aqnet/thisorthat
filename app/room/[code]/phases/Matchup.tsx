@@ -2,7 +2,8 @@
 
 import { castVote, nextRound } from '@/app/actions';
 import { PlayerDot, Scoreboard, styles } from '@/components/game/ui';
-import type { RoomSnapshot } from '@/lib/game/snapshot';
+import { MODE_INFO } from '@/lib/game/modes';
+import type { CrownCallout, RoomSnapshot, SnapshotCard } from '@/lib/game/snapshot';
 import type { PhaseProps } from '../RoomClient';
 
 function Header({ snap }: { snap: RoomSnapshot }) {
@@ -10,6 +11,7 @@ function Header({ snap }: { snap: RoomSnapshot }) {
   return (
     <p className={styles.eyebrow}>
       Round {game.round} of {game.totalRounds} · {game.categoryName}
+      {game.mode === 'pick_and_fwd' ? ` · ${MODE_INFO.pick_and_fwd.name}` : ''}
     </p>
   );
 }
@@ -35,6 +37,39 @@ function Showdown({ snap }: { snap: RoomSnapshot }) {
       ))}
     </div>
   );
+}
+
+/**
+ * Pick and fwd (mode spec §4.3): the champion's crown, reign and original
+ * owner, shown openly -- that owner was revealed when it won.
+ */
+function ChampionTag({ card, snap }: { card: SnapshotCard; snap: RoomSnapshot }) {
+  if (!card.champion) return null;
+  const owners = card.champion.ownerIds
+    .map((id) => snap.players.find((p) => p.id === id))
+    .filter((p) => p !== undefined);
+  return (
+    <span className={styles.cardMeta}>
+      👑 Champion{card.champion.reign > 1 ? ` ×${card.champion.reign}` : ''}
+      {owners.length > 0 && ` · ${owners.map((p) => (p.isComputer ? 'Computer' : p.name)).join(' & ')}`}
+    </span>
+  );
+}
+
+/** Mode spec §4.4: what happened to the crown. */
+function crownText(crown: CrownCallout): string {
+  switch (crown.kind) {
+    case 'defended':
+      return `${crown.text} defends the crown! 👑 ×${crown.reign}`;
+    case 'retired':
+      return `${crown.text} retires undefeated.`;
+    case 'coin_flip':
+      return crown.dethroned
+        ? `${crown.text} wins the coin flip and takes the crown from ${crown.dethroned}!`
+        : `${crown.text} wins the coin flip.`;
+    case 'new':
+      return crown.dethroned ? `${crown.text} takes the crown from ${crown.dethroned}!` : `${crown.text} takes the crown! 👑`;
+  }
 }
 
 /**
@@ -65,11 +100,13 @@ export function Voting({ snap, room, roomCode }: PhaseProps) {
               card.mine ? styles.cardMine : '',
               game.myVote === card.id ? styles.cardPicked : '',
               voted && game.myVote !== card.id ? styles.cardDimmed : '',
+              card.champion ? styles.cardChampion : '',
             ].join(' ')}
             disabled={card.mine || voted || room.pending}
             onClick={() => room.act((t) => castVote(t, roomCode, card.id))}
             aria-label={card.mine ? `${card.displayText} (yours)` : `Vote for ${card.displayText}`}
           >
+            <ChampionTag card={card} snap={snap} />
             <span>{card.displayText}</span>
             {card.mine && <span className={styles.cardMeta}>Yours</span>}
           </button>
@@ -102,8 +139,13 @@ export function Reveal({ snap, room, roomCode, secondsLeft }: PhaseProps) {
         {game.cards.map((card) => (
           <div
             key={card.id}
-            className={[styles.card, card.winner ? styles.cardWinner : styles.cardDimmed].join(' ')}
+            className={[
+              styles.card,
+              card.winner ? styles.cardWinner : styles.cardDimmed,
+              card.champion ? styles.cardChampion : '',
+            ].join(' ')}
           >
+            {card.champion && <span className={styles.cardMeta}>👑 Champion</span>}
             <span>{card.displayText}</span>
             <span className={styles.votes}>
               {card.votes} vote{card.votes === 1 ? '' : 's'}
@@ -125,6 +167,8 @@ export function Reveal({ snap, room, roomCode, secondsLeft }: PhaseProps) {
           </div>
         ))}
       </div>
+
+      {game.crown && <div className={styles.callout}>{crownText(game.crown)}</div>}
 
       {lead && (
         <div className={styles.callout}>

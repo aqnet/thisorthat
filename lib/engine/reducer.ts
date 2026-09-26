@@ -21,6 +21,7 @@ import {
   MAX_HUMANS,
   MIN_HUMANS,
   PAUSE_GRACE_MS,
+  REVEAL_HOLD_FWD_MS,
   REVEAL_HOLD_MS,
   ROOM_IDLE_EXPIRY_MS,
   VOTE_MS,
@@ -29,7 +30,8 @@ import {
   type ListLength,
 } from './constants';
 import { createRng } from './rng';
-import { buildMatchups, ownCardId } from './matchups';
+import { buildMatchups, ownCardIds } from './matchups';
+import { addChampionCard, championForRound } from './champion';
 import { activeHumans, leaderAfterEachRound, scoreGame } from './scoring';
 import type {
   EngineContext,
@@ -94,9 +96,18 @@ function currentMatchup(state: SessionState): Matchup | null {
 
 // --- Phase transitions ----------------------------------------------------
 
-function openRound(state: SessionState, roundNumber: number, now: number): void {
+/** §9.5.9, and mode spec §4.4 for Pick and fwd. */
+function revealHoldMs(state: SessionState): number {
+  return state.game?.mode === 'pick_and_fwd' ? REVEAL_HOLD_FWD_MS : REVEAL_HOLD_MS;
+}
+
+function openRound(state: SessionState, roundNumber: number, ctx: EngineContext): void {
+  const { now } = ctx;
   const game = state.game!;
   const matchup = game.matchups.find((m) => m.roundNumber === roundNumber)!;
+  // Pick and fwd: the previous round's winner joins this ballot (mode spec §4.1).
+  const champion = championForRound(game, roundNumber, ctx.seed);
+  if (champion) addChampionCard(matchup, champion, game.favorites, ctx.newId);
   game.currentRound = roundNumber;
   matchup.status = 'voting';
   matchup.openedAt = now;
@@ -113,7 +124,7 @@ function revealRound(state: SessionState, now: number, events: EngineEvent[]): v
   matchup.status = 'revealed';
   matchup.revealedAt = now;
   state.status = 'matchup_reveal';
-  state.phaseDeadline = now + REVEAL_HOLD_MS;
+  state.phaseDeadline = now + revealHoldMs(state);
   events.push({ type: 'reveal', roundNumber: matchup.roundNumber });
 
   // §9.5.8: call out a change at the top of the scoreboard.
@@ -140,13 +151,13 @@ function finishGame(state: SessionState, now: number, endedEarly: boolean, event
   events.push({ type: 'game_over' });
 }
 
-function advanceAfterReveal(state: SessionState, now: number, events: EngineEvent[]): void {
+function advanceAfterReveal(state: SessionState, ctx: EngineContext, events: EngineEvent[]): void {
   const game = state.game!;
   const next = game.currentRound + 1;
   if (game.listLength !== null && next <= game.listLength) {
-    openRound(state, next, now);
+    openRound(state, next, ctx);
   } else {
-    finishGame(state, now, false, events);
+    finishGame(state, ctx.now, false, events);
   }
 }
 
@@ -287,6 +298,8 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       state.game = {
         id: ctx.newId(),
         number: (previous?.number ?? 0) + 1,
+        // Mode spec §3: the room's last mode is pre-selected.
+        mode: previous?.mode ?? 'pick_your_fav',
         offeredCategoryIds: [],
         categoryId: null,
         listLength: null,
@@ -319,10 +332,18 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       return commit(state, now, events);
     }
 
+    case 'select_mode': {
+      if (!isHost(state, intent.actorId)) return fail('not_host');
+      if (state.status !== 'setup') return fail('wrong_phase');
+      state.game!.mode = intent.mode;
+      return commit(state, now, events);
+    }
+
     case 'confirm_setup': {
       if (!isHost(state, intent.actorId)) return fail('not_host');
       if (state.status !== 'setup') return fail('wrong_phase');
       const game = state.game!;
+      if (intent.mode) game.mode = intent.mode;
       game.categoryId = intent.categoryId;
       game.listLength = intent.listLength;
       state.status = 'entering';
@@ -399,7 +420,7 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       game.matchups = built.matchups;
       game.favorites = built.favorites;
 
-      openRound(state, 1, now);
+      openRound(state, 1, ctx);
       return commit(state, now, events);
     }
 
@@ -416,7 +437,8 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       if (intent.playerId in matchup.votes) return fail('already_voted');
       if (!matchup.cards.some((c) => c.id === intent.ballotCardId)) return fail('unknown_card');
       // §9.4: without this every player votes for themselves and every round ties.
-      if (ownCardId(matchup, intent.playerId, state.game!.favorites) === intent.ballotCardId) {
+      // In Pick and fwd a player can own two cards; neither can be voted for.
+      if (ownCardIds(matchup, intent.playerId, state.game!.favorites).includes(intent.ballotCardId)) {
         return fail('own_card');
       }
 
@@ -429,7 +451,7 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
     case 'next': {
       if (!isHost(state, intent.actorId)) return fail('not_host');
       if (state.status !== 'matchup_reveal') return fail('wrong_phase');
-      advanceAfterReveal(state, now, events);
+      advanceAfterReveal(state, ctx, events);
       return commit(state, now, events);
     }
 
@@ -486,7 +508,7 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
     }
 
     case 'advance':
-      return advance(state, now, events);
+      return advance(state, ctx, events);
 
     default: {
       const exhaustive: never = intent;
@@ -537,7 +559,7 @@ function resumeDeadline(state: SessionState, status: SessionState['status'], now
     case 'matchup_voting':
       return now + VOTE_MS;
     case 'matchup_reveal':
-      return now + REVEAL_HOLD_MS;
+      return now + revealHoldMs(state);
     case 'entering':
       return listLength
         ? now + applyRelaxed(ENTRY_MS_BY_LENGTH[listLength], state.relaxedTimers)
@@ -552,7 +574,8 @@ function resumeDeadline(state: SessionState, status: SessionState['status'], now
   }
 }
 
-function advance(state: SessionState, now: number, events: EngineEvent[]): EngineResult {
+function advance(state: SessionState, ctx: EngineContext, events: EngineEvent[]): EngineResult {
+  const { now } = ctx;
   // Mark stale heartbeats before any rule reads "connected" (§14.4).
   for (const player of state.players) {
     if (player.isComputer || player.leftAt !== null) continue;
@@ -621,7 +644,7 @@ function advance(state: SessionState, now: number, events: EngineEvent[]): Engin
 
     case 'matchup_reveal':
       if (expired) {
-        advanceAfterReveal(state, now, events);
+        advanceAfterReveal(state, ctx, events);
         return commit(state, now, events);
       }
       return { ok: true, state, events: [] };

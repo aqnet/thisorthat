@@ -239,6 +239,145 @@ describe('a full game through the database', () => {
   });
 });
 
+describe('Pick and fwd through the database (mode spec §8)', () => {
+  const ITEMS = ['Mango', 'Kiwi', 'Plum', 'Fig', 'Lychee'];
+
+  /**
+   * Both players list the same five items, so shared items land in different
+   * rounds and the champion's twin is sometimes dealt into the very next
+   * round -- the merge path, which deletes a stored card.
+   */
+  async function fwdGame() {
+    const [u1, u2] = [await h.newUser(), await h.newUser()];
+    const created = await runner.createRoom(u1, 'Ana');
+    const code = created.roomCode;
+    const host = created.players.find((p) => !p.isComputer)!;
+    let state = await act(code, () => ({ type: 'join', playerId: randomUUID(), userId: u2, name: 'Ben' }));
+    const ben = state.players.find((p) => p.name === 'Ben')!;
+    await act(code, () => ({ type: 'start_game', actorId: host.id }));
+    state = await act(code, () => ({ type: 'select_mode', actorId: host.id, mode: 'pick_and_fwd' }));
+    expect(state.game!.mode).toBe('pick_and_fwd');
+    const fruit = (await repo.loadCategories(h.sql)).find((c) => c.slug === 'fruit')!;
+    await act(code, () => ({ type: 'confirm_setup', actorId: host.id, categoryId: fruit.id, listLength: 5 }));
+    for (const player of [host, ben]) {
+      for (const [i, text] of ITEMS.entries()) {
+        await act(code, () => ({
+          type: 'add_item', playerId: player.id,
+          favorite: {
+            id: randomUUID(), playerId: player.id, entryPosition: i + 1, displayText: text,
+            ballotText: text.toUpperCase(), canonicalItemId: null, autoPicked: false,
+            surprisePicked: false, shuffledPosition: null,
+          },
+        }));
+      }
+      state = await act(code, () => ({ type: 'submit_list', playerId: player.id }));
+    }
+    expect(state.status).toBe('matchup_voting');
+
+    // Back the champion whenever you can, so crowns carry and merges can happen.
+    let merged = false;
+    for (let round = 1; round <= 5; round++) {
+      const live = state.game!.matchups.find((m) => m.roundNumber === round)!;
+      const champion = live.cards.find((c) => c.championReign != null);
+      if (champion && champion.ownerFavoriteIds.length > 1) merged = true;
+      for (const voter of [host, ben]) {
+        const own = new Set(
+          state.game!.favorites.filter((f) => f.playerId === voter.id).map((f) => f.id),
+        );
+        const options = live.cards.filter((c) => !c.ownerFavoriteIds.some((id) => own.has(id)));
+        const pick = options.find((c) => c.championReign != null) ?? options[0];
+        state = await act(code, () => ({ type: 'cast_vote', playerId: voter.id, ballotCardId: pick.id }));
+      }
+      state = await act(code, () => ({ type: 'next', actorId: host.id }));
+    }
+    expect(state.status).toBe('results');
+    return { state, merged };
+  }
+
+  it('round-trips a whole game, champions and merges included', async () => {
+    let merged = false;
+    let state: SessionState | null = null;
+    for (let attempt = 0; attempt < 40 && !merged; attempt++) ({ state, merged } = await fwdGame());
+    // The merge path actually ran: a stored fresh card was deleted into the champion.
+    expect(merged).toBe(true);
+
+    const game = state!.game!;
+    const champions = game.matchups.flatMap((m) => m.cards.filter((c) => c.championReign != null));
+    expect(champions.length).toBeGreaterThan(0);
+    const stored = await h.admin((s) => s`
+      select count(*)::int as n from this_or_that.ballot_cards c
+        join this_or_that.matchups m on m.id = c.matchup_id
+       where m.game_id = ${game.id} and c.champion_reign is not null`);
+    expect(stored[0].n).toBe(champions.length);
+
+    const [score] = await h.admin((s) => s`select mode from this_or_that.high_scores where game_id = ${game.id} limit 1`);
+    expect(score.mode).toBe('pick_and_fwd');
+  });
+
+  it('counts only fresh appearances in item_stats (F6)', async () => {
+    // Deterministic: both players back the Computer's card in round 1, so it
+    // wins outright and becomes champion, then back it until it retires at
+    // reign 3. It is on 3 ballots but was dealt fresh into only one.
+    const [u1, u2] = [await h.newUser(), await h.newUser()];
+    const created = await runner.createRoom(u1, 'Ana');
+    const code = created.roomCode;
+    const host = created.players.find((p) => !p.isComputer)!;
+    let state = await act(code, () => ({ type: 'join', playerId: randomUUID(), userId: u2, name: 'Ben' }));
+    const ben = state.players.find((p) => p.name === 'Ben')!;
+    const computer = state.players.find((p) => p.isComputer)!;
+    await act(code, () => ({ type: 'start_game', actorId: host.id }));
+    await act(code, () => ({ type: 'select_mode', actorId: host.id, mode: 'pick_and_fwd' }));
+    const fruit = (await repo.loadCategories(h.sql)).find((c) => c.slug === 'fruit')!;
+    await act(code, () => ({ type: 'confirm_setup', actorId: host.id, categoryId: fruit.id, listLength: 5 }));
+    await expire(code);
+    await touch(code);
+    state = await act(code, () => ({ type: 'advance' }));
+    expect(state.status).toBe('matchup_voting');
+
+    const round1 = state.game!.matchups[0];
+    const computerCard = round1.cards.find((c) =>
+      c.ownerFavoriteIds.some((id) => state.game!.favorites.find((f) => f.id === id)?.playerId === computer.id),
+    )!;
+    const itemId = state.game!.favorites.find((f) => f.id === computerCard.ownerFavoriteIds[0])!.canonicalItemId!;
+    const [before] = await h.admin((s) => s`
+      select coalesce(max(appearances), 0)::int as n from this_or_that.item_stats where dictionary_id = ${itemId}`);
+
+    for (let round = 1; round <= 3; round++) {
+      const live = state.game!.matchups.find((m) => m.roundNumber === round)!;
+      const target = round === 1 ? computerCard.id : live.cards.find((c) => c.championReign != null)!.id;
+      for (const voter of [host, ben]) {
+        state = await act(code, () => ({ type: 'cast_vote', playerId: voter.id, ballotCardId: target }));
+      }
+      state = await act(code, () => ({ type: 'next', actorId: host.id }));
+    }
+    // It reigned: on the ballot in rounds 1, 2 and 3.
+    const ballots = state.game!.matchups.filter((m) =>
+      m.cards.some((c) => c.ownerFavoriteIds.includes(computerCard.ownerFavoriteIds[0])),
+    );
+    expect(ballots.map((m) => m.roundNumber)).toEqual([1, 2, 3]);
+
+    const [after] = await h.admin((s) => s`
+      select appearances from this_or_that.item_stats where dictionary_id = ${itemId}`);
+    // One fresh appearance from this game, not three.
+    expect(after.appearances - before.n).toBe(1);
+  });
+
+  it('keeps the selected mode when the setup timer runs out (§3)', async () => {
+    const [u1, u2] = [await h.newUser(), await h.newUser()];
+    const created = await runner.createRoom(u1, 'Fay');
+    const code = created.roomCode;
+    const host = created.players.find((p) => !p.isComputer)!;
+    await act(code, () => ({ type: 'join', playerId: randomUUID(), userId: u2, name: 'Gus' }));
+    await act(code, () => ({ type: 'start_game', actorId: host.id }));
+    await act(code, () => ({ type: 'select_mode', actorId: host.id, mode: 'pick_and_fwd' }));
+    await expire(code);
+    await touch(code);
+    const state = await act(code, () => ({ type: 'advance' }));
+    expect(state.status).toBe('entering');
+    expect(state.game!.mode).toBe('pick_and_fwd');
+  });
+});
+
 describe('§14.3 the dispatcher and /api/advance', () => {
   const secret = 'test-advance-secret';
   let POST: typeof import('@/app/api/advance/route').POST;

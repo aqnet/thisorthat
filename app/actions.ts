@@ -7,6 +7,8 @@ import {
   toBallotText,
   validateEntry,
   validateName,
+  GAME_MODES,
+  type GameMode,
   type Intent,
   type ListLength,
   type SessionState,
@@ -16,7 +18,13 @@ import { AuthError, verifyUser } from '@/lib/server/auth';
 import { db, type Tx } from '@/lib/server/db';
 import { isProfane } from '@/lib/server/profanity';
 import { loadByCode, loadCategories, type CategoryRow, type LoadedRoom } from '@/lib/server/repo';
-import { createRoom as createRoomRow, dictionaryFavorite, runIntent } from '@/lib/server/runner';
+import {
+  createRoom as createRoomRow,
+  dictionaryFavorite,
+  runIntent,
+  seedFor,
+  type RunOutcome,
+} from '@/lib/server/runner';
 import { buildSnapshot, categoryOption, viewerSeat } from '@/lib/server/view';
 
 /**
@@ -51,7 +59,7 @@ async function asSeat(
   token: string,
   roomCode: string,
   build: (seatId: string, loaded: LoadedRoom, tx: Tx) => Intent | Refusal | Promise<Intent | Refusal>,
-): Promise<ActionResult> {
+): Promise<ActionResult<{ snapshot: RoomSnapshot }>> {
   try {
     const userId = await verifyUser(token);
     const outcome = await runIntent({ roomCode: normalizeCode(roomCode) }, (loaded, tx) => {
@@ -59,10 +67,20 @@ async function asSeat(
       if (!seat) return { refuse: "You don't have a seat in this room", code: 'not_seated' };
       return build(seat.id, loaded, tx);
     });
-    return outcome.ok ? { ok: true } : { ok: false, message: outcome.message, code: outcome.code };
+    if (!outcome.ok) return { ok: false, message: outcome.message, code: outcome.code };
+    return { ok: true, snapshot: await snapshotFor(outcome, userId) };
   } catch (error) {
     return failure(error);
   }
+}
+
+/**
+ * The caller's view of the room right after their own action, from the state
+ * the action just committed. The phone applies it at once, instead of
+ * depending on a second request (or a broadcast) to see what it just did.
+ */
+async function snapshotFor(outcome: Extract<RunOutcome, { ok: true }>, userId: string): Promise<RoomSnapshot> {
+  return buildSnapshot(outcome.state, userId, await categories(), outcome.loaded.dbNow, seedFor(outcome.loaded.seedHex));
 }
 
 // --- Rooms and seats ------------------------------------------------------------
@@ -159,7 +177,10 @@ export async function getSnapshot(token: string, roomCode: string): Promise<Acti
     const userId = await verifyUser(token);
     const loaded = await loadByCode(db(), normalizeCode(roomCode), false);
     if (!loaded) return { ok: false, message: 'Room not found', code: 'not_found' };
-    return { ok: true, snapshot: buildSnapshot(loaded.state, userId, await categories(), loaded.dbNow) };
+    return {
+      ok: true,
+      snapshot: buildSnapshot(loaded.state, userId, await categories(), loaded.dbNow, seedFor(loaded.seedHex)),
+    };
   } catch (error) {
     return failure(error);
   }
@@ -232,16 +253,31 @@ export async function newRoom(token: string, roomCode: string): Promise<ActionRe
 
 // --- Setup -------------------------------------------------------------------------
 
-export async function confirmSetup(token: string, roomCode: string, categoryId: number, listLength: number) {
+/** Mode spec §3: the first setup step, so the server knows the mode if the timer runs out. */
+export async function selectMode(token: string, roomCode: string, mode: GameMode) {
+  return asSeat(token, roomCode, (seatId) => {
+    if (!GAME_MODES.includes(mode)) return { refuse: 'Unknown game mode', code: 'invalid_mode' };
+    return { type: 'select_mode', actorId: seatId, mode };
+  });
+}
+
+export async function confirmSetup(
+  token: string,
+  roomCode: string,
+  categoryId: number,
+  listLength: number,
+  mode?: GameMode,
+) {
   const rows = await categories();
   return asSeat(token, roomCode, (seatId) => {
+    if (mode !== undefined && !GAME_MODES.includes(mode)) return { refuse: 'Unknown game mode', code: 'invalid_mode' };
     const option = rows.find((c) => c.id === categoryId);
     const allowed = option ? categoryOption(option) : null;
     // §7: only the lengths the category's size class (and dictionary) allow.
     if (!allowed || !allowed.allowedLengths.includes(listLength as ListLength)) {
       return { refuse: 'That list length is not allowed for this category', code: 'invalid_length' };
     }
-    return { type: 'confirm_setup', actorId: seatId, categoryId, listLength: listLength as ListLength };
+    return { type: 'confirm_setup', actorId: seatId, categoryId, listLength: listLength as ListLength, mode };
   });
 }
 
@@ -260,7 +296,7 @@ export async function addItem(
   roomCode: string,
   text: string,
   choice?: { kind: 'suggestion'; dictionaryId: number } | { kind: 'mine' },
-): Promise<ActionResult<AddItemResult>> {
+): Promise<ActionResult<AddItemResult & { snapshot?: RoomSnapshot }>> {
   try {
     const userId = await verifyUser(token);
     const code = normalizeCode(roomCode);
@@ -342,7 +378,7 @@ export async function addItem(
           set distinct_player_count = this_or_that.unmatched_entries.distinct_player_count + 1,
               last_seen_at = now()`;
     }
-    return { ok: true };
+    return { ok: true, snapshot: await snapshotFor(outcome, userId) };
   } catch (error) {
     return failure(error);
   }
