@@ -1,9 +1,10 @@
 # This or That — Game Mode: Pick and fwd
 
-**Status:** Draft v0.2 · **Date:** 2026-09-26 · **Owner:** Anderson
+**Status:** v0.3, implemented · **Date:** 2026-09-26 · **Owner:** Anderson
 **Builds on:** [Game Mechanics Spec v0.7](this-or-that-game-mechanics.md) (the "original spec"). Everything there applies unless this document changes it. Section references (§) point to the original spec; references to this document say "this spec".
 
 **Changelog**
+- v0.3 — Implemented, with the recommended answer to every open decision (F1–F7). Each is isolated in the code, so a different call is a small change: F2 is `CHAMPION_REIGN_CAP` in `lib/engine/champion.ts`; F6 is the fresh-appearance check in the runner's `item_stats` update.
 - v0.2 — Review fixes: the champion rules split into "who holds the crown" and "retirement", so they no longer contradict each other; a champion card no longer reveals the owner of a merged duplicate; "reign" defined; the champion is derived from the round record rather than stored; the coin flip is seeded per round; champion rounds don't feed `item_stats`; Computer tuning and reveal pacing per mode; consistent mode names; acceptance criteria and decision F6 added.
 - v0.1 — First draft.
 

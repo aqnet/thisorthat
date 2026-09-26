@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { closeRoom, endGame, leaveRoom, rejoinSeat } from '@/app/actions';
 import { Scoreboard, Sheet, Timer, Toast, styles } from '@/components/game/ui';
+import { nameToRemember, rememberName } from '@/lib/client/playerName';
 import { useCountdown, useRoom } from '@/lib/client/useRoom';
 import type { RoomSnapshot } from '@/lib/game/snapshot';
 import { Lobby } from './phases/Lobby';
@@ -31,6 +32,13 @@ export function RoomClient({ roomCode }: { roomCode: string }) {
   const secondsLeft = useCountdown(snap?.phaseDeadline ?? null, room.serverNow);
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirming, setConfirming] = useState<'leave' | 'end' | 'cancel' | null>(null);
+
+  // Played a game through as host or player: remember the name in this
+  // browser, so New Game and Join can pre-fill it next time.
+  const finishedAs = nameToRemember(snap);
+  useEffect(() => {
+    if (finishedAs) rememberName(finishedAs);
+  }, [finishedAs]);
 
   // No seat here: go through the join screen, which handles every case (§6).
   useEffect(() => {

@@ -303,3 +303,65 @@ describe('the app role is limited to its own schema', () => {
     await expect(h.sql`select * from vault.decrypted_secrets`).rejects.toThrow(/permission denied/);
   });
 });
+
+describe('Pick and fwd through the actions (mode spec §3-§4)', () => {
+  it('lets the host pick the mode first, and shows it to everyone', async () => {
+    const r = await room(1);
+    ok(await actions.startGame(r.host, r.code));
+    expect((await snapshot(r.guests[0], r.code)).game!.mode).toBe('pick_your_fav');
+    expect(await actions.selectMode(r.guests[0], r.code, 'pick_and_fwd')).toMatchObject({ ok: false, code: 'not_host' });
+    expect(await actions.selectMode(r.host, r.code, 'bogus' as never)).toMatchObject({ ok: false, code: 'invalid_mode' });
+    ok(await actions.selectMode(r.host, r.code, 'pick_and_fwd'));
+    expect((await snapshot(r.guests[0], r.code)).game!.mode).toBe('pick_and_fwd');
+  });
+
+  it('carries the round winner onto the next ballot, with its owner public', async () => {
+    const r = await room(1);
+    ok(await actions.startGame(r.host, r.code));
+    const fruit = (await snapshot(r.host, r.code)).categories.find((c) => c.name === 'Fruit')!;
+    ok(await actions.confirmSetup(r.host, r.code, fruit.id, 5, 'pick_and_fwd'));
+    for (const user of [r.host, r.guests[0]]) {
+      for (let i = 0; i < 5; i++) ok(await actions.surpriseMe(user, r.code));
+      ok(await actions.submitList(user, r.code));
+    }
+
+    // Round 1: both back the same card (not their own), so it wins outright.
+    const round1 = await snapshot(r.host, r.code);
+    const target = round1.game!.cards.find((c) => !c.mine)!;
+    const guestRound1 = await snapshot(r.guests[0], r.code);
+    const guestPick = guestRound1.game!.cards.find((c) => c.id === target.id && !c.mine)
+      ?? guestRound1.game!.cards.find((c) => !c.mine)!;
+    ok(await actions.castVote(r.host, r.code, target.id));
+    ok(await actions.castVote(r.guests[0], r.code, guestPick.id));
+
+    const reveal = await snapshot(r.host, r.code);
+    expect(reveal.status).toBe('matchup_reveal');
+    expect(reveal.game!.crown?.kind).toMatch(/^(new|coin_flip)$/);
+
+    ok(await actions.nextRound(r.host, r.code));
+    const round2 = await snapshot(r.guests[0], r.code);
+    const champion = round2.game!.cards[0];
+    expect(champion.champion).not.toBeNull();
+    expect(champion.displayText).toBe(reveal.game!.crown!.text);
+    // Owner public before the reveal (mode spec §4.3); fresh cards stay anonymous.
+    expect(champion.champion!.ownerIds.length).toBeGreaterThan(0);
+    expect(round2.game!.cards.slice(1).every((c) => c.ownerIds === null && c.champion === null)).toBe(true);
+    // 2 humans + the Computer + the champion.
+    expect(round2.game!.cards.length).toBe(4);
+  });
+});
+
+describe("the caller's fresh view comes back with every action", () => {
+  it('returns the snapshot the action just committed, so the phone needs no second request', async () => {
+    const r = await entering();
+    const before = await snapshot(r.guests[0], r.code);
+    const surprise = ok(await actions.surpriseMe(r.guests[0], r.code));
+    expect(surprise.snapshot.version).toBeGreaterThan(before.version);
+    expect(surprise.snapshot.game!.myList).toHaveLength(1);
+    // It's the caller's own view: their list, not the other player's.
+    expect(surprise.snapshot.me!.playerId).toBe(before.me!.playerId);
+
+    const added = ok(await actions.addItem(r.host, r.code, 'Mango'));
+    expect(added.snapshot!.game!.myList.map((i) => i.displayText)).toEqual(['Mango']);
+  });
+});

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { joinRoom, lookupRoom, rejoinSeat } from '@/app/actions';
 import { styles } from '@/components/game/ui';
+import { rememberedName } from '@/lib/client/playerName';
 import { accessToken } from '@/lib/client/supabase';
 import type { JoinInfo } from '@/lib/game/snapshot';
 
@@ -20,6 +21,7 @@ export function JoinClient({ roomCode }: { roomCode: string }) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [retryCode, setRetryCode] = useState('');
+  const [prefilled, setPrefilled] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -30,6 +32,12 @@ export function JoinClient({ roomCode }: { roomCode: string }) {
         if (!result.ok) return setLoadError(result.message);
         if (result.info.status === 'seated') return router.replace(`/room/${roomCode}`);
         setInfo(result.info);
+        // Pre-fill the name remembered from a finished game, unless they've started typing.
+        const remembered = rememberedName();
+        if (remembered) {
+          setName((current) => current || remembered);
+          setPrefilled(true);
+        }
       } catch (e) {
         if (live) setLoadError(e instanceof Error ? e.message : "Couldn't reach the game");
       }
@@ -185,13 +193,18 @@ export function JoinClient({ roomCode }: { roomCode: string }) {
           <input
             className={styles.input}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setPrefilled(false);
+            }}
+            onFocus={(e) => prefilled && e.target.select()}
             maxLength={12}
             autoFocus
             autoComplete="nickname"
             placeholder="Up to 12 letters"
           />
         </label>
+        {prefilled && <p className={styles.hint}>From your last game. Type to change it.</p>}
         {error && <p className={styles.error}>{error}</p>}
         <button className={styles.button} disabled={busy || !name.trim()}>
           {busy ? 'Joining…' : inProgress ? 'Join the next game' : 'Join'}

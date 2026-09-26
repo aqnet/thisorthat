@@ -140,7 +140,8 @@ async function runOnce(tx: Tx, target: Target, build: IntentBuilder): Promise<Ru
   return { ok: true, state, loaded };
 }
 
-function seedFor(seedHex: string | null): number {
+/** The engine's numeric seed for a game, from games.rng_seed. */
+export function seedFor(seedHex: string | null): number {
   return seedHex ? seedFromBytes(Buffer.from(seedHex, 'hex')) : 1;
 }
 
@@ -308,7 +309,13 @@ async function recordSideEffects(
     for (const card of matchup.cards) {
       const votes = outcome.votesByCard[card.id] ?? 0;
       for (const favoriteId of card.ownerFavoriteIds) {
-        const itemId = game.favorites.find((f) => f.id === favoriteId)?.canonicalItemId;
+        const favorite = game.favorites.find((f) => f.id === favoriteId);
+        // Pick and fwd (mode spec §5, F6): only fresh appearances count. A
+        // champion's later rounds are correlated repeats of one win, and the
+        // stats are shared with Pick your fav. A fresh duplicate merged into
+        // the champion is dealt into this round, so it does count.
+        if (favorite?.shuffledPosition !== matchup.roundNumber) continue;
+        const itemId = favorite.canonicalItemId;
         if (itemId == null || rows.some((r) => r.dictionary_id === itemId)) continue;
         rows.push({ dictionary_id: itemId, votes, won: top > 0 && votes === top ? 1 : 0 });
       }
@@ -362,17 +369,18 @@ async function recordSideEffects(
       human_count: game.humanCount,
       category_id: game.categoryId,
       device_group_id: loaded.deviceGroupId,
+      mode: game.mode,
     }));
   if (scores.length) {
     await tx`
       insert into this_or_that.high_scores
-        (game_id, player_name, score, max_possible, pct, list_length, human_count, category_id, device_group_id, board_week)
+        (game_id, player_name, score, max_possible, pct, list_length, human_count, category_id, device_group_id, mode, board_week)
       select r.game_id, r.player_name, r.score, r.max_possible, r.pct, r.list_length, r.human_count,
-             r.category_id, r.device_group_id,
+             r.category_id, r.device_group_id, r.mode,
              date_trunc('week', now() at time zone 'America/Los_Angeles')::date
         from jsonb_to_recordset(${tx.json(scores)}) as r(
           game_id uuid, player_name text, score int, max_possible int, pct smallint,
-          list_length smallint, human_count smallint, category_id smallint, device_group_id uuid)`;
+          list_length smallint, human_count smallint, category_id smallint, device_group_id uuid, mode text)`;
   }
 }
 

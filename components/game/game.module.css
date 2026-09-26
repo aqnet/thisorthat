@@ -203,6 +203,45 @@
   cursor: not-allowed;
 }
 
+/* --- Mode picker (mode spec §3a) --------------------------------------------- */
+
+.modeCard {
+  font: inherit;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  padding: 18px 16px;
+  border-radius: var(--radius-card);
+  border: 3px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform var(--motion-select);
+}
+
+.modeCard:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.modeCardActive {
+  border-color: var(--side-b-fill);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--side-b-fill) 30%, transparent);
+}
+
+.modeName {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-transform: uppercase;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.modePitch {
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
 /* --- Players ---------------------------------------------------------------- */
 
 .player {
@@ -380,6 +419,12 @@
 
 .cardDimmed {
   opacity: 0.55;
+}
+
+/* Pick and fwd: the champion is pinned first and wears the spark colour. */
+.cardChampion {
+  outline: 3px dashed var(--spark);
+  outline-offset: 2px;
 }
 
 .cardWinner {

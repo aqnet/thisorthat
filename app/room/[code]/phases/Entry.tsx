@@ -58,7 +58,8 @@ export function Entry({ snap, room, roomCode }: PhaseProps) {
       setSuggestion(null);
       // Only clear what was submitted: a fast typer may already be on the next item.
       setText((current) => (current === typed ? '' : current));
-      void room.refresh();
+      if (result.snapshot) room.apply(result.snapshot);
+      else void room.refresh();
     } catch {
       setError("Couldn't reach the game. Try again.");
     } finally {

@@ -31,7 +31,8 @@ export interface BuildMatchupsResult {
   sharedCardRounds: number[];
 }
 
-function keyOf(favorite: Favorite): string {
+/** What makes two items "the same": canonical id first, else normalized text. */
+export function itemKey(favorite: Favorite): string {
   // Prefer the canonical dictionary id: "NYC" and "New York City" are the same
   // item even though their text differs.
   return favorite.canonicalItemId !== null
@@ -97,7 +98,7 @@ export function buildMatchups(input: BuildMatchupsInput): BuildMatchupsResult {
     lists.set(playerId, rng.shuffle(own));
   }
 
-  const keyAt = (playerId: string, round: number): string => keyOf(lists.get(playerId)![round]);
+  const keyAt = (playerId: string, round: number): string => itemKey(lists.get(playerId)![round]);
 
   // §9.2.4: separate same-item collisions where we can.
   for (let round = 0; round < listLength; round++) {
@@ -130,7 +131,7 @@ export function buildMatchups(input: BuildMatchupsInput): BuildMatchupsResult {
     const byKey = new Map<string, { favorite: Favorite; owners: string[] }>();
     for (const playerId of playerIds) {
       const favorite = lists.get(playerId)![round];
-      const key = keyOf(favorite);
+      const key = itemKey(favorite);
       const existing = byKey.get(key);
       if (existing) {
         existing.owners.push(favorite.id);
@@ -172,15 +173,28 @@ export function buildMatchups(input: BuildMatchupsInput): BuildMatchupsResult {
   return { matchups, favorites: positioned, sharedCardRounds };
 }
 
-/** The card a player owns in a match-up, if any. Used to disable "Yours". */
+/**
+ * Every card a player owns in a match-up. Usually one; in Pick and fwd a
+ * player can own the champion AND a fresh card, and may vote for neither.
+ */
+export function ownCardIds(
+  matchup: Matchup,
+  playerId: string,
+  favorites: readonly Favorite[],
+): string[] {
+  const ownFavoriteIds = new Set(
+    favorites.filter((f) => f.playerId === playerId).map((f) => f.id),
+  );
+  return matchup.cards
+    .filter((c) => c.ownerFavoriteIds.some((id) => ownFavoriteIds.has(id)))
+    .map((c) => c.id);
+}
+
+/** The first card a player owns in a match-up, if any. */
 export function ownCardId(
   matchup: Matchup,
   playerId: string,
   favorites: readonly Favorite[],
 ): string | null {
-  const ownFavoriteIds = new Set(
-    favorites.filter((f) => f.playerId === playerId).map((f) => f.id),
-  );
-  const card = matchup.cards.find((c) => c.ownerFavoriteIds.some((id) => ownFavoriteIds.has(id)));
-  return card?.id ?? null;
+  return ownCardIds(matchup, playerId, favorites)[0] ?? null;
 }

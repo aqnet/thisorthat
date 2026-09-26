@@ -1,4 +1,4 @@
-import type { ListLength, SessionStatus } from '@/lib/engine';
+import type { GameMode, ListLength, SessionStatus } from '@/lib/engine';
 
 /**
  * What one player's phone is allowed to know (§14.5), built per viewer by the
@@ -67,6 +67,22 @@ export interface SnapshotCard {
   winner: boolean;
   /** Timer-filled item, tagged on reveal (§8). */
   auto: boolean;
+  /**
+   * Pick and fwd: the champion card, pinned first. Its original owners are
+   * public before the reveal (mode spec §4.3); an owner merged in from a
+   * fresh duplicate is not.
+   */
+  champion: { reign: number; ownerIds: string[] } | null;
+}
+
+/** Pick and fwd: what happened to the crown on the round just revealed (mode spec §4.4). */
+export interface CrownCallout {
+  kind: 'defended' | 'new' | 'coin_flip' | 'retired';
+  /** The item now holding (or retiring with) the crown. */
+  text: string;
+  reign: number;
+  /** Set when a new champion took the crown from an old one. */
+  dethroned: string | null;
 }
 
 export interface StandingRow {
@@ -83,6 +99,7 @@ export interface StandingRow {
 
 export interface SnapshotGame {
   number: number;
+  mode: GameMode;
   categoryName: string | null;
   listLength: ListLength | null;
   round: number;
@@ -101,6 +118,8 @@ export interface SnapshotGame {
   roundPoints: Record<string, number> | null;
   /** §9.5.8: set on the reveal where the leader changed. */
   leadChange: string | null;
+  /** Pick and fwd: shown before the lead-change callout. */
+  crown: CrownCallout | null;
   results: SnapshotResults | null;
 }
 

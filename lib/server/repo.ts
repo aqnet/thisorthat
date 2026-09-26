@@ -157,6 +157,8 @@ function toLoaded(row: Row): LoadedRoom {
         id: c.id as string,
         displayText: c.display_text as string,
         sortOrder: c.sort_order as number,
+        // Only the champion card carries a reign; fresh cards leave it out, as the engine does.
+        ...(c.champion_reign != null ? { championReign: c.champion_reign as number } : {}),
         ownerFavoriteIds: (ownersByCard.get(c.id as string) ?? []).sort(),
       });
       cardsByMatchup.set(c.matchup_id as string, list);
@@ -193,6 +195,7 @@ function toLoaded(row: Row): LoadedRoom {
     game = {
       id: g.id as string,
       number: g.number as number,
+      mode: ((g.mode as string | null) ?? 'pick_your_fav') as Game['mode'],
       offeredCategoryIds: (g.offered_category_ids as number[] | null) ?? [],
       categoryId: (g.category_id as number | null) ?? null,
       listLength: (g.list_length as ListLength | null) ?? null,
@@ -299,6 +302,7 @@ function rowsOf(state: SessionState | null, seedHex: string | null): Record<Tabl
       id: game.id,
       session_id: state.id,
       number: game.number,
+      mode: game.mode,
       offered_category_ids: game.offeredCategoryIds,
       category_id: game.categoryId,
       list_length: game.listLength,
@@ -342,7 +346,13 @@ function rowsOf(state: SessionState | null, seedHex: string | null): Record<Tabl
       revealed_at: iso(m.revealedAt),
     });
     for (const c of m.cards) {
-      out.ballot_cards.push({ id: c.id, matchup_id: m.id, display_text: c.displayText, sort_order: c.sortOrder });
+      out.ballot_cards.push({
+        id: c.id,
+        matchup_id: m.id,
+        display_text: c.displayText,
+        sort_order: c.sortOrder,
+        champion_reign: c.championReign ?? null,
+      });
       for (const favoriteId of c.ownerFavoriteIds) {
         out.ballot_card_owners.push({ ballot_card_id: c.id, favorite_id: favoriteId });
       }
@@ -418,6 +428,14 @@ export async function saveState(
     const previous = new Map(oldRows[name].map((row) => [keyOf(spec, row), JSON.stringify(row)]));
     const changed = newRows[name].filter((row) => previous.get(keyOf(spec, row)) !== JSON.stringify(row));
     await upsert(sql, spec, changed);
+  }
+
+  // Pick and fwd: a fresh card merged into the champion when its round opened
+  // (mode spec §4.1). It never had a vote; its owners moved to the champion card.
+  const keptCards = new Set(newRows.ballot_cards.map((r) => r.id as string));
+  const mergedCards = oldRows.ballot_cards.map((r) => r.id as string).filter((id) => !keptCards.has(id));
+  if (mergedCards.length) {
+    await sql.unsafe(`delete from this_or_that.ballot_cards where id = any($1::uuid[])`, [mergedCards]);
   }
 
   // remove_item is the only intent that deletes a favorite.

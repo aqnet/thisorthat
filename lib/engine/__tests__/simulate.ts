@@ -4,11 +4,11 @@
  */
 
 import { apply } from '../reducer';
-import { ownCardId } from '../matchups';
-import { createRng } from '../rng';
+import { ownCardIds } from '../matchups';
+import { createRng, type Rng } from '../rng';
 import { pickComputerItems, type DictionaryEntry } from '../computer';
 import { toBallotText, toDisplayText } from '../text';
-import type { EngineContext, Favorite, Intent, SessionState } from '../types';
+import type { BallotCard, EngineContext, Favorite, GameMode, Intent, SessionState } from '../types';
 import type { ListLength } from '../constants';
 import { session } from './fixtures';
 
@@ -30,6 +30,12 @@ export interface SimulationOptions {
   seed: number;
   /** Humans who never vote, to exercise the timeout paths. */
   silentPlayerIds?: string[];
+  mode?: GameMode;
+  /**
+   * How each human picks a card. Default: the first card they don't own.
+   * Pass a strategy to shape outcomes (e.g. always back the champion).
+   */
+  chooseCard?: (args: { playerId: string; round: number; options: BallotCard[]; rng: Rng }) => string;
 }
 
 export interface SimulationResult {
@@ -39,7 +45,7 @@ export interface SimulationResult {
 }
 
 export function simulateGame(options: SimulationOptions): SimulationResult {
-  const { humanCount, listLength, seed, silentPlayerIds = [] } = options;
+  const { humanCount, listLength, seed, silentPlayerIds = [], mode = 'pick_your_fav', chooseCard } = options;
   const rng = createRng(seed);
   let idCounter = 0;
   let now = 1_000;
@@ -73,7 +79,7 @@ export function simulateGame(options: SimulationOptions): SimulationResult {
   }
 
   step({ type: 'start_game', actorId: humanIds[0] });
-  step({ type: 'confirm_setup', actorId: humanIds[0], categoryId: 1, listLength });
+  step({ type: 'confirm_setup', actorId: humanIds[0], categoryId: 1, listLength, mode });
 
   // Each human enters a full, distinct list.
   const dictionary = makeDictionary(200);
@@ -125,14 +131,16 @@ export function simulateGame(options: SimulationOptions): SimulationResult {
 
   // Play every round.
   for (let round = 1; round <= listLength; round++) {
-    const matchup = state.game!.matchups.find((m) => m.roundNumber === round)!;
     for (const playerId of humanIds) {
       if (silentPlayerIds.includes(playerId)) continue;
-      const own = ownCardId(matchup, playerId, state.game!.favorites);
-      const target = matchup.cards.find((c) => c.id !== own);
-      if (!target) continue;
+      // Read the live match-up: in Pick and fwd the champion joins at open.
+      const live = state.game!.matchups.find((m) => m.roundNumber === round)!;
+      const own = ownCardIds(live, playerId, state.game!.favorites);
+      const options = live.cards.filter((c) => !own.includes(c.id));
+      if (options.length === 0) continue;
+      const cardId = chooseCard ? chooseCard({ playerId, round, options, rng }) : options[0].id;
       now += 100;
-      step({ type: 'cast_vote', playerId, ballotCardId: target.id });
+      step({ type: 'cast_vote', playerId, ballotCardId: cardId });
     }
 
     if (state.status === 'matchup_voting') {

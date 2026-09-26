@@ -54,6 +54,8 @@ export const VOTE_MS = 15_000;
 
 /** §9.5: reveal holds before auto-advancing; the host can skip with Next. */
 export const REVEAL_HOLD_MS = 4_000;
+/** Pick and fwd (mode spec §4.4): one more callout to fit, so a longer hold. */
+export const REVEAL_HOLD_FWD_MS = 5_000;
 
 /** §5: relaxed timers stretch setup, category vote, and entry only. */
 export const RELAXED_MULTIPLIER = 1.5;
