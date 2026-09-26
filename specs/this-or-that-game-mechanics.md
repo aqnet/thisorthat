@@ -1,9 +1,10 @@
 # This or That — Game Mechanics Spec
 
-**Status:** Draft v0.7 · **Date:** 2026-09-25 · **Owner:** Anderson
+**Status:** Draft v0.8 · **Date:** 2026-09-27 · **Owner:** Anderson
 **Depends on:** This or That Design System (themes: Duel, Candy Pop)
 
 **Changelog**
+- v0.8 — **The Computer can sit out with 3+ humans.** A host setting in the lobby (§5); below 3 humans it always plays, because then it's what keeps ballots from being a 2-way vote (§9.1). The choice is frozen at Start. Without it: human-only ballots, no Computer outcomes on results (§10), and high scores record it (§12, D13).
 - v0.7 — **Game modes.** The game this spec describes is now the mode **Pick your fav**. A second mode, **Pick and fwd**, carries each round's winner onto the next ballot; it's specified separately in [this-or-that-mode-pick-and-fwd.md](this-or-that-mode-pick-and-fwd.md), which builds on this spec. Host Setup picks the mode before the category (§7).
 - v0.6 — **Ballot cards are always ALL CAPS**, uppercased server-side, so casing and typing style can't reveal who wrote an item (§9.1, §9.3).
 - v0.5:
@@ -34,7 +35,7 @@
 
 > **Modes:** this spec describes the mode **Pick your fav**. The mode **Pick and fwd** changes only what its [mini spec](this-or-that-mode-pick-and-fwd.md) says; everything else here applies to both.
 
-A Jackbox-style party game for 2–4 human players on their own phones, plus an always-present **Computer** player. The host creates a session, players join via QR code or URL, everyone enters items they'll defend in a chosen category, and then those items, plus one Computer-picked item, are pitted against each other in match-ups. Players vote on each match-up; the owner of the winning item scores. The last round is a double-points Final Showdown. Highest total wins, and top scores go on high-score boards.
+A Jackbox-style party game for 2–4 human players on their own phones, plus a **Computer** player — always present with 2 humans, optional with 3 or more (§9.1). The host creates a session, players join via QR code or URL, everyone enters items they'll defend in a chosen category, and then those items, plus one Computer-picked item, are pitted against each other in match-ups. Players vote on each match-up; the owner of the winning item scores. The last round is a double-points Final Showdown. Highest total wins, and top scores go on high-score boards.
 
 The Computer guarantees every ballot has at least 3 items, so no game is ever a degenerate 2-way vote, and it gives every game a shared opponent: **beat the Computer.**
 
@@ -121,6 +122,7 @@ Four actions: **New Game · Join · High Scores · Settings**.
 - **Start** is disabled with fewer than 2 humans, and labelled with the reason: "Need 1 more player."
 - **Remove player** (tap a player → Remove, with a confirmation). A removed player sees "You were removed from the room" with **Home**.
 - **Cancel Room** closes the session. Everyone sees "The host closed the room" with **Home** and **Start your own**.
+- **Computer player** (on by default): the host can switch it off when **3 or more humans** are seated; with fewer, the switch is disabled with the reason ("Always plays with fewer than 3 players"). If a player leaves and the lobby drops below 3, the Computer plays again. Switched off, its lobby row reads "Sitting out". The setting carries over to Play Again (§11).
 - **Game settings:** relaxed timers (1.5× setup, category-vote, and entry timers; the 15s vote timer is fixed; default off) and category vote (default off).
 
 **Leaving the lobby:** any player can tap **Leave**, which frees their seat.
@@ -239,6 +241,8 @@ Each player privately enters items in the chosen category, up to the chosen list
 
 The Computer is a full scoring participant that **plays items but never votes**.
 
+**When it plays (v0.8):** always with 2 humans — there it's what keeps every ballot at 3+ cards. With **3 or more humans** every ballot already has 3+ cards, so the host may switch it off in the lobby (§5). The choice is **frozen at Start**: a player leaving mid-game doesn't bring the Computer back, because departed players' items stay on the ballots (§9.7) and ballots keep 3+ cards. A game without the Computer simply has no Computer list: everything below about its picks, camouflage and scoring doesn't apply.
+
 **Why it doesn't vote:** it has no taste, so its votes would be random, and in a 2-player game a random tiebreaker would decide most rounds. Human votes decide the game. Every point the Computer earns comes from humans preferring its pick.
 
 **How the Computer picks items**
@@ -272,7 +276,7 @@ When all human lists are locked and the Computer's list is generated:
 3. With N items per player there are exactly **N match-ups** (5, 10, or 15).
 4. **Collision handling:** if two human players' items in the same match-up are the same canonical item, the server swaps positions within one player's list to separate them. If duplicates can't be separated (rare), the shared item appears once with both owners credited (§9.5). The Computer never collides, because its items are excluded from human lists (§9.1).
 
-Each match-up shows **one item per human player plus one Computer item**:
+Each match-up shows **one item per human player plus one Computer item** (or just the human items when the Computer sits out, §9.1):
 
 | Human players | Cards per ballot | Choices per voter (excluding own) |
 |---|---|---|
@@ -353,6 +357,7 @@ The last round(s) are worth **double points** (votes and bonus both ×2):
 - **Tiebreaker for the win:** most round wins; if still tied, shared victory.
 - **If the Computer finishes first:** "The Computer wins." Nobody gets a victory, but the best-placed human is shown as "Top Human."
 - **Beat the Computer:** every human who finished above the Computer gets a badge on the results screen.
+- **Without the Computer (v0.8):** it isn't on the podium, and there's no "The Computer wins", Top Human, Beat the Computer badge, or *Fooled by the Computer* stat.
 - **Fun stats** (low cost, high replay value):
   - *Crowd Favorite* — single item with the most votes all game
   - *Hidden Gem* — item that won with the fewest votes
@@ -399,6 +404,7 @@ All boards are split by list length (5 / 10 / 15).
 - Entry: player name, percentage, points, category, list length, human player count, date.
 - A qualifying player sees "New high score! #4 this week."
 - **Eligibility:** human players only, and completed games only (no End Game, no games paused out). The Computer is never on any board.
+- **Without the Computer (v0.8):** the percentage formula is unchanged — a human still earns at most (humans − 1) votes + 1 bonus a round — and entries record `with_computer`. Whether those scores need their own boards is D13.
 - **Integrity:** scores are computed server-side only. Clients never submit scores.
 - **Moderation:** names on global boards pass the same profanity filter; flagged entries can be hidden.
 
@@ -576,7 +582,7 @@ high_scores        (id, game_id, player_name, score, max_possible, pct, list_len
 **Rules the database enforces (not just the engine):**
 - **Room codes:** exclude `I`/`O`, and are unique among open rooms.
 - **Seats and names:**
-  - exactly one Computer per room;
+  - exactly one Computer per room (seated even when it sits a game out; `sessions.computer_player` is the lobby setting, `games.with_computer` what each game did);
   - player names unique per room (case-insensitive);
   - seat colors 1–4 unique, which hard-caps a room at 4 seated humans;
   - at most one host;
@@ -670,6 +676,7 @@ The room page is **one route with phase-driven rendering**, not a route per phas
 | D4 | Duplicate items across players | Allow (shared credit) · block at entry ("someone already has that") | **Allow.** Blocking leaks information about others' lists during entry. |
 | D5 | Vote reveal | Show owners during voting vs after | **After.** Hidden ownership prevents alliance/pity voting. |
 | D6 | Ballot size (3–5 cards) | Keep multi-item ballots vs pairwise 1v1 match-ups | Multi-item ballots for v1. With the Computer, 4 humans means 5 cards; watch vote-time and readability in playtests. Pairwise brackets are a candidate v2 mode. |
+| D13 | Boards for games without the Computer | Shared boards · separate boards · exclude them | **Shared for now**, with `with_computer` recorded on every entry. Without the Computer each voter has one fewer card to spread votes over, so percentages may run higher; split the boards if playtest data shows it. |
 | D7 | Computer strength | Uniform random · win-rate weighted · adaptive to group skill | Win-rate weighted, `computer.strength` = 0.7 at launch. Target: the Computer wins roughly 20–30% of games. Much higher feels unfair; much lower and it stops mattering. |
 | D8 | Computer voting | Never · only as a 2-player tiebreaker | **Never.** Revisit only if 2-player tie rates feel bad in playtests. |
 | D9 | Crowd-pleaser vs self-expression | Keep the crowd-pleaser scoring with honest framing · add a self-expression mechanic (e.g. "guess whose item this is") | Crowd-pleaser for v1 (§1). A "guess the owner" bonus round is a strong v2 candidate. |
@@ -707,6 +714,7 @@ The room page is **one route with phase-driven rendering**, not a route per phas
 
 **Match-ups & scoring**
 - [ ] Every session has exactly one Computer player, contributing one item per match-up, never duplicating a human's item, and never voting.
+- [ ] With 3+ humans the host can switch the Computer off in the lobby; below 3 it always plays. The choice is frozen at Start, and a game without it has human-only ballots and no Computer outcomes on results.
 - [ ] Computer items are visually indistinguishable from player items until reveal.
 - [ ] Every ballot card is ALL CAPS in the stored text and the broadcast payload, not only on screen; curly quotes are straightened and trailing punctuation stripped.
 - [ ] N match-ups are generated server-side with one item per player and no same-item collisions.

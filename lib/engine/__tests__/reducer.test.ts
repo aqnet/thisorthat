@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { apply, publicState } from '../reducer';
 import { ownCardId } from '../matchups';
 import { simulateGame } from './simulate';
+import { standings } from '../scoring';
 import { session, player } from './fixtures';
 import {
   DEPART_AFTER_MS,
@@ -419,5 +420,54 @@ describe('§11 play again with a full room', () => {
     const queued = again.players.find((p) => p.id === 'q1')!;
     expect(queued.queued).toBe(true);
     expect(queued.colorSlot).toBeNull();
+  });
+});
+
+describe('§5 / §9.1 the Computer sitting out (spec v0.8)', () => {
+  const lobbyOf = (humans: number, computerPlayer: boolean) =>
+    session({
+      hostPlayerId: 'p1',
+      computerPlayer,
+      players: [
+        player('cpu', { isComputer: true, colorSlot: 0, name: 'Computer', userId: null }),
+        ...Array.from({ length: humans }, (_, i) =>
+          player(`p${i + 1}`, { colorSlot: i + 1, isHost: i === 0, joinedAt: i }),
+        ),
+      ],
+    });
+
+  it('lets the host switch the Computer off in the lobby, and only the host', () => {
+    const off = ok(lobbyOf(3, true), { type: 'update_settings', actorId: 'p1', computerPlayer: false }, 1_000);
+    expect(off.computerPlayer).toBe(false);
+    // Changing one setting leaves the other alone.
+    expect(off.relaxedTimers).toBe(false);
+    expect(apply(lobbyOf(3, true), { type: 'update_settings', actorId: 'p2', computerPlayer: false }, ctx(1)))
+      .toMatchObject({ ok: false, error: 'not_host' });
+  });
+
+  it('freezes the choice at Start: off with 3+ humans, forced on with 2', () => {
+    const three = ok(lobbyOf(3, false), { type: 'start_game', actorId: 'p1' }, 1_000);
+    expect(three.game!.withComputer).toBe(false);
+    const two = ok(lobbyOf(2, false), { type: 'start_game', actorId: 'p1' }, 1_000);
+    expect(two.game!.withComputer).toBe(true);
+    const on = ok(lobbyOf(4, true), { type: 'start_game', actorId: 'p1' }, 1_000);
+    expect(on.game!.withComputer).toBe(true);
+  });
+
+  it('keeps the Computer out for the whole game even if a player leaves', () => {
+    let state = ok(lobbyOf(3, false), { type: 'start_game', actorId: 'p1' }, 1_000);
+    state = ok(state, { type: 'leave', playerId: 'p3' }, 2_000);
+    expect(state.game!.withComputer).toBe(false);
+  });
+
+  it('builds ballots from human lists only, and leaves the Computer off the scoreboard', () => {
+    const { state } = simulateGame({ humanCount: 3, listLength: 5, seed: 4, computerPlayer: false });
+    expect(state.status).toBe('results');
+    for (const m of state.game!.matchups) {
+      expect(m.cards).toHaveLength(3);
+      const owners = m.cards.flatMap((c) => c.ownerFavoriteIds.map((id) => state.game!.favorites.find((f) => f.id === id)!.playerId));
+      expect(owners).not.toContain('cpu');
+    }
+    expect(standings(state).some((r) => r.isComputer)).toBe(false);
   });
 });

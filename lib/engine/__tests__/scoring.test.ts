@@ -161,7 +161,7 @@ describe('§10 final results', () => {
         player('cpu', { isComputer: true, colorSlot: 0, name: 'Computer' }),
       ],
       game: {
-        id: 'g1', number: 1, mode: 'pick_your_fav', offeredCategoryIds: [], categoryId: 1, listLength: 5,
+        id: 'g1', number: 1, mode: 'pick_your_fav', withComputer: true, offeredCategoryIds: [], categoryId: 1, listLength: 5,
         humanCount: 2, currentRound: 5, endedEarly: false, favorites,
         matchups: [
           matchup({ id: 'm1', roundNumber: 1, cards, votes: { ana: 'c-cpu', ben: 'c-cpu' } }),

@@ -215,3 +215,14 @@ describe('mutation-hardened snapshot rules (test gap review)', () => {
     expect(found).toMatch(/ended .+'s reign$/);
   });
 });
+
+describe('results without the Computer (spec v0.8)', () => {
+  it('names no Computer win, Top Human, Beat the Computer badge or Fooled stat', () => {
+    const { state } = simulateGame({ humanCount: 3, listLength: 5, seed: 6, computerPlayer: false });
+    const game = buildSnapshot(state, 'u-p1', categories, 0).game!;
+    expect(game.withComputer).toBe(false);
+    expect(game.results).toMatchObject({ computerWon: false, topHumanId: null, beatComputerIds: [] });
+    expect(game.results!.funStats.map((s) => s.label)).not.toContain('Fooled by the Computer');
+    expect(game.standings.some((r) => r.isComputer)).toBe(false);
+  });
+});

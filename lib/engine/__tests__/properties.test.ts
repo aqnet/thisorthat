@@ -164,3 +164,33 @@ function sharedOwnerExtra(state: ReturnType<typeof simulateGame>['state'], round
   }
   return extra;
 }
+
+describe('§12 without the Computer (spec v0.8)', () => {
+  it('keeps every human score within max_possible and always reaches results', () => {
+    fc.assert(
+      fc.property(
+        fc.constantFrom(3, 4),
+        fc.constantFrom(...LIST_LENGTHS),
+        fc.integer({ min: 1, max: 5000 }),
+        fc.constantFrom('pick_your_fav' as const, 'pick_and_fwd' as const),
+        (humanCount, listLength, seed, mode) => {
+          const { state } = simulateGame({ humanCount, listLength: listLength as ListLength, seed, mode, computerPlayer: false });
+          expect(state.status).toBe('results');
+          const ceiling = maxPossibleForHuman(listLength as ListLength, humanCount, (r) =>
+            multiplierForRound(listLength as ListLength, r),
+          );
+          for (const row of standings(state)) {
+            expect(row.isComputer).toBe(false);
+            expect(row.score).toBeLessThanOrEqual(ceiling);
+          }
+          for (const m of state.game!.matchups) {
+            // One card per human list, plus the champion in Pick and fwd.
+            expect(m.cards.length).toBeLessThanOrEqual(humanCount + 1);
+            expect(m.cards.length).toBeGreaterThanOrEqual(humanCount - 1);
+          }
+        },
+      ),
+      { numRuns: 60 },
+    );
+  });
+});

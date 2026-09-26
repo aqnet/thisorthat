@@ -237,6 +237,9 @@ async function lockListsIntent(tx: Tx, state: SessionState, seedHex: string | nu
     }
   }
 
+  // The host switched the Computer off (3+ humans): nothing for it to pick.
+  if (!game.withComputer) return { type: 'lock_lists', autoFill, computerFavorites: [], computerItemIds: [] };
+
   const computer = state.players.find((p) => p.isComputer)!;
   const humanKeys = new Set(all.map((f) => dedupeKey(f.displayText)));
   const excluded = new Set<number>(
@@ -370,17 +373,19 @@ async function recordSideEffects(
       category_id: game.categoryId,
       device_group_id: loaded.deviceGroupId,
       mode: game.mode,
+      with_computer: game.withComputer,
     }));
   if (scores.length) {
     await tx`
       insert into this_or_that.high_scores
-        (game_id, player_name, score, max_possible, pct, list_length, human_count, category_id, device_group_id, mode, board_week)
+        (game_id, player_name, score, max_possible, pct, list_length, human_count, category_id, device_group_id, mode, with_computer, board_week)
       select r.game_id, r.player_name, r.score, r.max_possible, r.pct, r.list_length, r.human_count,
-             r.category_id, r.device_group_id, r.mode,
+             r.category_id, r.device_group_id, r.mode, r.with_computer,
              date_trunc('week', now() at time zone 'America/Los_Angeles')::date
         from jsonb_to_recordset(${tx.json(scores)}) as r(
           game_id uuid, player_name text, score int, max_possible int, pct smallint,
-          list_length smallint, human_count smallint, category_id smallint, device_group_id uuid, mode text)`;
+          list_length smallint, human_count smallint, category_id smallint, device_group_id uuid, mode text,
+          with_computer boolean)`;
   }
 }
 
@@ -414,6 +419,7 @@ export async function createRoom(userId: string, name: string): Promise<SessionS
           phaseDeadline: null,
           relaxedTimers: false,
           categoryVoteEnabled: false,
+          computerPlayer: true,
           players: [
             {
               id: randomUUID(),

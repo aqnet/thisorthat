@@ -21,16 +21,27 @@ export function PlayerDot({ name, colorSlot, isComputer }: { name: string; color
   );
 }
 
-export function PlayerRow({ player, children, you }: { player: SnapshotPlayer; children?: ReactNode; you?: boolean }) {
+export function PlayerRow({
+  player,
+  children,
+  you,
+  sittingOut,
+}: {
+  player: SnapshotPlayer;
+  children?: ReactNode;
+  you?: boolean;
+  /** The Computer, switched off for the next game (§5). */
+  sittingOut?: boolean;
+}) {
   return (
-    <div className={`${styles.player} ${player.left ? styles.faded : ''}`}>
+    <div className={`${styles.player} ${player.left || sittingOut ? styles.faded : ''}`}>
       <PlayerDot name={player.name} colorSlot={player.colorSlot} isComputer={player.isComputer} />
       <span className={styles.playerName}>
         {player.name}
         {you ? ' (you)' : ''}
       </span>
       {player.isHost && <span className={`${styles.tag} ${styles.sparkTag}`}>Host</span>}
-      {player.isComputer && <span className={styles.tag}>Always here</span>}
+      {player.isComputer && <span className={styles.tag}>{sittingOut ? 'Sitting out' : 'Playing'}</span>}
       {player.left && <span className={styles.tag}>Left</span>}
       {!player.left && !player.isComputer && !player.connected && <span className={styles.tag}>Reconnecting…</span>}
       {children}

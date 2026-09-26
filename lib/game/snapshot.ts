@@ -15,6 +15,10 @@ export interface RoomSnapshot {
   pausedFrom: SessionStatus | null;
   hostPlayerId: string | null;
   relaxedTimers: boolean;
+  /** Lobby setting (§5): the host wants the Computer to play. */
+  computerPlayer: boolean;
+  /** Whether it will play the next game: the setting, or forced on below 3 humans. */
+  computerPlays: boolean;
   me: SnapshotMe | null;
   players: SnapshotPlayer[];
   /** Only for the host during setup. */
@@ -100,6 +104,8 @@ export interface StandingRow {
 export interface SnapshotGame {
   number: number;
   mode: GameMode;
+  /** False when the Computer sat this game out. */
+  withComputer: boolean;
   categoryName: string | null;
   listLength: ListLength | null;
   round: number;

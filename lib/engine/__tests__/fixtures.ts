@@ -59,6 +59,7 @@ export function session(overrides: Partial<SessionState> = {}): SessionState {
     phaseDeadline: null,
     relaxedTimers: false,
     categoryVoteEnabled: false,
+    computerPlayer: true,
     players: [],
     game: null,
     lastActivityAt: 0,

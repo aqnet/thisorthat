@@ -31,6 +31,8 @@ export interface SimulationOptions {
   /** Humans who never vote, to exercise the timeout paths. */
   silentPlayerIds?: string[];
   mode?: GameMode;
+  /** The lobby's Computer setting; it only sits out with 3+ humans. */
+  computerPlayer?: boolean;
   /**
    * How each human picks a card. Default: the first card they don't own.
    * Pass a strategy to shape outcomes (e.g. always back the champion).
@@ -45,7 +47,7 @@ export interface SimulationResult {
 }
 
 export function simulateGame(options: SimulationOptions): SimulationResult {
-  const { humanCount, listLength, seed, silentPlayerIds = [], mode = 'pick_your_fav', chooseCard } = options;
+  const { humanCount, listLength, seed, silentPlayerIds = [], mode = 'pick_your_fav', chooseCard, computerPlayer = true } = options;
   const rng = createRng(seed);
   let idCounter = 0;
   let now = 1_000;
@@ -62,6 +64,7 @@ export function simulateGame(options: SimulationOptions): SimulationResult {
       },
     ],
     lastActivityAt: now,
+    computerPlayer,
   });
 
   const step = (intent: Intent): void => {
@@ -105,7 +108,8 @@ export function simulateGame(options: SimulationOptions): SimulationResult {
   });
 
   // The server does the dictionary work, then hands the result back (§14.8).
-  const picks = pickComputerItems({
+  // The server skips the Computer's picks when it sits out.
+  const picks = !state.game!.withComputer ? { items: [] } : pickComputerItems({
     dictionary,
     listLength,
     excludedItemIds: usedItemIds,
