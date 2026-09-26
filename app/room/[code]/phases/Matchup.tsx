@@ -118,7 +118,9 @@ export function Voting({ snap, room, roomCode }: PhaseProps) {
           ? waitingOn.length
             ? `Waiting on ${waitingOn.map((p) => p.name).join(', ')}…`
             : 'Counting votes…'
-          : "You can't vote for your own item. The Computer's card is in there somewhere."}
+          : game.withComputer
+            ? "You can't vote for your own item. The Computer's card is in there somewhere."
+            : "You can't vote for your own item."}
       </p>
     </>
   );

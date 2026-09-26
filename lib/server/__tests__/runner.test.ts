@@ -378,6 +378,50 @@ describe('Pick and fwd through the database (mode spec §8)', () => {
   });
 });
 
+describe('the Computer sitting out, through the database (spec v0.8)', () => {
+  it('plays a 3-human game without the Computer and round-trips every state', async () => {
+    const users = [await h.newUser(), await h.newUser(), await h.newUser()];
+    const created = await runner.createRoom(users[0], 'Ana');
+    const code = created.roomCode;
+    const host = created.players.find((p) => !p.isComputer)!;
+    let state = await act(code, () => ({ type: 'join', playerId: randomUUID(), userId: users[1], name: 'Ben' }));
+    state = await act(code, () => ({ type: 'join', playerId: randomUUID(), userId: users[2], name: 'Cy' }));
+    state = await act(code, () => ({ type: 'update_settings', actorId: host.id, computerPlayer: false }));
+    expect(state.computerPlayer).toBe(false);
+    state = await act(code, () => ({ type: 'start_game', actorId: host.id }));
+    expect(state.game!.withComputer).toBe(false);
+    const fruit = (await repo.loadCategories(h.sql)).find((c) => c.slug === 'fruit')!;
+    await act(code, () => ({ type: 'confirm_setup', actorId: host.id, categoryId: fruit.id, listLength: 5 }));
+    await expire(code);
+    await touch(code);
+    state = await act(code, () => ({ type: 'advance' }));
+    expect(state.status).toBe('matchup_voting');
+
+    const computer = state.players.find((p) => p.isComputer)!;
+    expect(state.game!.favorites.some((f) => f.playerId === computer.id)).toBe(false);
+    for (const m of state.game!.matchups) expect(m.cards.length).toBeLessThanOrEqual(3);
+
+    const humans = state.players.filter((p) => !p.isComputer);
+    for (let round = 1; round <= 5; round++) {
+      for (const voter of humans) {
+        state = await act(code, () => ({ type: 'cast_vote', playerId: voter.id, ballotCardId: votable(state, round, voter.id) }));
+      }
+      state = await act(code, () => ({ type: 'next', actorId: host.id }));
+    }
+    expect(state.status).toBe('results');
+    const gameId = state.game!.id;
+    const results = await h.admin((s) => s`select player_id from this_or_that.game_results where game_id = ${gameId}`);
+    expect(results.map((r) => r.player_id)).not.toContain(computer.id);
+    const scores = await h.admin((s) => s`select distinct with_computer from this_or_that.high_scores where game_id = ${gameId}`);
+    expect(scores).toEqual([{ with_computer: false }]);
+
+    // The setting carries over to the next game.
+    state = await act(code, () => ({ type: 'play_again', actorId: host.id }));
+    state = await act(code, () => ({ type: 'start_game', actorId: host.id }));
+    expect(state.game!.withComputer).toBe(false);
+  });
+});
+
 describe('§14.3 the dispatcher and /api/advance', () => {
   const secret = 'test-advance-secret';
   let POST: typeof import('@/app/api/advance/route').POST;

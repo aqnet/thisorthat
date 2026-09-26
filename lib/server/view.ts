@@ -7,6 +7,7 @@ import {
   beatTheComputer,
   computerWon,
   leaderAfterEachRound,
+  computerPlays,
   crownHistory,
   isChampionCard,
   ownCardIds,
@@ -76,6 +77,8 @@ export function buildSnapshot(
     pausedFrom: state.pausedFrom,
     hostPlayerId: state.hostPlayerId,
     relaxedTimers: state.relaxedTimers,
+    computerPlayer: state.computerPlayer,
+    computerPlays: computerPlays(state),
     me: seat
       ? { playerId: seat.id, isHost, queued: seat.queued, left: seat.leftAt !== null }
       : null,
@@ -170,6 +173,7 @@ function buildGame(
   return {
     number: game.number,
     mode: game.mode,
+    withComputer: game.withComputer,
     categoryName,
     listLength,
     round: game.currentRound,
@@ -220,10 +224,12 @@ function crownCallout(crown: RoundCrown | undefined): CrownCallout | null {
 function buildResults(state: SessionState, rows: StandingRow[], crowns: RoundCrown[]) {
   const engineRows = standings(state);
   const top = topHuman(engineRows);
+  // Without the Computer there's nobody to beat and no "Top Human" to name.
+  const withComputer = state.game!.withComputer;
   return {
-    computerWon: computerWon(engineRows),
-    topHumanId: top?.playerId ?? null,
-    beatComputerIds: beatTheComputer(engineRows),
+    computerWon: withComputer && computerWon(engineRows),
+    topHumanId: withComputer ? (top?.playerId ?? null) : null,
+    beatComputerIds: withComputer ? beatTheComputer(engineRows) : [],
     funStats: [...funStats(state, rows), ...crownStats(state, rows, crowns)],
   };
 }

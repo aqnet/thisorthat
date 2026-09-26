@@ -32,7 +32,7 @@ import {
 import { createRng } from './rng';
 import { buildMatchups, ownCardIds } from './matchups';
 import { addChampionCard, championForRound } from './champion';
-import { activeHumans, leaderAfterEachRound, scoreGame } from './scoring';
+import { activeHumans, computerPlays, leaderAfterEachRound, scoreGame } from './scoring';
 import type {
   EngineContext,
   EngineErrorCode,
@@ -300,6 +300,8 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
         number: (previous?.number ?? 0) + 1,
         // Mode spec §3: the room's last mode is pre-selected.
         mode: previous?.mode ?? 'pick_your_fav',
+        // Frozen now, so a player leaving mid-game doesn't bring it back.
+        withComputer: computerPlays(state),
         offeredCategoryIds: [],
         categoryId: null,
         listLength: null,
@@ -407,7 +409,7 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       game.humanCount = seated.length;
 
       const playerIds = [...seated.map((p) => p.id)];
-      if (computer) playerIds.push(computer.id);
+      if (computer && game.withComputer) playerIds.push(computer.id);
 
       const built = buildMatchups({
         gameId: game.id,
@@ -492,7 +494,8 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
     case 'update_settings': {
       if (!isHost(state, intent.actorId)) return fail('not_host');
       if (state.status !== 'lobby') return fail('wrong_phase');
-      state.relaxedTimers = intent.relaxedTimers;
+      if (intent.relaxedTimers !== undefined) state.relaxedTimers = intent.relaxedTimers;
+      if (intent.computerPlayer !== undefined) state.computerPlayer = intent.computerPlayer;
       return commit(state, now, events);
     }
 

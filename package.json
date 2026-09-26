@@ -14,7 +14,8 @@
     "db:check": "node db/migrate.mjs --check",
     "db:seed": "node db/seed.mjs",
     "dev:dispatch": "node scripts/dev-dispatch.mjs",
-    "e2e:smoke": "node e2e/smoke.mjs"
+    "e2e:smoke": "node e2e/smoke.mjs",
+    "e2e:three": "node e2e/three-players.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

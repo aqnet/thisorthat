@@ -77,6 +77,8 @@ Ballot size is **fresh cards + 1** whenever a champion is carried:
 
 The layout must fit **6 cards** on a phone without scrolling: 2 columns × 3 rows. §9.3 was designed for 5.
 
+Without the Computer (original spec v0.8, §9.1) each row has one card fewer: 3 fresh cards and 4 with the champion for 3 humans, 4 and 5 for 4 humans. The champion rules are unchanged.
+
 **Duplicate of the champion.** Sometimes a fresh card is the same item as the champion: the same canonical item, or the same text after normalization. The two **merge into the champion card**, crediting both owners like any shared duplicate (§9.2.4, §9.5.6). The merged-in owner **stays hidden until the reveal** (this spec §4.3), so the merge leaks nothing about their list.
 
 ### 4.2 The champion

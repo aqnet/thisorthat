@@ -365,3 +365,23 @@ describe("the caller's fresh view comes back with every action", () => {
     expect(added.snapshot!.game!.myList.map((i) => i.displayText)).toEqual(['Mango']);
   });
 });
+
+describe('§5 the Computer player setting (spec v0.8)', () => {
+  it('only lets the Computer sit out with 3+ humans, and only the host changes it', async () => {
+    const r = await room(1);
+    ok(await actions.setComputerPlayer(r.host, r.code, false));
+    // Stored, but with 2 humans the Computer still plays.
+    let view = await snapshot(r.host, r.code);
+    expect(view.computerPlayer).toBe(false);
+    expect(view.computerPlays).toBe(true);
+
+    const third = await h.newUser();
+    ok(await actions.joinRoom(third, r.code, 'Cy'));
+    view = await snapshot(third, r.code);
+    expect(view.computerPlays).toBe(false);
+
+    expect(await actions.setComputerPlayer(r.guests[0], r.code, true)).toMatchObject({ ok: false, code: 'not_host' });
+    ok(await actions.startGame(r.host, r.code));
+    expect((await snapshot(third, r.code)).game!.withComputer).toBe(false);
+  });
+});

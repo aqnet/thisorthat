@@ -4,6 +4,12 @@ export const LIST_LENGTHS = [5, 10, 15] as const;
 export type ListLength = (typeof LIST_LENGTHS)[number];
 
 export const MIN_HUMANS = 2;
+/**
+ * The Computer can sit out only when there are at least this many humans:
+ * then every ballot already has 3+ cards, which is the job the Computer does
+ * in a 2-player game (§9.1).
+ */
+export const MIN_HUMANS_WITHOUT_COMPUTER = 3;
 export const MAX_HUMANS = 4;
 
 /** Seat 0 is always the Computer; 1-4 are the human seats (schema: color_slot). */

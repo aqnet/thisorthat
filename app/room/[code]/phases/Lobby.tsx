@@ -2,10 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { closeRoom, leaveRoom, removePlayer, setRelaxedTimers, startGame } from '@/app/actions';
+import { closeRoom, leaveRoom, removePlayer, setComputerPlayer, setRelaxedTimers, startGame } from '@/app/actions';
 import { PlayerRow, QrCode, Sheet, styles } from '@/components/game/ui';
 import { accessToken } from '@/lib/client/supabase';
-import { MIN_HUMANS } from '@/lib/engine/constants';
+import { MIN_HUMANS, MIN_HUMANS_WITHOUT_COMPUTER } from '@/lib/engine/constants';
 import type { PhaseProps } from '../RoomClient';
 
 /** §4-§5: share the room, watch players arrive, host starts at 2+ humans. */
@@ -83,7 +83,7 @@ export function Lobby({ snap, room, roomCode }: PhaseProps) {
             )}
           </PlayerRow>
         ))}
-        {computer && <PlayerRow player={computer} />}
+        {computer && <PlayerRow player={computer} sittingOut={!snap.computerPlays} />}
       </section>
 
       {me.isHost ? (
@@ -98,8 +98,38 @@ export function Lobby({ snap, room, roomCode }: PhaseProps) {
               type="checkbox"
               checked={snap.relaxedTimers}
               disabled={room.pending}
-              onChange={(e) => room.act((t) => setRelaxedTimers(t, roomCode, e.target.checked))}
+              onChange={(e) => {
+                // Read the value now: this is a controlled input, and by the
+                // time the action's callback runs React has reset it.
+                const relaxed = e.target.checked;
+                void room.act((t) => setRelaxedTimers(t, roomCode, relaxed));
+              }}
               style={{ width: 24, height: 24 }}
+            />
+          </label>
+          {/* §5: the Computer can sit out only with 3+ humans; below that it always plays. */}
+          <label className={styles.spread}>
+            <span>
+              <strong>Computer player</strong>
+              <br />
+              <span className={styles.hint}>
+                {seated.length < MIN_HUMANS_WITHOUT_COMPUTER
+                  ? `Always plays with fewer than ${MIN_HUMANS_WITHOUT_COMPUTER} players`
+                  : snap.computerPlays
+                    ? 'Adds one item to every ballot. Switch off to play humans only.'
+                    : 'Sitting out: humans only this game.'}
+              </span>
+            </span>
+            <input
+              type="checkbox"
+              checked={snap.computerPlays}
+              disabled={room.pending || seated.length < MIN_HUMANS_WITHOUT_COMPUTER}
+              onChange={(e) => {
+                const plays = e.target.checked; // read now; see the relaxed-timers switch
+                void room.act((t) => setComputerPlayer(t, roomCode, plays));
+              }}
+              style={{ width: 24, height: 24 }}
+              aria-label="Computer player"
             />
           </label>
           {/* Start explains why it's disabled (§5). */}

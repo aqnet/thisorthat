@@ -88,6 +88,8 @@ export interface Game {
   number: number;
   /** Chosen first in setup; defaults to the previous game's mode. */
   mode: GameMode;
+  /** Frozen at Start: false when the host switched the Computer off (3+ humans). */
+  withComputer: boolean;
   offeredCategoryIds: number[];
   categoryId: number | null;
   listLength: ListLength | null;
@@ -118,6 +120,8 @@ export interface SessionState {
   phaseDeadline: number | null;
   relaxedTimers: boolean;
   categoryVoteEnabled: boolean;
+  /** Lobby setting: the host wants the Computer to play. It sits out only with 3+ humans. */
+  computerPlayer: boolean;
   players: Player[];
   game: Game | null;
   lastActivityAt: number;
@@ -149,7 +153,7 @@ export type Intent =
   | { type: 'end_game'; actorId: string }
   | { type: 'play_again'; actorId: string }
   /** §5 lobby settings. Host only, lobby only. */
-  | { type: 'update_settings'; actorId: string; relaxedTimers: boolean }
+  | { type: 'update_settings'; actorId: string; relaxedTimers?: boolean; computerPlayer?: boolean }
   /** §5 Cancel Room and §11 Exit / New Room: the host closes the room for everyone. */
   | { type: 'close_room'; actorId: string }
   | { type: 'heartbeat'; playerId: string }

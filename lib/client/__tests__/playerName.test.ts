@@ -6,7 +6,8 @@ import type { RoomSnapshot } from '@/lib/game/snapshot';
 function snapshot(overrides: Partial<RoomSnapshot> & { me?: RoomSnapshot['me'] } = {}): RoomSnapshot {
   return {
     version: 1, serverNow: 0, roomCode: 'KZPW', status: 'results', phaseDeadline: null,
-    pausedFrom: null, hostPlayerId: 'p1', relaxedTimers: false, categories: [], game: null,
+    pausedFrom: null, hostPlayerId: 'p1', relaxedTimers: false, computerPlayer: true, computerPlays: true,
+    categories: [], game: null,
     me: { playerId: 'p2', isHost: false, queued: false, left: false },
     players: [
       { id: 'p1', name: 'Ana', colorSlot: 1, isComputer: false, isHost: true, queued: false, left: false, connected: true },

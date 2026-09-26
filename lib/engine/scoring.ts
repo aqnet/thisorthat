@@ -9,7 +9,7 @@
  */
 
 import type { Favorite, Matchup, Player, SessionState } from './types';
-import type { ListLength } from './constants';
+import { MIN_HUMANS_WITHOUT_COMPUTER, type ListLength } from './constants';
 
 export interface RoundOutcome {
   roundNumber: number;
@@ -165,6 +165,8 @@ export function standings(state: SessionState): PlayerScore[] {
   const totals = new Map<string, { score: number; roundWins: number }>();
   for (const player of state.players) {
     if (player.queued) continue;
+    // A Computer that sat this game out isn't on the scoreboard.
+    if (player.isComputer && game && !game.withComputer) continue;
     totals.set(player.id, { score: 0, roundWins: 0 });
   }
   for (const outcome of outcomes) {
@@ -261,6 +263,14 @@ export function beatTheComputer(rows: readonly PlayerScore[]): string[] {
   return rows
     .filter((row) => !row.isComputer && row.rank < computer.rank)
     .map((row) => row.playerId);
+}
+
+/**
+ * Whether the Computer plays the next game: always, unless the host switched
+ * it off AND there are enough humans for 3+ card ballots without it.
+ */
+export function computerPlays(state: Pick<SessionState, 'computerPlayer' | 'players'>): boolean {
+  return state.computerPlayer || activeHumans(state.players).length < MIN_HUMANS_WITHOUT_COMPUTER;
 }
 
 export function activeHumans(players: readonly Player[]): Player[] {

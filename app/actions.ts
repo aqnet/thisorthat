@@ -224,6 +224,11 @@ export async function setRelaxedTimers(token: string, roomCode: string, relaxedT
   return asSeat(token, roomCode, (seatId) => ({ type: 'update_settings', actorId: seatId, relaxedTimers }));
 }
 
+/** §5 lobby setting: the Computer can sit out when there are 3+ humans. */
+export async function setComputerPlayer(token: string, roomCode: string, computerPlayer: boolean) {
+  return asSeat(token, roomCode, (seatId) => ({ type: 'update_settings', actorId: seatId, computerPlayer }));
+}
+
 export async function startGame(token: string, roomCode: string) {
   return asSeat(token, roomCode, (seatId) => ({ type: 'start_game', actorId: seatId }));
 }
