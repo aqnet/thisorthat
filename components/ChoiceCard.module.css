@@ -10,6 +10,8 @@
   position: relative;
   border-radius: var(--radius-card);
   overflow: hidden;
+  /* Lets the label size itself to the card rather than the screen (cqi below). */
+  container-type: inline-size;
 }
 
 /* Duel: edge-to-edge, with the "or" badge sitting on the seam. */
@@ -48,6 +50,24 @@
 
 .cards .side {
   border-radius: var(--radius-card);
+  /*
+   * Lilita One is much wider than Duel's condensed Big Shoulders, and each
+   * card is only half the row minus the gap. Sized to the screen (7vw),
+   * "PINEAPPLE" broke mid-word at every phone width. Sized to the component
+   * instead, with tighter side padding, a common 9-letter word fits on one
+   * line down to a 320px phone. Longer items still wrap rather than truncate.
+   */
+  padding-inline: 6px;
+  font-size: clamp(var(--display-min-size), 6.6cqi, 30px);
+}
+
+/* The "or" badge straddles the gap, so the inner edge of each card keeps clear of it. */
+.cards .sideA {
+  padding-right: 22px;
+}
+
+.cards .sideB {
+  padding-left: 22px;
 }
 
 .side:active {
@@ -87,5 +107,17 @@
   .side {
     padding: 22px 10px;
     min-height: 100px;
+  }
+
+  .cards .side {
+    padding-inline: 4px;
+  }
+
+  .cards .sideA {
+    padding-right: 20px;
+  }
+
+  .cards .sideB {
+    padding-left: 20px;
   }
 }
