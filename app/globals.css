@@ -79,6 +79,10 @@ body {
   --font-body: var(--font-archivo), system-ui, sans-serif;
   --font-numeric: var(--font-archivo), system-ui, sans-serif;
   --display-min-size: 18px;
+  /* How wide the display face runs, relative to Duel's condensed Big Shoulders.
+     Viewport-sized display text (the wordmark) scales by it, so it fits the
+     same line in every theme. */
+  --display-fit: 1;
   --display-weight: 800;
   --display-tracking: 0.01em;
 
@@ -189,6 +193,8 @@ body {
   --font-body: var(--font-nunito), system-ui, sans-serif;
   --font-numeric: var(--font-nunito), system-ui, sans-serif;
   --display-min-size: 20px;
+  /* Lilita One is much wider: "THIS OR THAT" wrapped at 16vw on phones. */
+  --display-fit: 0.85;
   /* Lilita One ships one weight, so emphasis comes from size and colour. */
   --display-weight: 400;
   --display-tracking: 0.02em;

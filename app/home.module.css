@@ -15,7 +15,8 @@
   font-weight: var(--display-weight);
   letter-spacing: var(--display-tracking);
   text-transform: uppercase;
-  font-size: clamp(44px, 16vw, 76px);
+  /* One line on a phone in every theme; --display-fit narrows wide faces. */
+  font-size: clamp(40px, calc(16vw * var(--display-fit)), 76px);
   line-height: 0.88;
   margin: 12px 0 0;
   color: var(--ink);

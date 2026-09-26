@@ -1,9 +1,10 @@
 # This or That — Game Mechanics Spec
 
-**Status:** Draft v0.6 · **Date:** 2026-09-24 · **Owner:** Anderson
+**Status:** Draft v0.7 · **Date:** 2026-09-25 · **Owner:** Anderson
 **Depends on:** This or That Design System (themes: Duel, Candy Pop)
 
 **Changelog**
+- v0.7 — **Game modes.** The game this spec describes is now the mode **Pick your fav**. A second mode, **Pick and fwd**, carries each round's winner onto the next ballot; it's specified separately in [this-or-that-mode-pick-and-fwd.md](this-or-that-mode-pick-and-fwd.md), which builds on this spec. Host Setup picks the mode before the category (§7).
 - v0.6 — **Ballot cards are always ALL CAPS**, uppercased server-side, so casing and typing style can't reveal who wrote an item (§9.1, §9.3).
 - v0.5:
   - Dedicated **`this_or_that`** schema, with a tested migration.
@@ -30,6 +31,8 @@
 ---
 
 ## 1. Summary
+
+> **Modes:** this spec describes the mode **Pick your fav**. The mode **Pick and fwd** changes only what its [mini spec](this-or-that-mode-pick-and-fwd.md) says; everything else here applies to both.
 
 A Jackbox-style party game for 2–4 human players on their own phones, plus an always-present **Computer** player. The host creates a session, players join via QR code or URL, everyone enters items they'll defend in a chosen category, and then those items, plus one Computer-picked item, are pitted against each other in match-ups. Players vote on each match-up; the owner of the winning item scores. The last round is a double-points Final Showdown. Highest total wins, and top scores go on high-score boards.
 
@@ -148,6 +151,8 @@ Every failed join lands on a screen with a clear next step.
 ---
 
 ## 7. Phase 3 — Host Setup
+
+> **v0.7:** the host now picks the **game mode first**, then the category, length and confirmation below. See the [Pick and fwd spec §3](this-or-that-mode-pick-and-fwd.md#3-phase-3--host-setup-changes-to-7).
 
 ### 3a. Category
 Categories have a **size class**, which limits the list lengths available (§3b). This is what stops players from running out of ideas at item 9 of 15.
