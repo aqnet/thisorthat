@@ -149,15 +149,17 @@ describe('§4-§6 rooms, names and joining', () => {
 });
 
 describe('§7 host setup', () => {
-  it('offers categories to the host only, and enforces each size class', async () => {
+  it('offers categories to the host only, with every length and a suggested maximum', async () => {
     const r = await room(1);
     ok(await actions.startGame(r.host, r.code));
     const hostView = await snapshot(r.host, r.code);
     expect((await snapshot(r.guests[0], r.code)).categories).toEqual([]);
 
     const sport = hostView.categories.find((c) => c.name === 'Sport')!;
-    expect(sport.allowedLengths).toEqual([5]);
-    expect(await actions.confirmSetup(r.host, r.code, sport.id, 15)).toMatchObject({ ok: false, code: 'invalid_length' });
+    // Custom-category spec v0.5: every length is offered; the size class only suggests.
+    expect(sport.allowedLengths).toEqual([5, 10, 15]);
+    expect(sport.suggestedMax).toBe(5);
+    expect(await actions.confirmSetup(r.host, r.code, sport.id, 12)).toMatchObject({ ok: false, code: 'invalid_length' });
     expect(await actions.confirmSetup(r.guests[0], r.code, sport.id, 5)).toMatchObject({ ok: false, code: 'not_host' });
     ok(await actions.confirmSetup(r.host, r.code, sport.id, 5));
   });
@@ -383,5 +385,20 @@ describe('§5 the Computer player setting (spec v0.8)', () => {
     expect(await actions.setComputerPlayer(r.guests[0], r.code, true)).toMatchObject({ ok: false, code: 'not_host' });
     ok(await actions.startGame(r.host, r.code));
     expect((await snapshot(third, r.code)).game!.withComputer).toBe(false);
+  });
+});
+
+describe('mode spec v0.4 the champion reign cap in the lobby', () => {
+  it('stores 3, 5 or never for the room, refuses anything else, and carries it into the game', async () => {
+    const r = await room(1);
+    expect((await snapshot(r.host, r.code)).championReignCap).toBe(3);
+    expect(await actions.setChampionReignCap(r.host, r.code, 4)).toMatchObject({ ok: false, code: 'invalid_cap' });
+    ok(await actions.setChampionReignCap(r.host, r.code, null));
+    expect((await snapshot(r.guests[0], r.code)).championReignCap).toBeNull();
+    ok(await actions.startGame(r.host, r.code));
+    const [game] = await h.admin((s) => s`
+      select g.champion_reign_cap from this_or_that.games g
+        join this_or_that.sessions s on s.current_game_id = g.id where s.room_code = ${r.code}`);
+    expect(game.champion_reign_cap).toBeNull();
   });
 });

@@ -1,0 +1,435 @@
+{
+  "slug": "ice-cream-flavor",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Chocolate",
+      "popular": true
+    },
+    {
+      "name": "Vanilla",
+      "popular": true
+    },
+    {
+      "name": "Strawberry",
+      "popular": true
+    },
+    {
+      "name": "Cookies and Cream",
+      "popular": true,
+      "aliases": [
+        "Cookies 'n' Cream",
+        "Oreo"
+      ]
+    },
+    {
+      "name": "Cookie Dough",
+      "popular": true,
+      "aliases": [
+        "Chocolate Chip Cookie Dough"
+      ]
+    },
+    {
+      "name": "Mint Chocolate Chip",
+      "popular": true,
+      "aliases": [
+        "Mint Chip"
+      ]
+    },
+    {
+      "name": "Cotton Candy",
+      "popular": true
+    },
+    {
+      "name": "Birthday Cake",
+      "popular": true,
+      "aliases": [
+        "Funfetti",
+        "Confetti"
+      ]
+    },
+    {
+      "name": "Rocky Road",
+      "popular": true
+    },
+    {
+      "name": "Chocolate Chip",
+      "popular": true
+    },
+    {
+      "name": "Neapolitan",
+      "popular": true
+    },
+    {
+      "name": "Moose Tracks",
+      "popular": true
+    },
+    {
+      "name": "Rainbow Sherbet",
+      "popular": true,
+      "aliases": [
+        "Rainbow Sherbert"
+      ]
+    },
+    {
+      "name": "Bubble Gum",
+      "popular": true
+    },
+    {
+      "name": "Cake Batter",
+      "popular": true
+    },
+    {
+      "name": "Salted Caramel",
+      "popular": true
+    },
+    {
+      "name": "Superman",
+      "popular": true
+    },
+    {
+      "name": "Peanut Butter Cup",
+      "popular": true,
+      "aliases": [
+        "Peanut Butter Cups"
+      ]
+    },
+    {
+      "name": "Fudge Brownie",
+      "popular": true,
+      "aliases": [
+        "Chocolate Fudge Brownie",
+        "Brownie"
+      ]
+    },
+    {
+      "name": "S'mores",
+      "popular": true
+    },
+    {
+      "name": "French Vanilla",
+      "popular": false
+    },
+    {
+      "name": "Vanilla Bean",
+      "popular": false
+    },
+    {
+      "name": "Double Chocolate",
+      "popular": false
+    },
+    {
+      "name": "Dark Chocolate",
+      "popular": false
+    },
+    {
+      "name": "White Chocolate",
+      "popular": false
+    },
+    {
+      "name": "Fudge Ripple",
+      "popular": false,
+      "aliases": [
+        "Fudge Swirl"
+      ]
+    },
+    {
+      "name": "Brownie Batter",
+      "popular": false
+    },
+    {
+      "name": "Peanut Butter",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Peanut Butter",
+      "popular": false
+    },
+    {
+      "name": "Cookie Monster",
+      "popular": false
+    },
+    {
+      "name": "Blue Moon",
+      "popular": false
+    },
+    {
+      "name": "Unicorn",
+      "popular": false
+    },
+    {
+      "name": "Strawberry Cheesecake",
+      "popular": false
+    },
+    {
+      "name": "Key Lime Pie",
+      "popular": false
+    },
+    {
+      "name": "Apple Pie",
+      "popular": false
+    },
+    {
+      "name": "Pumpkin",
+      "popular": false,
+      "aliases": [
+        "Pumpkin Pie"
+      ]
+    },
+    {
+      "name": "Red Velvet",
+      "popular": false
+    },
+    {
+      "name": "Cookie Butter",
+      "popular": false
+    },
+    {
+      "name": "Snickerdoodle",
+      "popular": false
+    },
+    {
+      "name": "Cinnamon",
+      "popular": false
+    },
+    {
+      "name": "Churro",
+      "popular": false
+    },
+    {
+      "name": "Gingerbread",
+      "popular": false
+    },
+    {
+      "name": "Peppermint",
+      "popular": false,
+      "aliases": [
+        "Candy Cane",
+        "Peppermint Stick"
+      ]
+    },
+    {
+      "name": "Caramel",
+      "popular": false
+    },
+    {
+      "name": "Dulce de Leche",
+      "popular": false
+    },
+    {
+      "name": "Butterscotch",
+      "popular": false
+    },
+    {
+      "name": "Toffee",
+      "popular": false
+    },
+    {
+      "name": "Marshmallow",
+      "popular": false,
+      "aliases": [
+        "Toasted Marshmallow"
+      ]
+    },
+    {
+      "name": "Butter Pecan",
+      "popular": false
+    },
+    {
+      "name": "Pistachio",
+      "popular": false
+    },
+    {
+      "name": "Pralines and Cream",
+      "popular": false,
+      "aliases": [
+        "Pralines 'n Cream"
+      ]
+    },
+    {
+      "name": "Cherry",
+      "popular": false
+    },
+    {
+      "name": "Black Cherry",
+      "popular": false
+    },
+    {
+      "name": "Cherry Vanilla",
+      "popular": false
+    },
+    {
+      "name": "Banana",
+      "popular": false
+    },
+    {
+      "name": "Banana Split",
+      "popular": false
+    },
+    {
+      "name": "Strawberry Banana",
+      "popular": false
+    },
+    {
+      "name": "Mango",
+      "popular": false
+    },
+    {
+      "name": "Coconut",
+      "popular": false
+    },
+    {
+      "name": "Pineapple",
+      "popular": false
+    },
+    {
+      "name": "Peach",
+      "popular": false
+    },
+    {
+      "name": "Blueberry",
+      "popular": false
+    },
+    {
+      "name": "Raspberry",
+      "popular": false
+    },
+    {
+      "name": "Black Raspberry",
+      "popular": false
+    },
+    {
+      "name": "Blue Raspberry",
+      "popular": false
+    },
+    {
+      "name": "Mixed Berry",
+      "popular": false
+    },
+    {
+      "name": "Watermelon",
+      "popular": false
+    },
+    {
+      "name": "Lemon",
+      "popular": false
+    },
+    {
+      "name": "Orange Sherbet",
+      "popular": false,
+      "aliases": [
+        "Orange Sherbert"
+      ]
+    },
+    {
+      "name": "Lime Sherbet",
+      "popular": false,
+      "aliases": [
+        "Lime Sherbert"
+      ]
+    },
+    {
+      "name": "Orange Cream",
+      "popular": false,
+      "aliases": [
+        "Orange Creamsicle",
+        "Creamsicle"
+      ]
+    },
+    {
+      "name": "Root Beer Float",
+      "popular": false,
+      "aliases": [
+        "Root Beer"
+      ]
+    },
+    {
+      "name": "Green Tea",
+      "popular": false,
+      "aliases": [
+        "Matcha"
+      ]
+    },
+    {
+      "name": "Ube",
+      "popular": false
+    },
+    {
+      "name": "Horchata",
+      "popular": false
+    },
+    {
+      "name": "Tutti Frutti",
+      "popular": false
+    },
+    {
+      "name": "Spumoni",
+      "popular": false
+    },
+    {
+      "name": "Mint",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Marshmallow",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Chip Cookie",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Malt",
+      "popular": false,
+      "aliases": [
+        "Malted"
+      ]
+    },
+    {
+      "name": "Honey",
+      "popular": false
+    },
+    {
+      "name": "Maple",
+      "popular": false
+    },
+    {
+      "name": "Almond",
+      "popular": false
+    },
+    {
+      "name": "Strawberry Shortcake",
+      "popular": false
+    },
+    {
+      "name": "Cherry Cheesecake",
+      "popular": false
+    },
+    {
+      "name": "Cinnamon Roll",
+      "popular": false
+    },
+    {
+      "name": "Sprinkles",
+      "popular": false,
+      "aliases": [
+        "Rainbow Sprinkles"
+      ]
+    },
+    {
+      "name": "Cereal Milk",
+      "popular": false
+    },
+    {
+      "name": "Lemonade",
+      "popular": false,
+      "aliases": [
+        "Pink Lemonade"
+      ]
+    },
+    {
+      "name": "Grape",
+      "popular": false
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+-- Retired dictionary items (custom-category spec §B5).
+--
+-- A retired item is never suggested, auto-filled or played by the Computer,
+-- but still matches spell check and keeps its history. Retiring is a one-time
+-- stamp, so re-running this file is a no-op. This is the one seed file that
+-- updates rows; everything else is insert-only.
+--
+-- Pattern, one statement per review:
+--   update this_or_that.dictionary d set retired_at = coalesce(d.retired_at, now())
+--     from this_or_that.categories c
+--    where c.id = d.category_id and c.slug = 'kids-tv-show'
+--      and d.canonical_name in ('Some Faded Show');
+--
+-- Nothing is retired yet.
+select 1;

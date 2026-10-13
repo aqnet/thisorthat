@@ -1,0 +1,463 @@
+{
+  "slug": "book-series",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Dog Man",
+      "popular": true
+    },
+    {
+      "name": "Diary of a Wimpy Kid",
+      "popular": true,
+      "aliases": [
+        "Wimpy Kid"
+      ]
+    },
+    {
+      "name": "Harry Potter",
+      "popular": true
+    },
+    {
+      "name": "Wings of Fire",
+      "popular": true
+    },
+    {
+      "name": "Magic Tree House",
+      "popular": true,
+      "aliases": [
+        "The Magic Tree House"
+      ]
+    },
+    {
+      "name": "Captain Underpants",
+      "popular": true
+    },
+    {
+      "name": "Percy Jackson",
+      "popular": true
+    },
+    {
+      "name": "The Bad Guys",
+      "popular": true,
+      "aliases": [
+        "Bad Guys"
+      ]
+    },
+    {
+      "name": "Cat Kid Comic Club",
+      "popular": true,
+      "aliases": [
+        "Cat Kid"
+      ]
+    },
+    {
+      "name": "Big Nate",
+      "popular": true
+    },
+    {
+      "name": "Junie B. Jones",
+      "popular": true,
+      "aliases": [
+        "Junie B"
+      ]
+    },
+    {
+      "name": "Goosebumps",
+      "popular": true
+    },
+    {
+      "name": "Pete the Cat",
+      "popular": true
+    },
+    {
+      "name": "Elephant & Piggie",
+      "popular": true,
+      "aliases": [
+        "Elephant and Piggie"
+      ]
+    },
+    {
+      "name": "The Baby-Sitters Club",
+      "popular": true,
+      "aliases": [
+        "Baby-Sitters Club"
+      ]
+    },
+    {
+      "name": "I Survived",
+      "popular": true
+    },
+    {
+      "name": "Dork Diaries",
+      "popular": true
+    },
+    {
+      "name": "Owl Diaries",
+      "popular": true
+    },
+    {
+      "name": "The Chronicles of Narnia",
+      "popular": true,
+      "aliases": [
+        "Chronicles of Narnia",
+        "Narnia"
+      ]
+    },
+    {
+      "name": "The Last Kids on Earth",
+      "popular": true,
+      "aliases": [
+        "Last Kids on Earth"
+      ]
+    },
+    {
+      "name": "Heroes of Olympus",
+      "popular": false,
+      "aliases": [
+        "The Heroes of Olympus"
+      ]
+    },
+    {
+      "name": "The Kane Chronicles",
+      "popular": false,
+      "aliases": [
+        "Kane Chronicles"
+      ]
+    },
+    {
+      "name": "A Series of Unfortunate Events",
+      "popular": false,
+      "aliases": [
+        "Unfortunate Events"
+      ]
+    },
+    {
+      "name": "Warriors",
+      "popular": false,
+      "aliases": [
+        "Warrior Cats"
+      ]
+    },
+    {
+      "name": "Keeper of the Lost Cities",
+      "popular": false,
+      "aliases": [
+        "Keeper"
+      ]
+    },
+    {
+      "name": "Amulet",
+      "popular": false
+    },
+    {
+      "name": "Bone",
+      "popular": false
+    },
+    {
+      "name": "Hilo",
+      "popular": false
+    },
+    {
+      "name": "Lunch Lady",
+      "popular": false
+    },
+    {
+      "name": "Babymouse",
+      "popular": false
+    },
+    {
+      "name": "Squish",
+      "popular": false
+    },
+    {
+      "name": "InvestiGators",
+      "popular": false
+    },
+    {
+      "name": "Bad Kitty",
+      "popular": false
+    },
+    {
+      "name": "Mercy Watson",
+      "popular": false
+    },
+    {
+      "name": "Fly Guy",
+      "popular": false
+    },
+    {
+      "name": "Henry and Mudge",
+      "popular": false,
+      "aliases": [
+        "Henry & Mudge"
+      ]
+    },
+    {
+      "name": "Frog and Toad",
+      "popular": false,
+      "aliases": [
+        "Frog & Toad"
+      ]
+    },
+    {
+      "name": "Nate the Great",
+      "popular": false
+    },
+    {
+      "name": "Cam Jansen",
+      "popular": false
+    },
+    {
+      "name": "The Magic School Bus",
+      "popular": false,
+      "aliases": [
+        "Magic School Bus"
+      ]
+    },
+    {
+      "name": "Flat Stanley",
+      "popular": false
+    },
+    {
+      "name": "Ramona",
+      "popular": false,
+      "aliases": [
+        "Ramona Quimby"
+      ]
+    },
+    {
+      "name": "Ivy + Bean",
+      "popular": false,
+      "aliases": [
+        "Ivy and Bean"
+      ]
+    },
+    {
+      "name": "Judy Moody",
+      "popular": false
+    },
+    {
+      "name": "Stink",
+      "popular": false
+    },
+    {
+      "name": "Amelia Bedelia",
+      "popular": false
+    },
+    {
+      "name": "Fancy Nancy",
+      "popular": false
+    },
+    {
+      "name": "Pinkalicious",
+      "popular": false
+    },
+    {
+      "name": "The Berenstain Bears",
+      "popular": false,
+      "aliases": [
+        "Berenstain Bears",
+        "Berenstein Bears"
+      ]
+    },
+    {
+      "name": "Clifford the Big Red Dog",
+      "popular": false,
+      "aliases": [
+        "Clifford"
+      ]
+    },
+    {
+      "name": "Curious George",
+      "popular": false
+    },
+    {
+      "name": "Arthur",
+      "popular": false
+    },
+    {
+      "name": "Franklin",
+      "popular": false
+    },
+    {
+      "name": "Llama Llama",
+      "popular": false
+    },
+    {
+      "name": "If You Give a Mouse a Cookie",
+      "popular": false
+    },
+    {
+      "name": "Biscuit",
+      "popular": false
+    },
+    {
+      "name": "Narwhal and Jelly",
+      "popular": false,
+      "aliases": [
+        "Narwhal & Jelly"
+      ]
+    },
+    {
+      "name": "The Princess in Black",
+      "popular": false,
+      "aliases": [
+        "Princess in Black"
+      ]
+    },
+    {
+      "name": "Rainbow Magic",
+      "popular": false
+    },
+    {
+      "name": "Unicorn Diaries",
+      "popular": false
+    },
+    {
+      "name": "Dragon Masters",
+      "popular": false
+    },
+    {
+      "name": "Geronimo Stilton",
+      "popular": false
+    },
+    {
+      "name": "The Boxcar Children",
+      "popular": false,
+      "aliases": [
+        "Boxcar Children"
+      ]
+    },
+    {
+      "name": "Encyclopedia Brown",
+      "popular": false
+    },
+    {
+      "name": "Nancy Drew",
+      "popular": false
+    },
+    {
+      "name": "The Hardy Boys",
+      "popular": false,
+      "aliases": [
+        "Hardy Boys"
+      ]
+    },
+    {
+      "name": "The Wild Robot",
+      "popular": false,
+      "aliases": [
+        "Wild Robot"
+      ]
+    },
+    {
+      "name": "Spy School",
+      "popular": false
+    },
+    {
+      "name": "The Land of Stories",
+      "popular": false,
+      "aliases": [
+        "Land of Stories"
+      ]
+    },
+    {
+      "name": "Fablehaven",
+      "popular": false
+    },
+    {
+      "name": "Nevermoor",
+      "popular": false
+    },
+    {
+      "name": "Artemis Fowl",
+      "popular": false
+    },
+    {
+      "name": "Origami Yoda",
+      "popular": false
+    },
+    {
+      "name": "Diary of a Minecraft Zombie",
+      "popular": false
+    },
+    {
+      "name": "The Spiderwick Chronicles",
+      "popular": false,
+      "aliases": [
+        "Spiderwick Chronicles",
+        "Spiderwick"
+      ]
+    },
+    {
+      "name": "Wayside School",
+      "popular": false
+    },
+    {
+      "name": "Upside-Down Magic",
+      "popular": false
+    },
+    {
+      "name": "Whatever After",
+      "popular": false
+    },
+    {
+      "name": "The 13-Story Treehouse",
+      "popular": false,
+      "aliases": [
+        "13-Story Treehouse",
+        "Treehouse Books"
+      ]
+    },
+    {
+      "name": "New Kid",
+      "popular": false
+    },
+    {
+      "name": "Phoebe and Her Unicorn",
+      "popular": false
+    },
+    {
+      "name": "Calvin and Hobbes",
+      "popular": false,
+      "aliases": [
+        "Calvin & Hobbes"
+      ]
+    },
+    {
+      "name": "Peanuts",
+      "popular": false
+    },
+    {
+      "name": "Garfield",
+      "popular": false
+    },
+    {
+      "name": "Who Would Win?",
+      "popular": false
+    },
+    {
+      "name": "Choose Your Own Adventure",
+      "popular": false
+    },
+    {
+      "name": "Diary of a Pug",
+      "popular": false
+    },
+    {
+      "name": "Little House on the Prairie",
+      "popular": false,
+      "aliases": [
+        "Little House"
+      ]
+    },
+    {
+      "name": "Paddington",
+      "popular": false
+    },
+    {
+      "name": "Winnie-the-Pooh",
+      "popular": false
+    }
+  ]
+}

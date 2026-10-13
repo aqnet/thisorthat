@@ -134,13 +134,12 @@ describe('§9.1 the Computer never duplicates a human item', () => {
     );
   });
 
-  it('refuses to build a list from a dictionary that is too small', () => {
+  it('plays what a thin dictionary has instead of padding (custom-category spec §4.3)', () => {
     const dictionary = makeDictionary(6);
-    expect(() =>
-      pickComputerItems({
-        dictionary, listLength: 15, excludedItemIds: new Set(), rng: createRng(1),
-      }),
-    ).toThrow(/need 15/);
+    const { items } = pickComputerItems({
+      dictionary, listLength: 15, excludedItemIds: new Set([1, 2]), rng: createRng(1),
+    });
+    expect(items.map((i) => i.id).sort((a, b) => a - b)).toEqual([3, 4, 5, 6]);
   });
 });
 

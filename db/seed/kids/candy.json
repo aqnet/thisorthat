@@ -1,0 +1,491 @@
+{
+  "slug": "candy",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Skittles",
+      "popular": true
+    },
+    {
+      "name": "M&M's",
+      "popular": true,
+      "aliases": [
+        "M and Ms",
+        "Peanut M&M's"
+      ]
+    },
+    {
+      "name": "Reese's Peanut Butter Cups",
+      "popular": true,
+      "aliases": [
+        "Reese's",
+        "Reese's Cups",
+        "Reeses Cup"
+      ]
+    },
+    {
+      "name": "Kit Kat",
+      "popular": true
+    },
+    {
+      "name": "Snickers",
+      "popular": true
+    },
+    {
+      "name": "Twix",
+      "popular": true
+    },
+    {
+      "name": "Sour Patch Kids",
+      "popular": true
+    },
+    {
+      "name": "Starburst",
+      "popular": true
+    },
+    {
+      "name": "Nerds Gummy Clusters",
+      "popular": true,
+      "aliases": [
+        "Gummy Clusters",
+        "Nerds Clusters"
+      ]
+    },
+    {
+      "name": "Gummy Bears",
+      "popular": true,
+      "aliases": [
+        "Gummy Bear"
+      ]
+    },
+    {
+      "name": "Airheads",
+      "popular": true
+    },
+    {
+      "name": "Jolly Rancher",
+      "popular": true,
+      "aliases": [
+        "Jolly Ranchers"
+      ]
+    },
+    {
+      "name": "Lollipop",
+      "popular": true,
+      "aliases": [
+        "Lollipops",
+        "Sucker"
+      ]
+    },
+    {
+      "name": "Cotton Candy",
+      "popular": true
+    },
+    {
+      "name": "Warheads",
+      "popular": true,
+      "aliases": [
+        "Mega Warheads"
+      ]
+    },
+    {
+      "name": "Ring Pop",
+      "popular": true
+    },
+    {
+      "name": "Hershey's Kisses",
+      "popular": true,
+      "aliases": [
+        "Kisses"
+      ]
+    },
+    {
+      "name": "Twizzlers",
+      "popular": true
+    },
+    {
+      "name": "Swedish Fish",
+      "popular": true
+    },
+    {
+      "name": "Nerds",
+      "popular": true
+    },
+    {
+      "name": "Laffy Taffy",
+      "popular": false
+    },
+    {
+      "name": "Hershey's Milk Chocolate Bar",
+      "popular": false,
+      "aliases": [
+        "Hershey's Bar",
+        "Hershey Bar",
+        "Hershey's"
+      ]
+    },
+    {
+      "name": "Hershey's Cookies 'n' Creme",
+      "popular": false,
+      "aliases": [
+        "Cookies and Creme Bar"
+      ]
+    },
+    {
+      "name": "Milky Way",
+      "popular": false
+    },
+    {
+      "name": "3 Musketeers",
+      "popular": false,
+      "aliases": [
+        "Three Musketeers"
+      ]
+    },
+    {
+      "name": "Butterfinger",
+      "popular": false
+    },
+    {
+      "name": "Almond Joy",
+      "popular": false
+    },
+    {
+      "name": "Crunch Bar",
+      "popular": false,
+      "aliases": [
+        "Nestle Crunch"
+      ]
+    },
+    {
+      "name": "100 Grand",
+      "popular": false,
+      "aliases": [
+        "Hundred Grand"
+      ]
+    },
+    {
+      "name": "Reese's Pieces",
+      "popular": false
+    },
+    {
+      "name": "Whoppers",
+      "popular": false
+    },
+    {
+      "name": "Milk Duds",
+      "popular": false
+    },
+    {
+      "name": "Junior Mints",
+      "popular": false
+    },
+    {
+      "name": "York Peppermint Pattie",
+      "popular": false,
+      "aliases": [
+        "York Pattie"
+      ]
+    },
+    {
+      "name": "Andes Mints",
+      "popular": false,
+      "aliases": [
+        "Andes"
+      ]
+    },
+    {
+      "name": "Rolo",
+      "popular": false
+    },
+    {
+      "name": "Ferrero Rocher",
+      "popular": false
+    },
+    {
+      "name": "Toblerone",
+      "popular": false
+    },
+    {
+      "name": "Kinder Joy",
+      "popular": false
+    },
+    {
+      "name": "Kinder Bueno",
+      "popular": false
+    },
+    {
+      "name": "Cadbury Creme Egg",
+      "popular": false,
+      "aliases": [
+        "Creme Egg"
+      ]
+    },
+    {
+      "name": "Cadbury Mini Eggs",
+      "popular": false,
+      "aliases": [
+        "Mini Eggs"
+      ]
+    },
+    {
+      "name": "Chocolate Bunny",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Coins",
+      "popular": false,
+      "aliases": [
+        "Gold Coins"
+      ]
+    },
+    {
+      "name": "Tootsie Roll",
+      "popular": false,
+      "aliases": [
+        "Tootsie Rolls"
+      ]
+    },
+    {
+      "name": "Tootsie Pop",
+      "popular": false,
+      "aliases": [
+        "Tootsie Pops"
+      ]
+    },
+    {
+      "name": "Dum Dums",
+      "popular": false
+    },
+    {
+      "name": "Blow Pop",
+      "popular": false,
+      "aliases": [
+        "Blow Pops"
+      ]
+    },
+    {
+      "name": "Chupa Chups",
+      "popular": false
+    },
+    {
+      "name": "Push Pop",
+      "popular": false
+    },
+    {
+      "name": "Baby Bottle Pop",
+      "popular": false
+    },
+    {
+      "name": "Juicy Drop Pop",
+      "popular": false,
+      "aliases": [
+        "Juicy Drop"
+      ]
+    },
+    {
+      "name": "Smarties",
+      "popular": false
+    },
+    {
+      "name": "Sweetarts",
+      "popular": false
+    },
+    {
+      "name": "Pixy Stix",
+      "popular": false
+    },
+    {
+      "name": "Fun Dip",
+      "popular": false
+    },
+    {
+      "name": "Lemonheads",
+      "popular": false
+    },
+    {
+      "name": "Pop Rocks",
+      "popular": false
+    },
+    {
+      "name": "Pez",
+      "popular": false
+    },
+    {
+      "name": "Candy Necklace",
+      "popular": false
+    },
+    {
+      "name": "Candy Buttons",
+      "popular": false
+    },
+    {
+      "name": "Candy Cane",
+      "popular": false,
+      "aliases": [
+        "Candy Canes"
+      ]
+    },
+    {
+      "name": "Candy Corn",
+      "popular": false
+    },
+    {
+      "name": "Candy Apple",
+      "popular": false,
+      "aliases": [
+        "Caramel Apple"
+      ]
+    },
+    {
+      "name": "Peeps",
+      "popular": false
+    },
+    {
+      "name": "Rock Candy",
+      "popular": false
+    },
+    {
+      "name": "Jawbreaker",
+      "popular": false,
+      "aliases": [
+        "Jawbreakers"
+      ]
+    },
+    {
+      "name": "Gobstopper",
+      "popular": false,
+      "aliases": [
+        "Gobstoppers"
+      ]
+    },
+    {
+      "name": "Gumballs",
+      "popular": false,
+      "aliases": [
+        "Gumball"
+      ]
+    },
+    {
+      "name": "Bubble Gum",
+      "popular": false
+    },
+    {
+      "name": "Hubba Bubba",
+      "popular": false,
+      "aliases": [
+        "Bubble Tape"
+      ]
+    },
+    {
+      "name": "Big League Chew",
+      "popular": false
+    },
+    {
+      "name": "Jelly Beans",
+      "popular": false,
+      "aliases": [
+        "Jelly Bean"
+      ]
+    },
+    {
+      "name": "Jelly Belly",
+      "popular": false
+    },
+    {
+      "name": "Gummy Worms",
+      "popular": false,
+      "aliases": [
+        "Sour Gummy Worms"
+      ]
+    },
+    {
+      "name": "Peach Rings",
+      "popular": false
+    },
+    {
+      "name": "Trolli Sour Brite Crawlers",
+      "popular": false,
+      "aliases": [
+        "Sour Brite Crawlers",
+        "Brite Crawlers"
+      ]
+    },
+    {
+      "name": "Mike and Ike",
+      "popular": false,
+      "aliases": [
+        "Mike & Ike"
+      ]
+    },
+    {
+      "name": "Hot Tamales",
+      "popular": false
+    },
+    {
+      "name": "Dots",
+      "popular": false
+    },
+    {
+      "name": "Sour Punch Straws",
+      "popular": false,
+      "aliases": [
+        "Sour Punch"
+      ]
+    },
+    {
+      "name": "Sour Belts",
+      "popular": false
+    },
+    {
+      "name": "Toxic Waste",
+      "popular": false
+    },
+    {
+      "name": "Nerds Rope",
+      "popular": false
+    },
+    {
+      "name": "Red Vines",
+      "popular": false
+    },
+    {
+      "name": "Licorice",
+      "popular": false
+    },
+    {
+      "name": "Saltwater Taffy",
+      "popular": false
+    },
+    {
+      "name": "Caramel",
+      "popular": false,
+      "aliases": [
+        "Caramels"
+      ]
+    },
+    {
+      "name": "Fudge",
+      "popular": false
+    },
+    {
+      "name": "Hi-Chew",
+      "popular": false
+    },
+    {
+      "name": "Mentos",
+      "popular": false
+    },
+    {
+      "name": "Life Savers",
+      "popular": false
+    },
+    {
+      "name": "Tic Tac",
+      "popular": false,
+      "aliases": [
+        "Tic Tacs"
+      ]
+    }
+  ]
+}

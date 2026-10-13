@@ -1,0 +1,238 @@
+{
+  "slug": "pet",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Dog",
+      "popular": true,
+      "aliases": [
+        "Puppy",
+        "Doggy"
+      ]
+    },
+    {
+      "name": "Cat",
+      "popular": true,
+      "aliases": [
+        "Kitten",
+        "Kitty"
+      ]
+    },
+    {
+      "name": "Hamster",
+      "popular": true
+    },
+    {
+      "name": "Guinea Pig",
+      "popular": true
+    },
+    {
+      "name": "Rabbit",
+      "popular": true,
+      "aliases": [
+        "Bunny"
+      ]
+    },
+    {
+      "name": "Goldfish",
+      "popular": true
+    },
+    {
+      "name": "Betta Fish",
+      "popular": true,
+      "aliases": [
+        "Betta",
+        "Siamese Fighting Fish"
+      ]
+    },
+    {
+      "name": "Guppy",
+      "popular": false
+    },
+    {
+      "name": "Parakeet",
+      "popular": true,
+      "aliases": [
+        "Budgie"
+      ]
+    },
+    {
+      "name": "Parrot",
+      "popular": true
+    },
+    {
+      "name": "Cockatiel",
+      "popular": false
+    },
+    {
+      "name": "Canary",
+      "popular": false
+    },
+    {
+      "name": "Lovebird",
+      "popular": false
+    },
+    {
+      "name": "Turtle",
+      "popular": true
+    },
+    {
+      "name": "Tortoise",
+      "popular": false
+    },
+    {
+      "name": "Bearded Dragon",
+      "popular": true
+    },
+    {
+      "name": "Leopard Gecko",
+      "popular": true,
+      "aliases": [
+        "Gecko"
+      ]
+    },
+    {
+      "name": "Iguana",
+      "popular": false
+    },
+    {
+      "name": "Chameleon",
+      "popular": false
+    },
+    {
+      "name": "Snake",
+      "popular": true
+    },
+    {
+      "name": "Axolotl",
+      "popular": true,
+      "aliases": [
+        "Axolotyl"
+      ]
+    },
+    {
+      "name": "Frog",
+      "popular": true
+    },
+    {
+      "name": "Hermit Crab",
+      "popular": true
+    },
+    {
+      "name": "Hedgehog",
+      "popular": true
+    },
+    {
+      "name": "Ferret",
+      "popular": true
+    },
+    {
+      "name": "Chinchilla",
+      "popular": true
+    },
+    {
+      "name": "Gerbil",
+      "popular": false
+    },
+    {
+      "name": "Mouse",
+      "popular": false,
+      "aliases": [
+        "Mice"
+      ]
+    },
+    {
+      "name": "Rat",
+      "popular": false
+    },
+    {
+      "name": "Horse",
+      "popular": true
+    },
+    {
+      "name": "Pony",
+      "popular": false
+    },
+    {
+      "name": "Chicken",
+      "popular": false
+    },
+    {
+      "name": "Duck",
+      "popular": false
+    },
+    {
+      "name": "Goat",
+      "popular": false
+    },
+    {
+      "name": "Pig",
+      "popular": false,
+      "aliases": [
+        "Mini Pig"
+      ]
+    },
+    {
+      "name": "Sugar Glider",
+      "popular": false
+    },
+    {
+      "name": "Tarantula",
+      "popular": false
+    },
+    {
+      "name": "Ant Farm",
+      "popular": false,
+      "aliases": [
+        "Ants"
+      ]
+    },
+    {
+      "name": "Sea Monkeys",
+      "popular": false
+    },
+    {
+      "name": "Snail",
+      "popular": false
+    },
+    {
+      "name": "Stick Insect",
+      "popular": false,
+      "aliases": [
+        "Stick Bug"
+      ]
+    },
+    {
+      "name": "Donkey",
+      "popular": false
+    },
+    {
+      "name": "Alpaca",
+      "popular": false
+    },
+    {
+      "name": "Llama",
+      "popular": false
+    },
+    {
+      "name": "Koi",
+      "popular": false
+    },
+    {
+      "name": "Clownfish",
+      "popular": false
+    },
+    {
+      "name": "Angelfish",
+      "popular": false
+    },
+    {
+      "name": "Cockatoo",
+      "popular": false
+    },
+    {
+      "name": "Praying Mantis",
+      "popular": false
+    }
+  ]
+}

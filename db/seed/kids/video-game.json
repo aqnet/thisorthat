@@ -1,0 +1,754 @@
+{
+  "slug": "video-game",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Minecraft",
+      "popular": true
+    },
+    {
+      "name": "Mario Kart",
+      "popular": true,
+      "aliases": [
+        "Mario Kart 8 Deluxe",
+        "Mario Kart World",
+        "Mario Kart Tour"
+      ]
+    },
+    {
+      "name": "Super Mario Bros.",
+      "popular": true,
+      "aliases": [
+        "Mario Bros"
+      ]
+    },
+    {
+      "name": "Super Smash Bros.",
+      "popular": true,
+      "aliases": [
+        "Smash Bros",
+        "Super Smash Bros. Ultimate",
+        "Smash"
+      ]
+    },
+    {
+      "name": "Animal Crossing",
+      "popular": true,
+      "aliases": [
+        "Animal Crossing: New Horizons",
+        "ACNH"
+      ]
+    },
+    {
+      "name": "Pac-Man",
+      "popular": true
+    },
+    {
+      "name": "Tetris",
+      "popular": true
+    },
+    {
+      "name": "Sonic the Hedgehog",
+      "popular": true,
+      "aliases": [
+        "Sonic"
+      ]
+    },
+    {
+      "name": "Just Dance",
+      "popular": true
+    },
+    {
+      "name": "Pokémon Go",
+      "popular": true
+    },
+    {
+      "name": "Pokémon Scarlet and Violet",
+      "popular": true,
+      "aliases": [
+        "Pokémon Scarlet",
+        "Pokémon Violet"
+      ]
+    },
+    {
+      "name": "Pokémon Legends: Z-A",
+      "popular": true,
+      "aliases": [
+        "Legends Z-A"
+      ]
+    },
+    {
+      "name": "Super Mario Bros. Wonder",
+      "popular": true,
+      "aliases": [
+        "Mario Wonder"
+      ]
+    },
+    {
+      "name": "Donkey Kong Bananza",
+      "popular": true
+    },
+    {
+      "name": "Mario Party",
+      "popular": true,
+      "aliases": [
+        "Super Mario Party",
+        "Super Mario Party Jamboree",
+        "Mario Party Jamboree"
+      ]
+    },
+    {
+      "name": "Kirby",
+      "popular": true,
+      "aliases": [
+        "Kirby and the Forgotten Land",
+        "Kirby's Return to Dream Land"
+      ]
+    },
+    {
+      "name": "Among Us",
+      "popular": true
+    },
+    {
+      "name": "Fall Guys",
+      "popular": true
+    },
+    {
+      "name": "Rocket League",
+      "popular": true
+    },
+    {
+      "name": "Splatoon",
+      "popular": true,
+      "aliases": [
+        "Splatoon 3"
+      ]
+    },
+    {
+      "name": "The Legend of Zelda",
+      "popular": false,
+      "aliases": [
+        "Zelda",
+        "Tears of the Kingdom",
+        "Breath of the Wild",
+        "Echoes of Wisdom"
+      ]
+    },
+    {
+      "name": "Super Mario Odyssey",
+      "popular": false,
+      "aliases": [
+        "Mario Odyssey"
+      ]
+    },
+    {
+      "name": "Super Mario 3D World",
+      "popular": false,
+      "aliases": [
+        "Bowser's Fury"
+      ]
+    },
+    {
+      "name": "Super Mario Galaxy",
+      "popular": false,
+      "aliases": [
+        "Mario Galaxy"
+      ]
+    },
+    {
+      "name": "Super Mario 64",
+      "popular": false,
+      "aliases": [
+        "Mario 64"
+      ]
+    },
+    {
+      "name": "Super Mario Sunshine",
+      "popular": false,
+      "aliases": [
+        "Mario Sunshine"
+      ]
+    },
+    {
+      "name": "Super Mario Maker",
+      "popular": false,
+      "aliases": [
+        "Super Mario Maker 2",
+        "Mario Maker"
+      ]
+    },
+    {
+      "name": "New Super Mario Bros.",
+      "popular": false,
+      "aliases": [
+        "New Super Mario Bros. U"
+      ]
+    },
+    {
+      "name": "Super Mario Run",
+      "popular": false
+    },
+    {
+      "name": "Paper Mario",
+      "popular": false
+    },
+    {
+      "name": "Mario Tennis",
+      "popular": false
+    },
+    {
+      "name": "Mario Golf",
+      "popular": false
+    },
+    {
+      "name": "Mario Strikers",
+      "popular": false
+    },
+    {
+      "name": "Mario + Rabbids",
+      "popular": false,
+      "aliases": [
+        "Mario and Rabbids"
+      ]
+    },
+    {
+      "name": "Mario & Sonic",
+      "popular": false,
+      "aliases": [
+        "Mario and Sonic",
+        "Mario & Sonic at the Olympics"
+      ]
+    },
+    {
+      "name": "Luigi's Mansion",
+      "popular": false,
+      "aliases": [
+        "Luigi's Mansion 3"
+      ]
+    },
+    {
+      "name": "Princess Peach Showtime!",
+      "popular": false,
+      "aliases": [
+        "Princess Peach"
+      ]
+    },
+    {
+      "name": "Yoshi's Crafted World",
+      "popular": false,
+      "aliases": [
+        "Yoshi"
+      ]
+    },
+    {
+      "name": "Captain Toad: Treasure Tracker",
+      "popular": false,
+      "aliases": [
+        "Captain Toad"
+      ]
+    },
+    {
+      "name": "Donkey Kong Country",
+      "popular": false
+    },
+    {
+      "name": "Donkey Kong",
+      "popular": false
+    },
+    {
+      "name": "Kirby Air Riders",
+      "popular": false,
+      "aliases": [
+        "Kirby Air Ride"
+      ]
+    },
+    {
+      "name": "Pikmin",
+      "popular": false,
+      "aliases": [
+        "Pikmin 4"
+      ]
+    },
+    {
+      "name": "Nintendogs",
+      "popular": false
+    },
+    {
+      "name": "WarioWare",
+      "popular": false
+    },
+    {
+      "name": "Tomodachi Life",
+      "popular": false
+    },
+    {
+      "name": "Wii Sports",
+      "popular": false,
+      "aliases": [
+        "Wii Sports Resort"
+      ]
+    },
+    {
+      "name": "Nintendo Switch Sports",
+      "popular": false,
+      "aliases": [
+        "Switch Sports"
+      ]
+    },
+    {
+      "name": "Wii Fit",
+      "popular": false
+    },
+    {
+      "name": "Ring Fit Adventure",
+      "popular": false,
+      "aliases": [
+        "Ring Fit"
+      ]
+    },
+    {
+      "name": "Pokémon Sword and Shield",
+      "popular": false,
+      "aliases": [
+        "Pokémon Sword",
+        "Pokémon Shield"
+      ]
+    },
+    {
+      "name": "Pokémon: Let's Go",
+      "popular": false,
+      "aliases": [
+        "Let's Go Pikachu",
+        "Let's Go Eevee"
+      ]
+    },
+    {
+      "name": "Pokémon Brilliant Diamond",
+      "popular": false,
+      "aliases": [
+        "Pokémon Shining Pearl"
+      ]
+    },
+    {
+      "name": "Pokémon Legends: Arceus",
+      "popular": false,
+      "aliases": [
+        "Legends Arceus"
+      ]
+    },
+    {
+      "name": "Pokémon Unite",
+      "popular": false
+    },
+    {
+      "name": "Pokémon Mystery Dungeon",
+      "popular": false
+    },
+    {
+      "name": "New Pokémon Snap",
+      "popular": false,
+      "aliases": [
+        "Pokémon Snap"
+      ]
+    },
+    {
+      "name": "Pokémon TCG Pocket",
+      "popular": false,
+      "aliases": [
+        "Pokémon Pocket"
+      ]
+    },
+    {
+      "name": "Detective Pikachu",
+      "popular": false
+    },
+    {
+      "name": "Sonic Frontiers",
+      "popular": false
+    },
+    {
+      "name": "Sonic Mania",
+      "popular": false
+    },
+    {
+      "name": "Super Monkey Ball",
+      "popular": false,
+      "aliases": [
+        "Monkey Ball"
+      ]
+    },
+    {
+      "name": "Crash Bandicoot",
+      "popular": false,
+      "aliases": [
+        "Crash"
+      ]
+    },
+    {
+      "name": "Crash Team Racing",
+      "popular": false
+    },
+    {
+      "name": "Spyro the Dragon",
+      "popular": false,
+      "aliases": [
+        "Spyro"
+      ]
+    },
+    {
+      "name": "Ratchet & Clank",
+      "popular": false,
+      "aliases": [
+        "Ratchet and Clank"
+      ]
+    },
+    {
+      "name": "Sackboy: A Big Adventure",
+      "popular": false,
+      "aliases": [
+        "Sackboy"
+      ]
+    },
+    {
+      "name": "LittleBigPlanet",
+      "popular": false
+    },
+    {
+      "name": "Astro Bot",
+      "popular": false,
+      "aliases": [
+        "Astro's Playroom"
+      ]
+    },
+    {
+      "name": "Mega Man",
+      "popular": false
+    },
+    {
+      "name": "Kingdom Hearts",
+      "popular": false
+    },
+    {
+      "name": "Skylanders",
+      "popular": false
+    },
+    {
+      "name": "Disney Infinity",
+      "popular": false
+    },
+    {
+      "name": "Disney Dreamlight Valley",
+      "popular": false,
+      "aliases": [
+        "Dreamlight Valley"
+      ]
+    },
+    {
+      "name": "Disney Speedstorm",
+      "popular": false
+    },
+    {
+      "name": "Epic Mickey",
+      "popular": false
+    },
+    {
+      "name": "Hello Kitty Island Adventure",
+      "popular": false,
+      "aliases": [
+        "Hello Kitty"
+      ]
+    },
+    {
+      "name": "Bluey: The Videogame",
+      "popular": false,
+      "aliases": [
+        "Bluey Game"
+      ]
+    },
+    {
+      "name": "Battle for Bikini Bottom",
+      "popular": false,
+      "aliases": [
+        "SpongeBob Battle for Bikini"
+      ]
+    },
+    {
+      "name": "TMNT: Shredder's Revenge",
+      "popular": false,
+      "aliases": [
+        "Shredder's Revenge"
+      ]
+    },
+    {
+      "name": "Lego Star Wars",
+      "popular": false,
+      "aliases": [
+        "Lego Star Wars Skywalker Saga"
+      ]
+    },
+    {
+      "name": "Lego Marvel Super Heroes",
+      "popular": false,
+      "aliases": [
+        "Lego Marvel"
+      ]
+    },
+    {
+      "name": "Lego Batman",
+      "popular": false
+    },
+    {
+      "name": "Lego Harry Potter",
+      "popular": false
+    },
+    {
+      "name": "Lego Jurassic World",
+      "popular": false
+    },
+    {
+      "name": "Lego City Undercover",
+      "popular": false
+    },
+    {
+      "name": "Lego 2K Drive",
+      "popular": false
+    },
+    {
+      "name": "Minecraft Dungeons",
+      "popular": false
+    },
+    {
+      "name": "Minecraft Legends",
+      "popular": false
+    },
+    {
+      "name": "Stardew Valley",
+      "popular": false
+    },
+    {
+      "name": "Cuphead",
+      "popular": false
+    },
+    {
+      "name": "Hollow Knight",
+      "popular": false,
+      "aliases": [
+        "Hollow Knight: Silksong",
+        "Silksong"
+      ]
+    },
+    {
+      "name": "Untitled Goose Game",
+      "popular": false,
+      "aliases": [
+        "Goose Game"
+      ]
+    },
+    {
+      "name": "Overcooked",
+      "popular": false,
+      "aliases": [
+        "Overcooked 2"
+      ]
+    },
+    {
+      "name": "Human: Fall Flat",
+      "popular": false
+    },
+    {
+      "name": "Slime Rancher",
+      "popular": false
+    },
+    {
+      "name": "Moving Out",
+      "popular": false
+    },
+    {
+      "name": "Beat Saber",
+      "popular": false
+    },
+    {
+      "name": "Hello Neighbor",
+      "popular": false
+    },
+    {
+      "name": "Plants vs. Zombies",
+      "popular": false,
+      "aliases": [
+        "PvZ",
+        "Garden Warfare"
+      ]
+    },
+    {
+      "name": "Angry Birds",
+      "popular": false
+    },
+    {
+      "name": "Subway Surfers",
+      "popular": false
+    },
+    {
+      "name": "Fruit Ninja",
+      "popular": false
+    },
+    {
+      "name": "Temple Run",
+      "popular": false
+    },
+    {
+      "name": "Cut the Rope",
+      "popular": false
+    },
+    {
+      "name": "Candy Crush Saga",
+      "popular": false,
+      "aliases": [
+        "Candy Crush"
+      ]
+    },
+    {
+      "name": "Geometry Dash",
+      "popular": false
+    },
+    {
+      "name": "Crossy Road",
+      "popular": false
+    },
+    {
+      "name": "Jetpack Joyride",
+      "popular": false
+    },
+    {
+      "name": "Flappy Bird",
+      "popular": false
+    },
+    {
+      "name": "Hill Climb Racing",
+      "popular": false
+    },
+    {
+      "name": "My Talking Tom",
+      "popular": false,
+      "aliases": [
+        "Talking Tom"
+      ]
+    },
+    {
+      "name": "Pou",
+      "popular": false
+    },
+    {
+      "name": "Toca Boca World",
+      "popular": false,
+      "aliases": [
+        "Toca Life World",
+        "Toca Boca"
+      ]
+    },
+    {
+      "name": "Hay Day",
+      "popular": false
+    },
+    {
+      "name": "Clash Royale",
+      "popular": false
+    },
+    {
+      "name": "Clash of Clans",
+      "popular": false
+    },
+    {
+      "name": "Brawl Stars",
+      "popular": false
+    },
+    {
+      "name": "Stumble Guys",
+      "popular": false
+    },
+    {
+      "name": "Bloons TD",
+      "popular": false,
+      "aliases": [
+        "Bloons",
+        "Bloons TD 6"
+      ]
+    },
+    {
+      "name": "Retro Bowl",
+      "popular": false
+    },
+    {
+      "name": "Block Blast",
+      "popular": false
+    },
+    {
+      "name": "My Singing Monsters",
+      "popular": false
+    },
+    {
+      "name": "Animal Jam",
+      "popular": false
+    },
+    {
+      "name": "Prodigy",
+      "popular": false,
+      "aliases": [
+        "Prodigy Math"
+      ]
+    },
+    {
+      "name": "Madden NFL",
+      "popular": false,
+      "aliases": [
+        "Madden"
+      ]
+    },
+    {
+      "name": "EA Sports FC",
+      "popular": false,
+      "aliases": [
+        "FIFA"
+      ]
+    },
+    {
+      "name": "NBA 2K",
+      "popular": false
+    },
+    {
+      "name": "MLB The Show",
+      "popular": false
+    },
+    {
+      "name": "Hot Wheels Unleashed",
+      "popular": false
+    },
+    {
+      "name": "Forza Horizon",
+      "popular": false
+    },
+    {
+      "name": "Gran Turismo",
+      "popular": false
+    },
+    {
+      "name": "Cooking Mama",
+      "popular": false
+    },
+    {
+      "name": "Story of Seasons",
+      "popular": false
+    },
+    {
+      "name": "Planet Zoo",
+      "popular": false
+    },
+    {
+      "name": "RollerCoaster Tycoon",
+      "popular": false
+    },
+    {
+      "name": "Space Invaders",
+      "popular": false
+    }
+  ]
+}

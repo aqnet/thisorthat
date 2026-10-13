@@ -123,3 +123,11 @@ describe('§5 name validation', () => {
     expect(validateName('a'.repeat(13), free)).toMatchObject({ reason: 'too_long' });
   });
 });
+
+describe('custom-category spec §B8.4 accent folding', () => {
+  it('treats accented and plain spellings as the same item', () => {
+    expect(dedupeKey('Pokémon')).toBe(dedupeKey('Pokemon'));
+    expect(dedupeKey('Flabébé')).toBe('FLABEBE');
+    expect(dedupeKey('Crème Brûlée')).toBe(dedupeKey('creme brulee'));
+  });
+});

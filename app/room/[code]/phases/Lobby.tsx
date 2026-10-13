@@ -2,7 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { closeRoom, leaveRoom, removePlayer, setComputerPlayer, setRelaxedTimers, startGame } from '@/app/actions';
+import {
+  closeRoom,
+  leaveRoom,
+  removePlayer,
+  setChampionReignCap,
+  setComputerPlayer,
+  setRelaxedTimers,
+  startGame,
+} from '@/app/actions';
 import { PlayerRow, QrCode, Sheet, styles } from '@/components/game/ui';
 import { accessToken } from '@/lib/client/supabase';
 import { MIN_HUMANS, MIN_HUMANS_WITHOUT_COMPUTER } from '@/lib/engine/constants';
@@ -132,6 +140,32 @@ export function Lobby({ snap, room, roomCode }: PhaseProps) {
               aria-label="Computer player"
             />
           </label>
+          {/* Mode spec v0.4: how long a Pick and fwd champion can reign. */}
+          <div className={styles.spread}>
+            <span>
+              <strong>Pick and fwd champion</strong>
+              <br />
+              <span className={styles.hint}>
+                {snap.championReignCap === null
+                  ? 'Stays until something beats it'
+                  : `Retires after ${snap.championReignCap} wins in a row`}
+              </span>
+            </span>
+            <div className={styles.row} role="group" aria-label="Champion retires after">
+              {([3, 5, null] as const).map((cap) => (
+                <button
+                  key={String(cap)}
+                  type="button"
+                  className={`${styles.chip} ${snap.championReignCap === cap ? styles.chipActive : ''}`}
+                  aria-pressed={snap.championReignCap === cap}
+                  disabled={room.pending}
+                  onClick={() => room.act((t) => setChampionReignCap(t, roomCode, cap))}
+                >
+                  {cap ?? 'Never'}
+                </button>
+              ))}
+            </div>
+          </div>
           {/* Start explains why it's disabled (§5). */}
           <button
             type="button"

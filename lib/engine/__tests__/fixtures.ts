@@ -60,6 +60,7 @@ export function session(overrides: Partial<SessionState> = {}): SessionState {
     relaxedTimers: false,
     categoryVoteEnabled: false,
     computerPlayer: true,
+    championReignCap: 3,
     players: [],
     game: null,
     lastActivityAt: 0,

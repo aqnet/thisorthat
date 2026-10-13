@@ -7,7 +7,7 @@
  * and the engine evolve.
  */
 import { randomUUID } from 'node:crypto';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import type { SessionState } from '@/lib/engine';
 import { startHarness, type Harness } from './harness';
 
@@ -438,6 +438,22 @@ describe('§14.3 the dispatcher and /api/advance', () => {
       body: JSON.stringify({ session_id: sessionId }),
     });
 
+  it('answers 400 without a session id, 404 for an unknown room, and 500 when the run fails', async () => {
+    const raw = (body: string) =>
+      new Request('http://test/api/advance', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${secret}`, 'Content-Type': 'application/json' },
+        body,
+      });
+    expect((await POST(raw('not json'))).status).toBe(400);
+    expect((await POST(raw(JSON.stringify({ session_id: 42 })))).status).toBe(400);
+    expect((await POST(advanceRequest(randomUUID()))).status).toBe(404);
+    const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
+    // Not a uuid: Postgres rejects the lookup, and the route reports it rather than throwing.
+    expect((await POST(advanceRequest('not-a-uuid'))).status).toBe(500);
+    quiet.mockRestore();
+  });
+
   it('refuses a request without the shared secret', async () => {
     const { state } = await roomAtRound1();
     const response = await POST(advanceRequest(state.id, 'Bearer wrong'));
@@ -526,3 +542,66 @@ function normalize(state: SessionState) {
   }
   return copy;
 }
+
+describe('§14.2 optimistic concurrency, replayed deterministically', () => {
+  /**
+   * PGlite serves one connection, so two transactions can't truly race here.
+   * Instead the intent builder plays the other writer: it bumps the room's
+   * version inside the transaction, exactly what a concurrent commit would
+   * leave behind, so saveState's version check fails.
+   */
+  async function lobbyRoom() {
+    const user = await h.newUser();
+    const created = await runner.createRoom(user, 'Ana');
+    return { code: created.roomCode, hostId: created.players.find((p) => !p.isComputer)!.id };
+  }
+
+  it('reloads and retries once after a version conflict, then succeeds', async () => {
+    const { code, hostId } = await lobbyRoom();
+    const before = (await repo.loadByCode(h.sql, code, false))!.state.version;
+    let calls = 0;
+    const outcome = await runner.runIntent({ roomCode: code }, async (loaded, tx) => {
+      calls += 1;
+      if (calls === 1) await tx`update this_or_that.sessions set version = version + 1 where id = ${loaded.state.id}`;
+      return { type: 'update_settings', actorId: hostId, relaxedTimers: true };
+    });
+    expect(calls).toBe(2);
+    expect(outcome.ok).toBe(true);
+    // The first attempt rolled back, the bump with it: one write landed.
+    const after = (await repo.loadByCode(h.sql, code, false))!.state;
+    expect(after.version).toBe(before + 1);
+    expect(after.relaxedTimers).toBe(true);
+  });
+
+  it('gives up after the second conflict instead of looping', async () => {
+    const { code, hostId } = await lobbyRoom();
+    let calls = 0;
+    await expect(
+      runner.runIntent({ roomCode: code }, async (loaded, tx) => {
+        calls += 1;
+        await tx`update this_or_that.sessions set version = version + 1 where id = ${loaded.state.id}`;
+        return { type: 'update_settings', actorId: hostId, relaxedTimers: true };
+      }),
+    ).rejects.toBeInstanceOf(repo.VersionConflict);
+    expect(calls).toBe(2);
+    expect((await repo.loadByCode(h.sql, code, false))!.state.relaxedTimers).toBe(false);
+  });
+
+  it('does not retry a refusal or an unrelated error', async () => {
+    const { code } = await lobbyRoom();
+    let calls = 0;
+    const refused = await runner.runIntent({ roomCode: code }, () => {
+      calls += 1;
+      return { refuse: 'No', code: 'nope' };
+    });
+    expect(refused).toMatchObject({ ok: false, code: 'nope' });
+    await expect(
+      runner.runIntent({ roomCode: code }, () => {
+        calls += 1;
+        throw new Error('boom');
+      }),
+    ).rejects.toThrow('boom');
+    expect(calls).toBe(2);
+    expect(await runner.runIntent({ roomCode: 'ZZZZ' }, () => ({ type: 'advance' }))).toMatchObject({ code: 'not_found' });
+  });
+});

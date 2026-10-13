@@ -1,0 +1,446 @@
+{
+  "slug": "vehicle",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Monster Truck",
+      "popular": true
+    },
+    {
+      "name": "Fire Truck",
+      "popular": true,
+      "aliases": [
+        "Fire Engine"
+      ]
+    },
+    {
+      "name": "Race Car",
+      "popular": true
+    },
+    {
+      "name": "Rocket",
+      "popular": true,
+      "aliases": [
+        "Rocket Ship"
+      ]
+    },
+    {
+      "name": "Helicopter",
+      "popular": true
+    },
+    {
+      "name": "Airplane",
+      "popular": true,
+      "aliases": [
+        "Plane"
+      ]
+    },
+    {
+      "name": "Submarine",
+      "popular": true
+    },
+    {
+      "name": "Police Car",
+      "popular": true,
+      "aliases": [
+        "Cop Car"
+      ]
+    },
+    {
+      "name": "School Bus",
+      "popular": true
+    },
+    {
+      "name": "Train",
+      "popular": true
+    },
+    {
+      "name": "Motorcycle",
+      "popular": true
+    },
+    {
+      "name": "Bicycle",
+      "popular": true,
+      "aliases": [
+        "Bike"
+      ]
+    },
+    {
+      "name": "Tractor",
+      "popular": true
+    },
+    {
+      "name": "Ambulance",
+      "popular": true
+    },
+    {
+      "name": "Garbage Truck",
+      "popular": true
+    },
+    {
+      "name": "Sports Car",
+      "popular": true
+    },
+    {
+      "name": "Speedboat",
+      "popular": true
+    },
+    {
+      "name": "Jet Ski",
+      "popular": true
+    },
+    {
+      "name": "Go-Kart",
+      "popular": true,
+      "aliases": [
+        "Go Cart"
+      ]
+    },
+    {
+      "name": "Hot Air Balloon",
+      "popular": true
+    },
+    {
+      "name": "Car",
+      "popular": false
+    },
+    {
+      "name": "Truck",
+      "popular": false
+    },
+    {
+      "name": "Bus",
+      "popular": false
+    },
+    {
+      "name": "Double-Decker Bus",
+      "popular": false
+    },
+    {
+      "name": "Scooter",
+      "popular": false
+    },
+    {
+      "name": "Skateboard",
+      "popular": false
+    },
+    {
+      "name": "Subway",
+      "popular": false
+    },
+    {
+      "name": "Jet",
+      "popular": false
+    },
+    {
+      "name": "Fighter Jet",
+      "popular": false
+    },
+    {
+      "name": "Space Shuttle",
+      "popular": false
+    },
+    {
+      "name": "Spaceship",
+      "popular": false,
+      "aliases": [
+        "Spacecraft"
+      ]
+    },
+    {
+      "name": "Flying Saucer",
+      "popular": false,
+      "aliases": [
+        "UFO"
+      ]
+    },
+    {
+      "name": "Mars Rover",
+      "popular": false
+    },
+    {
+      "name": "Boat",
+      "popular": false
+    },
+    {
+      "name": "Ship",
+      "popular": false
+    },
+    {
+      "name": "Sailboat",
+      "popular": false
+    },
+    {
+      "name": "Canoe",
+      "popular": false
+    },
+    {
+      "name": "Kayak",
+      "popular": false
+    },
+    {
+      "name": "Rowboat",
+      "popular": false
+    },
+    {
+      "name": "Cruise Ship",
+      "popular": false
+    },
+    {
+      "name": "Yacht",
+      "popular": false
+    },
+    {
+      "name": "Ferry",
+      "popular": false
+    },
+    {
+      "name": "Tugboat",
+      "popular": false
+    },
+    {
+      "name": "Pirate Ship",
+      "popular": false
+    },
+    {
+      "name": "Raft",
+      "popular": false
+    },
+    {
+      "name": "Aircraft Carrier",
+      "popular": false
+    },
+    {
+      "name": "Hovercraft",
+      "popular": false
+    },
+    {
+      "name": "Blimp",
+      "popular": false,
+      "aliases": [
+        "Airship",
+        "Zeppelin"
+      ]
+    },
+    {
+      "name": "Glider",
+      "popular": false
+    },
+    {
+      "name": "Dump Truck",
+      "popular": false
+    },
+    {
+      "name": "Tow Truck",
+      "popular": false
+    },
+    {
+      "name": "Cement Mixer",
+      "popular": false,
+      "aliases": [
+        "Cement Truck"
+      ]
+    },
+    {
+      "name": "Bulldozer",
+      "popular": false
+    },
+    {
+      "name": "Excavator",
+      "popular": false,
+      "aliases": [
+        "Digger"
+      ]
+    },
+    {
+      "name": "Crane",
+      "popular": false
+    },
+    {
+      "name": "Forklift",
+      "popular": false
+    },
+    {
+      "name": "Combine Harvester",
+      "popular": false,
+      "aliases": [
+        "Combine"
+      ]
+    },
+    {
+      "name": "Steamroller",
+      "popular": false
+    },
+    {
+      "name": "Ice Cream Truck",
+      "popular": false
+    },
+    {
+      "name": "Food Truck",
+      "popular": false
+    },
+    {
+      "name": "Mail Truck",
+      "popular": false
+    },
+    {
+      "name": "Taxi",
+      "popular": false,
+      "aliases": [
+        "Cab"
+      ]
+    },
+    {
+      "name": "Limousine",
+      "popular": false,
+      "aliases": [
+        "Limo"
+      ]
+    },
+    {
+      "name": "Pickup Truck",
+      "popular": false
+    },
+    {
+      "name": "Jeep",
+      "popular": false
+    },
+    {
+      "name": "SUV",
+      "popular": false
+    },
+    {
+      "name": "Minivan",
+      "popular": false
+    },
+    {
+      "name": "Van",
+      "popular": false
+    },
+    {
+      "name": "RV",
+      "popular": false,
+      "aliases": [
+        "Camper",
+        "Motorhome"
+      ]
+    },
+    {
+      "name": "Semi Truck",
+      "popular": false,
+      "aliases": [
+        "Big Rig",
+        "18-Wheeler"
+      ]
+    },
+    {
+      "name": "Tank",
+      "popular": false
+    },
+    {
+      "name": "Golf Cart",
+      "popular": false
+    },
+    {
+      "name": "Dune Buggy",
+      "popular": false
+    },
+    {
+      "name": "ATV",
+      "popular": false,
+      "aliases": [
+        "Four-Wheeler",
+        "Quad"
+      ]
+    },
+    {
+      "name": "Dirt Bike",
+      "popular": false
+    },
+    {
+      "name": "Snowmobile",
+      "popular": false
+    },
+    {
+      "name": "Tricycle",
+      "popular": false
+    },
+    {
+      "name": "Unicycle",
+      "popular": false
+    },
+    {
+      "name": "Hoverboard",
+      "popular": false
+    },
+    {
+      "name": "Electric Car",
+      "popular": false
+    },
+    {
+      "name": "Convertible",
+      "popular": false
+    },
+    {
+      "name": "Cable Car",
+      "popular": false
+    },
+    {
+      "name": "Trolley",
+      "popular": false,
+      "aliases": [
+        "Streetcar"
+      ]
+    },
+    {
+      "name": "Monorail",
+      "popular": false
+    },
+    {
+      "name": "Bullet Train",
+      "popular": false
+    },
+    {
+      "name": "Steam Train",
+      "popular": false,
+      "aliases": [
+        "Steam Engine"
+      ]
+    },
+    {
+      "name": "Zamboni",
+      "popular": false
+    },
+    {
+      "name": "Snowplow",
+      "popular": false
+    },
+    {
+      "name": "Horse and Carriage",
+      "popular": false,
+      "aliases": [
+        "Carriage"
+      ]
+    },
+    {
+      "name": "Wagon",
+      "popular": false
+    },
+    {
+      "name": "Sleigh",
+      "popular": false
+    },
+    {
+      "name": "Bumper Car",
+      "popular": false
+    },
+    {
+      "name": "Drone",
+      "popular": false
+    },
+    {
+      "name": "Jetpack",
+      "popular": false
+    }
+  ]
+}

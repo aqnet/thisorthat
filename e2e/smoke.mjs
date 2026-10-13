@@ -91,7 +91,7 @@ try {
   // Mode first (mode spec §3a), then the category.
   await host.getByRole('button', { name: new RegExp(`^${MODE}`) }).click();
   if (MODE === 'Pick and fwd') await guest.getByText('Mode so far: Pick and fwd').waitFor({ timeout: 10_000 });
-  await host.getByRole('button', { name: 'Fruit', exact: true }).click();
+  await pickCategory(host, 'Fruit');
   await host.getByRole('button', { name: '5', exact: true }).click();
   await host.getByRole('button', { name: 'Fruit · 5 items' }).click();
   await shot(host, '3-setup-confirm');
@@ -241,3 +241,10 @@ if (errors.length) {
 }
 console.log(failed ? `\nSMOKE TEST FAILED (screenshots in ${OUT})` : `\nsmoke test passed (screenshots in ${OUT})`);
 process.exit(failed ? 1 : 0);
+
+/** Setup shows the top 5 categories as chips and the rest in a dropdown. */
+async function pickCategory(page, name) {
+  const chip = page.getByRole('button', { name, exact: true });
+  if (await chip.count()) await chip.click();
+  else await page.getByLabel('More categories').selectOption({ label: name });
+}

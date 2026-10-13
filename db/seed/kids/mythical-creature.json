@@ -1,0 +1,234 @@
+{
+  "slug": "mythical-creature",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Dragon",
+      "popular": true
+    },
+    {
+      "name": "Unicorn",
+      "popular": true
+    },
+    {
+      "name": "Alicorn",
+      "popular": false
+    },
+    {
+      "name": "Pegasus",
+      "popular": true
+    },
+    {
+      "name": "Griffin",
+      "popular": true,
+      "aliases": [
+        "Gryphon",
+        "Griffon"
+      ]
+    },
+    {
+      "name": "Hippogriff",
+      "popular": false
+    },
+    {
+      "name": "Phoenix",
+      "popular": true
+    },
+    {
+      "name": "Thunderbird",
+      "popular": false
+    },
+    {
+      "name": "Centaur",
+      "popular": true
+    },
+    {
+      "name": "Minotaur",
+      "popular": false
+    },
+    {
+      "name": "Faun",
+      "popular": false
+    },
+    {
+      "name": "Cyclops",
+      "popular": false
+    },
+    {
+      "name": "Medusa",
+      "popular": true
+    },
+    {
+      "name": "Siren",
+      "popular": false
+    },
+    {
+      "name": "Harpy",
+      "popular": false
+    },
+    {
+      "name": "Hydra",
+      "popular": false
+    },
+    {
+      "name": "Cerberus",
+      "popular": false
+    },
+    {
+      "name": "Sphinx",
+      "popular": false
+    },
+    {
+      "name": "Kraken",
+      "popular": true
+    },
+    {
+      "name": "Sea Serpent",
+      "popular": false
+    },
+    {
+      "name": "Loch Ness Monster",
+      "popular": true,
+      "aliases": [
+        "Nessie"
+      ]
+    },
+    {
+      "name": "Mermaid",
+      "popular": true
+    },
+    {
+      "name": "Merman",
+      "popular": false
+    },
+    {
+      "name": "Yeti",
+      "popular": true,
+      "aliases": [
+        "Abominable Snowman"
+      ]
+    },
+    {
+      "name": "Bigfoot",
+      "popular": true,
+      "aliases": [
+        "Sasquatch"
+      ]
+    },
+    {
+      "name": "Chupacabra",
+      "popular": false
+    },
+    {
+      "name": "Jackalope",
+      "popular": false
+    },
+    {
+      "name": "Werewolf",
+      "popular": true
+    },
+    {
+      "name": "Vampire",
+      "popular": true
+    },
+    {
+      "name": "Zombie",
+      "popular": true
+    },
+    {
+      "name": "Ghost",
+      "popular": false
+    },
+    {
+      "name": "Gargoyle",
+      "popular": false
+    },
+    {
+      "name": "Golem",
+      "popular": false
+    },
+    {
+      "name": "Basilisk",
+      "popular": false
+    },
+    {
+      "name": "Manticore",
+      "popular": false
+    },
+    {
+      "name": "Wyvern",
+      "popular": false
+    },
+    {
+      "name": "Kitsune",
+      "popular": false
+    },
+    {
+      "name": "Chimera",
+      "popular": false
+    },
+    {
+      "name": "Gremlin",
+      "popular": false
+    },
+    {
+      "name": "Ogre",
+      "popular": false
+    },
+    {
+      "name": "Troll",
+      "popular": true
+    },
+    {
+      "name": "Goblin",
+      "popular": true
+    },
+    {
+      "name": "Gnome",
+      "popular": false
+    },
+    {
+      "name": "Elf",
+      "popular": false
+    },
+    {
+      "name": "Dwarf",
+      "popular": false
+    },
+    {
+      "name": "Fairy",
+      "popular": true,
+      "aliases": [
+        "Faerie"
+      ]
+    },
+    {
+      "name": "Pixie",
+      "popular": false
+    },
+    {
+      "name": "Sprite",
+      "popular": false
+    },
+    {
+      "name": "Genie",
+      "popular": true,
+      "aliases": [
+        "Djinn",
+        "Jinn"
+      ]
+    },
+    {
+      "name": "Leprechaun",
+      "popular": true
+    },
+    {
+      "name": "Tooth Fairy",
+      "popular": false
+    },
+    {
+      "name": "Giant",
+      "popular": false
+    }
+  ]
+}

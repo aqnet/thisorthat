@@ -8,8 +8,26 @@
  * means a replayed or repaired game recomputes to the same numbers.
  */
 
-import type { Favorite, Matchup, Player, SessionState } from './types';
-import { MIN_HUMANS_WITHOUT_COMPUTER, type ListLength } from './constants';
+import type { Favorite, Game, Matchup, Player, SessionState } from './types';
+import { MIN_HUMANS_WITHOUT_COMPUTER } from './constants';
+
+/**
+ * How many rounds the game has. Equal to the list length, except in a thin
+ * custom category, where rounds with fewer than 2 cards were dropped at list
+ * lock (custom-category spec §4.1). Before lock, it's the list length.
+ */
+export function roundCount(game: Pick<Game, 'matchups' | 'listLength'>): number {
+  return game.matchups.length > 0 ? game.matchups.length : (game.listLength ?? 0);
+}
+
+/**
+ * Custom-category spec §4.4: high scores need every ballot played to have had
+ * 3+ cards, the condition the Computer exists to guarantee (§9.1). In a 2-card
+ * round each voter has one choice, so percentages would mean nothing.
+ */
+export function everyBallotHadThree(game: Pick<Game, 'matchups'>): boolean {
+  return game.matchups.filter((m) => m.status === 'revealed').every((m) => m.cards.length >= 3);
+}
 
 export interface RoundOutcome {
   roundNumber: number;
@@ -127,7 +145,7 @@ export function scoreMatchup(
  * humans-only, and why pct is null for the Computer.
  */
 export function maxPossibleForHuman(
-  listLength: ListLength,
+  listLength: number,
   humanCount: number,
   multiplierForRound: (round: number) => 1 | 2,
 ): number {
@@ -187,10 +205,12 @@ export function standings(state: SessionState): PlayerScore[] {
     .filter((p) => !p.queued && totals.has(p.id))
     .map((player): Omit<PlayerScore, 'rank'> => {
       const entry = totals.get(player.id)!;
+      // Summed over the rounds actually built: a thin custom category can
+      // drop rounds (custom-category spec §4.4).
       const maxPossible =
         player.isComputer || humanCount === null || listLength === null
           ? null
-          : maxPossibleForHuman(listLength, humanCount, (round) =>
+          : maxPossibleForHuman(roundCount(game!), humanCount, (round) =>
               game!.matchups.find((m) => m.roundNumber === round)?.multiplier ?? 1,
             );
       return {

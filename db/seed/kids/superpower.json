@@ -1,0 +1,345 @@
+{
+  "slug": "superpower",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Flying",
+      "popular": true,
+      "aliases": [
+        "Flight"
+      ]
+    },
+    {
+      "name": "Invisibility",
+      "popular": true,
+      "aliases": [
+        "Being Invisible",
+        "Turning Invisible"
+      ]
+    },
+    {
+      "name": "Super Speed",
+      "popular": true
+    },
+    {
+      "name": "Super Strength",
+      "popular": true
+    },
+    {
+      "name": "Teleportation",
+      "popular": true,
+      "aliases": [
+        "Teleporting",
+        "Teleport"
+      ]
+    },
+    {
+      "name": "Time Travel",
+      "popular": true,
+      "aliases": [
+        "Time Traveling"
+      ]
+    },
+    {
+      "name": "Mind Reading",
+      "popular": true,
+      "aliases": [
+        "Telepathy",
+        "Reading Minds"
+      ]
+    },
+    {
+      "name": "Shape-Shifting",
+      "popular": true,
+      "aliases": [
+        "Shapeshifter"
+      ]
+    },
+    {
+      "name": "Laser Eyes",
+      "popular": true,
+      "aliases": [
+        "Laser Vision",
+        "Heat Vision"
+      ]
+    },
+    {
+      "name": "X-Ray Vision",
+      "popular": true
+    },
+    {
+      "name": "Ice Powers",
+      "popular": true,
+      "aliases": [
+        "Freezing",
+        "Ice Control"
+      ]
+    },
+    {
+      "name": "Fire Powers",
+      "popular": true,
+      "aliases": [
+        "Fire Control",
+        "Fire Breathing"
+      ]
+    },
+    {
+      "name": "Healing",
+      "popular": true,
+      "aliases": [
+        "Healing Powers",
+        "Regeneration"
+      ]
+    },
+    {
+      "name": "Telekinesis",
+      "popular": true,
+      "aliases": [
+        "Moving Things With Your Mind"
+      ]
+    },
+    {
+      "name": "Controlling Weather",
+      "popular": true,
+      "aliases": [
+        "Weather Control"
+      ]
+    },
+    {
+      "name": "Talking to Animals",
+      "popular": true,
+      "aliases": [
+        "Animal Talking"
+      ]
+    },
+    {
+      "name": "Breathing Underwater",
+      "popular": true,
+      "aliases": [
+        "Underwater Breathing"
+      ]
+    },
+    {
+      "name": "Shrinking",
+      "popular": true
+    },
+    {
+      "name": "Freeze Time",
+      "popular": true,
+      "aliases": [
+        "Stopping Time",
+        "Time Freezing"
+      ]
+    },
+    {
+      "name": "Web Slinging",
+      "popular": true,
+      "aliases": [
+        "Web Shooting",
+        "Spider Powers"
+      ]
+    },
+    {
+      "name": "Super Jumping",
+      "popular": false,
+      "aliases": [
+        "Super Jump"
+      ]
+    },
+    {
+      "name": "Growing Giant",
+      "popular": false,
+      "aliases": [
+        "Giant Size",
+        "Growing"
+      ]
+    },
+    {
+      "name": "Stretching",
+      "popular": false,
+      "aliases": [
+        "Elasticity"
+      ]
+    },
+    {
+      "name": "Wall Crawling",
+      "popular": false,
+      "aliases": [
+        "Wall Climbing"
+      ]
+    },
+    {
+      "name": "Super Hearing",
+      "popular": false
+    },
+    {
+      "name": "Night Vision",
+      "popular": false
+    },
+    {
+      "name": "Force Field",
+      "popular": false,
+      "aliases": [
+        "Shields"
+      ]
+    },
+    {
+      "name": "Immortality",
+      "popular": false,
+      "aliases": [
+        "Living Forever"
+      ]
+    },
+    {
+      "name": "Invincibility",
+      "popular": false,
+      "aliases": [
+        "Indestructible"
+      ]
+    },
+    {
+      "name": "Lightning Powers",
+      "popular": false,
+      "aliases": [
+        "Electricity Powers",
+        "Electricity"
+      ]
+    },
+    {
+      "name": "Water Powers",
+      "popular": false,
+      "aliases": [
+        "Water Control"
+      ]
+    },
+    {
+      "name": "Earth Powers",
+      "popular": false,
+      "aliases": [
+        "Rock Powers"
+      ]
+    },
+    {
+      "name": "Plant Powers",
+      "popular": false,
+      "aliases": [
+        "Plant Control"
+      ]
+    },
+    {
+      "name": "Wind Powers",
+      "popular": false,
+      "aliases": [
+        "Wind Control",
+        "Air Powers"
+      ]
+    },
+    {
+      "name": "Duplication",
+      "popular": false,
+      "aliases": [
+        "Cloning",
+        "Making Copies"
+      ]
+    },
+    {
+      "name": "Mind Control",
+      "popular": false
+    },
+    {
+      "name": "Magic",
+      "popular": false,
+      "aliases": [
+        "Spellcasting"
+      ]
+    },
+    {
+      "name": "Walking Through Walls",
+      "popular": false,
+      "aliases": [
+        "Phasing"
+      ]
+    },
+    {
+      "name": "Super Intelligence",
+      "popular": false,
+      "aliases": [
+        "Super Smart",
+        "Genius"
+      ]
+    },
+    {
+      "name": "Seeing the Future",
+      "popular": false,
+      "aliases": [
+        "Predicting the Future"
+      ]
+    },
+    {
+      "name": "Speaking Every Language",
+      "popular": false
+    },
+    {
+      "name": "Turning Into Animals",
+      "popular": false,
+      "aliases": [
+        "Animal Transformation"
+      ]
+    },
+    {
+      "name": "Gravity Control",
+      "popular": false,
+      "aliases": [
+        "Anti-Gravity"
+      ]
+    },
+    {
+      "name": "Super Luck",
+      "popular": false,
+      "aliases": [
+        "Luck"
+      ]
+    },
+    {
+      "name": "Copying Powers",
+      "popular": false,
+      "aliases": [
+        "Power Copying"
+      ]
+    },
+    {
+      "name": "Super Breath",
+      "popular": false
+    },
+    {
+      "name": "Camouflage",
+      "popular": false
+    },
+    {
+      "name": "Magnetism",
+      "popular": false,
+      "aliases": [
+        "Magnet Powers"
+      ]
+    },
+    {
+      "name": "Energy Blasts",
+      "popular": false
+    },
+    {
+      "name": "Making Portals",
+      "popular": false,
+      "aliases": [
+        "Portals"
+      ]
+    },
+    {
+      "name": "Super Swimming",
+      "popular": false
+    },
+    {
+      "name": "Glowing in the Dark",
+      "popular": false
+    }
+  ]
+}

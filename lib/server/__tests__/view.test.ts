@@ -5,11 +5,11 @@
 import { describe, expect, it } from 'vitest';
 import { leaderAfterEachRound, type SessionState } from '@/lib/engine';
 import { simulateGame } from '@/lib/engine/__tests__/simulate';
-import { buildSnapshot, categoryOption } from '../view';
+import { buildSnapshot, categoryOption, topCategoryIds } from '../view';
 import type { CategoryRow } from '../repo';
 
 const categories: CategoryRow[] = [
-  { id: 1, slug: 'fruit', name: 'Fruit', sizeClass: 'large', allowedLengths: [5, 10, 15], dictionarySize: 140 },
+  { id: 1, slug: 'fruit', name: 'Fruit', sizeClass: 'large', allowedLengths: [5, 10, 15], dictionarySize: 140, audience: 'everyone', isCustom: false, generated: false, singularLabel: null, pluralLabel: null },
 ];
 
 /** Rewind a finished game to the reveal of `round`, as the room would show it then. */
@@ -28,16 +28,30 @@ function atReveal(state: SessionState, round: number): SessionState {
 
 describe('§7 category size classes', () => {
   const category = (dictionarySize: number): CategoryRow => ({
-    id: 9, slug: 'x', name: 'X', sizeClass: 'large', allowedLengths: [5, 10, 15], dictionarySize,
+    id: 9, slug: 'x', name: 'X', sizeClass: 'large', allowedLengths: [5, 10, 15], dictionarySize, audience: 'everyone', isCustom: false, generated: false, singularLabel: null, pluralLabel: null,
+  });
+
+  it('never refuses a thin custom category (custom-category spec §3.4)', () => {
+    const custom = (dictionarySize: number) => ({ ...category(dictionarySize), isCustom: true, generated: true });
+    expect(categoryOption(custom(0))?.suggestedMax).toBe(15);
+    expect(categoryOption(custom(1))?.suggestedMax).toBe(5);
+    expect(categoryOption(custom(37))?.suggestedMax).toBe(5);
+    expect(categoryOption(custom(75))?.suggestedMax).toBe(10);
+    // Every length is offered regardless (v0.5).
+    expect(categoryOption(custom(1))?.allowedLengths).toEqual([5, 10, 15]);
+    expect(categoryOption(category(37))).toBeNull();
+    // Played without a build, its size was never judged: learned items don't cap it (§3.4, §5.4).
+    expect(categoryOption({ ...category(12), isCustom: true })?.suggestedMax).toBe(15);
   });
 
   it('offers every length when the dictionary meets its size class', () => {
-    expect(categoryOption(category(113))?.allowedLengths).toEqual([5, 10, 15]);
+    expect(categoryOption(category(113))?.suggestedMax).toBe(15);
   });
 
   it('caps a short dictionary at the next size down', () => {
-    expect(categoryOption(category(112))?.allowedLengths).toEqual([5, 10]);
-    expect(categoryOption(category(74))?.allowedLengths).toEqual([5]);
+    expect(categoryOption(category(112))?.suggestedMax).toBe(10);
+    expect(categoryOption(category(74))?.suggestedMax).toBe(5);
+    expect(categoryOption(category(74))?.allowedLengths).toEqual([5, 10, 15]);
   });
 
   it('hides a category too small for even the smallest class', () => {
@@ -224,5 +238,28 @@ describe('results without the Computer (spec v0.8)', () => {
     expect(game.results).toMatchObject({ computerWon: false, topHumanId: null, beatComputerIds: [] });
     expect(game.results!.funStats.map((s) => s.label)).not.toContain('Fooled by the Computer');
     expect(game.standings.some((r) => r.isComputer)).toBe(false);
+  });
+});
+
+describe('custom-category spec v0.6 top categories in setup', () => {
+  const row = (id: number, extra: Partial<CategoryRow> = {}): CategoryRow => ({
+    id, slug: `c${id}`, name: `C${id}`, sizeClass: 'large', allowedLengths: [5, 10, 15], dictionarySize: 140,
+    audience: 'everyone', isCustom: false, generated: false, singularLabel: null, pluralLabel: null, ...extra,
+  });
+  const rows = [1, 2, 3, 4, 5, 6, 7].map((id) => row(id)).concat(row(8, { isCustom: true }));
+
+  it('ranks by plays in the selected mode, then plays overall, then the default order', () => {
+    const usage = new Map([
+      [6, { pick_your_fav: 9, pick_and_fwd: 0 }],
+      [7, { pick_your_fav: 2, pick_and_fwd: 5 }],
+      [3, { pick_your_fav: 2, pick_and_fwd: 0 }],
+    ]);
+    expect(topCategoryIds(rows, usage, 'pick_your_fav')).toEqual([6, 7, 3, 1, 2]);
+    expect(topCategoryIds(rows, usage, 'pick_and_fwd')).toEqual([7, 6, 3, 1, 2]);
+  });
+
+  it('fills 5 chips from the default order on a fresh database, never with custom categories', () => {
+    expect(topCategoryIds(rows, new Map(), 'pick_your_fav')).toEqual([1, 2, 3, 4, 5]);
+    expect(topCategoryIds(rows, new Map([[8, { pick_your_fav: 99, pick_and_fwd: 0 }]]), 'pick_your_fav')).not.toContain(8);
   });
 });

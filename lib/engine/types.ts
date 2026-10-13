@@ -88,8 +88,24 @@ export interface Game {
   number: number;
   /** Chosen first in setup; defaults to the previous game's mode. */
   mode: GameMode;
-  /** Frozen at Start: false when the host switched the Computer off (3+ humans). */
+  /**
+   * Frozen at Start: false when the host switched the Computer off (3+ humans).
+   * Also false when a thin category left it nothing to play (custom-category spec §4.3).
+   */
   withComputer: boolean;
+  /** Custom categories only: the host switched "Did you mean…?" off (custom-category spec §5.3). */
+  spellCheck: boolean;
+  /** Pick and fwd: frozen at Start from the lobby setting. null = champions never retire. */
+  championReignCap: number | null;
+  /** The custom category the host is building, shown to everyone while it builds (§3.6). */
+  buildingCategory: string | null;
+  /** The setup timer has been extended for a build; it only happens once a game (§3.6). */
+  setupHeld: boolean;
+  /**
+   * Custom-category spec §4.5: the built-in category a short custom one tops up
+   * from this game, for the Computer, Surprise me and auto-fill. Never spell check.
+   */
+  borrowCategoryId: number | null;
   offeredCategoryIds: number[];
   categoryId: number | null;
   listLength: ListLength | null;
@@ -122,6 +138,8 @@ export interface SessionState {
   categoryVoteEnabled: boolean;
   /** Lobby setting: the host wants the Computer to play. It sits out only with 3+ humans. */
   computerPlayer: boolean;
+  /** Lobby setting (mode spec v0.4): Pick and fwd champions retire after this many wins; null = never. */
+  championReignCap: number | null;
   players: Player[];
   game: Game | null;
   lastActivityAt: number;
@@ -143,7 +161,22 @@ export type Intent =
   | { type: 'category_vote'; playerId: string; categoryId: number }
   /** Mode spec §3: the first setup step. Host only, setup only. */
   | { type: 'select_mode'; actorId: string; mode: GameMode }
-  | { type: 'confirm_setup'; actorId: string; categoryId: number; listLength: ListLength; mode?: GameMode }
+  | {
+      type: 'confirm_setup';
+      actorId: string;
+      categoryId: number;
+      listLength: ListLength;
+      mode?: GameMode;
+      /** Custom categories only; built-ins always spell-check. */
+      spellCheck?: boolean;
+      /** Custom categories only (§4.5): the built-in to borrow from, if any. */
+      borrowCategoryId?: number | null;
+    }
+  /**
+   * Server-only (custom-category spec §3.6): a custom category is building. Sets
+   * buildingCategory and extends the setup timer once a game. null clears it.
+   */
+  | { type: 'hold_setup'; actorId: string; name: string | null }
   | { type: 'add_item'; playerId: string; favorite: Favorite }
   | { type: 'remove_item'; playerId: string; favoriteId: string }
   | { type: 'submit_list'; playerId: string }
@@ -153,7 +186,14 @@ export type Intent =
   | { type: 'end_game'; actorId: string }
   | { type: 'play_again'; actorId: string }
   /** §5 lobby settings. Host only, lobby only. */
-  | { type: 'update_settings'; actorId: string; relaxedTimers?: boolean; computerPlayer?: boolean }
+  | {
+      type: 'update_settings';
+      actorId: string;
+      relaxedTimers?: boolean;
+      computerPlayer?: boolean;
+      /** null = champions never retire. */
+      championReignCap?: number | null;
+    }
   /** §5 Cancel Room and §11 Exit / New Room: the host closes the room for everyone. */
   | { type: 'close_room'; actorId: string }
   | { type: 'heartbeat'; playerId: string }

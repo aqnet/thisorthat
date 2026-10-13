@@ -1,0 +1,564 @@
+{
+  "slug": "pokemon",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Pikachu",
+      "popular": true
+    },
+    {
+      "name": "Charizard",
+      "popular": true
+    },
+    {
+      "name": "Eevee",
+      "popular": true
+    },
+    {
+      "name": "Snorlax",
+      "popular": true
+    },
+    {
+      "name": "Mewtwo",
+      "popular": true
+    },
+    {
+      "name": "Mew",
+      "popular": true
+    },
+    {
+      "name": "Gengar",
+      "popular": true
+    },
+    {
+      "name": "Lucario",
+      "popular": true
+    },
+    {
+      "name": "Greninja",
+      "popular": true
+    },
+    {
+      "name": "Squirtle",
+      "popular": true
+    },
+    {
+      "name": "Bulbasaur",
+      "popular": true
+    },
+    {
+      "name": "Charmander",
+      "popular": true
+    },
+    {
+      "name": "Sylveon",
+      "popular": true
+    },
+    {
+      "name": "Umbreon",
+      "popular": true
+    },
+    {
+      "name": "Rayquaza",
+      "popular": true
+    },
+    {
+      "name": "Mimikyu",
+      "popular": true
+    },
+    {
+      "name": "Sprigatito",
+      "popular": true
+    },
+    {
+      "name": "Fuecoco",
+      "popular": true
+    },
+    {
+      "name": "Chikorita",
+      "popular": true
+    },
+    {
+      "name": "Jigglypuff",
+      "popular": true
+    },
+    {
+      "name": "Ivysaur",
+      "popular": false
+    },
+    {
+      "name": "Venusaur",
+      "popular": false
+    },
+    {
+      "name": "Charmeleon",
+      "popular": false
+    },
+    {
+      "name": "Wartortle",
+      "popular": false
+    },
+    {
+      "name": "Blastoise",
+      "popular": false
+    },
+    {
+      "name": "Caterpie",
+      "popular": false
+    },
+    {
+      "name": "Butterfree",
+      "popular": false
+    },
+    {
+      "name": "Pidgey",
+      "popular": false
+    },
+    {
+      "name": "Pidgeot",
+      "popular": false
+    },
+    {
+      "name": "Raichu",
+      "popular": false
+    },
+    {
+      "name": "Clefairy",
+      "popular": false
+    },
+    {
+      "name": "Vulpix",
+      "popular": false
+    },
+    {
+      "name": "Ninetales",
+      "popular": false
+    },
+    {
+      "name": "Meowth",
+      "popular": false
+    },
+    {
+      "name": "Psyduck",
+      "popular": false
+    },
+    {
+      "name": "Growlithe",
+      "popular": false
+    },
+    {
+      "name": "Arcanine",
+      "popular": false
+    },
+    {
+      "name": "Abra",
+      "popular": false
+    },
+    {
+      "name": "Alakazam",
+      "popular": false
+    },
+    {
+      "name": "Machamp",
+      "popular": false
+    },
+    {
+      "name": "Ponyta",
+      "popular": false
+    },
+    {
+      "name": "Slowpoke",
+      "popular": false
+    },
+    {
+      "name": "Farfetch'd",
+      "popular": false,
+      "aliases": [
+        "Farfetched"
+      ]
+    },
+    {
+      "name": "Gastly",
+      "popular": false
+    },
+    {
+      "name": "Onix",
+      "popular": false
+    },
+    {
+      "name": "Cubone",
+      "popular": false
+    },
+    {
+      "name": "Diglett",
+      "popular": false
+    },
+    {
+      "name": "Mr. Mime",
+      "popular": false,
+      "aliases": [
+        "Mister Mime"
+      ]
+    },
+    {
+      "name": "Scyther",
+      "popular": false
+    },
+    {
+      "name": "Magikarp",
+      "popular": false
+    },
+    {
+      "name": "Gyarados",
+      "popular": false
+    },
+    {
+      "name": "Lapras",
+      "popular": false
+    },
+    {
+      "name": "Ditto",
+      "popular": false
+    },
+    {
+      "name": "Vaporeon",
+      "popular": false
+    },
+    {
+      "name": "Jolteon",
+      "popular": false
+    },
+    {
+      "name": "Flareon",
+      "popular": false
+    },
+    {
+      "name": "Aerodactyl",
+      "popular": false
+    },
+    {
+      "name": "Articuno",
+      "popular": false
+    },
+    {
+      "name": "Zapdos",
+      "popular": false
+    },
+    {
+      "name": "Moltres",
+      "popular": false
+    },
+    {
+      "name": "Dratini",
+      "popular": false
+    },
+    {
+      "name": "Dragonite",
+      "popular": false
+    },
+    {
+      "name": "Cyndaquil",
+      "popular": false
+    },
+    {
+      "name": "Totodile",
+      "popular": false
+    },
+    {
+      "name": "Pichu",
+      "popular": false
+    },
+    {
+      "name": "Togepi",
+      "popular": false
+    },
+    {
+      "name": "Marill",
+      "popular": false
+    },
+    {
+      "name": "Espeon",
+      "popular": false
+    },
+    {
+      "name": "Wobbuffet",
+      "popular": false
+    },
+    {
+      "name": "Scizor",
+      "popular": false
+    },
+    {
+      "name": "Tyranitar",
+      "popular": false
+    },
+    {
+      "name": "Lugia",
+      "popular": false
+    },
+    {
+      "name": "Ho-Oh",
+      "popular": false
+    },
+    {
+      "name": "Celebi",
+      "popular": false
+    },
+    {
+      "name": "Suicune",
+      "popular": false
+    },
+    {
+      "name": "Treecko",
+      "popular": false
+    },
+    {
+      "name": "Torchic",
+      "popular": false
+    },
+    {
+      "name": "Blaziken",
+      "popular": false
+    },
+    {
+      "name": "Mudkip",
+      "popular": false
+    },
+    {
+      "name": "Gardevoir",
+      "popular": false
+    },
+    {
+      "name": "Absol",
+      "popular": false
+    },
+    {
+      "name": "Salamence",
+      "popular": false
+    },
+    {
+      "name": "Metagross",
+      "popular": false
+    },
+    {
+      "name": "Kyogre",
+      "popular": false
+    },
+    {
+      "name": "Groudon",
+      "popular": false
+    },
+    {
+      "name": "Latias",
+      "popular": false
+    },
+    {
+      "name": "Jirachi",
+      "popular": false
+    },
+    {
+      "name": "Milotic",
+      "popular": false
+    },
+    {
+      "name": "Turtwig",
+      "popular": false
+    },
+    {
+      "name": "Chimchar",
+      "popular": false
+    },
+    {
+      "name": "Piplup",
+      "popular": false
+    },
+    {
+      "name": "Infernape",
+      "popular": false
+    },
+    {
+      "name": "Riolu",
+      "popular": false
+    },
+    {
+      "name": "Garchomp",
+      "popular": false
+    },
+    {
+      "name": "Leafeon",
+      "popular": false
+    },
+    {
+      "name": "Glaceon",
+      "popular": false
+    },
+    {
+      "name": "Togekiss",
+      "popular": false
+    },
+    {
+      "name": "Dialga",
+      "popular": false
+    },
+    {
+      "name": "Palkia",
+      "popular": false
+    },
+    {
+      "name": "Giratina",
+      "popular": false
+    },
+    {
+      "name": "Arceus",
+      "popular": false
+    },
+    {
+      "name": "Darkrai",
+      "popular": false
+    },
+    {
+      "name": "Snivy",
+      "popular": false
+    },
+    {
+      "name": "Tepig",
+      "popular": false
+    },
+    {
+      "name": "Oshawott",
+      "popular": false
+    },
+    {
+      "name": "Zorua",
+      "popular": false
+    },
+    {
+      "name": "Zoroark",
+      "popular": false
+    },
+    {
+      "name": "Reshiram",
+      "popular": false
+    },
+    {
+      "name": "Zekrom",
+      "popular": false
+    },
+    {
+      "name": "Froakie",
+      "popular": false
+    },
+    {
+      "name": "Fennekin",
+      "popular": false
+    },
+    {
+      "name": "Chespin",
+      "popular": false
+    },
+    {
+      "name": "Hawlucha",
+      "popular": false
+    },
+    {
+      "name": "Flabébé",
+      "popular": false
+    },
+    {
+      "name": "Xerneas",
+      "popular": false
+    },
+    {
+      "name": "Yveltal",
+      "popular": false
+    },
+    {
+      "name": "Rowlet",
+      "popular": false
+    },
+    {
+      "name": "Litten",
+      "popular": false
+    },
+    {
+      "name": "Popplio",
+      "popular": false
+    },
+    {
+      "name": "Incineroar",
+      "popular": false
+    },
+    {
+      "name": "Rockruff",
+      "popular": false
+    },
+    {
+      "name": "Lycanroc",
+      "popular": false
+    },
+    {
+      "name": "Solgaleo",
+      "popular": false
+    },
+    {
+      "name": "Lunala",
+      "popular": false
+    },
+    {
+      "name": "Grookey",
+      "popular": false
+    },
+    {
+      "name": "Scorbunny",
+      "popular": false
+    },
+    {
+      "name": "Sobble",
+      "popular": false
+    },
+    {
+      "name": "Cinderace",
+      "popular": false
+    },
+    {
+      "name": "Dragapult",
+      "popular": false
+    },
+    {
+      "name": "Zacian",
+      "popular": false
+    },
+    {
+      "name": "Zamazenta",
+      "popular": false
+    },
+    {
+      "name": "Quaxly",
+      "popular": false
+    },
+    {
+      "name": "Meowscarada",
+      "popular": false
+    },
+    {
+      "name": "Pawmi",
+      "popular": false
+    },
+    {
+      "name": "Lechonk",
+      "popular": false
+    },
+    {
+      "name": "Tinkaton",
+      "popular": false
+    },
+    {
+      "name": "Koraidon",
+      "popular": false
+    },
+    {
+      "name": "Miraidon",
+      "popular": false
+    }
+  ]
+}

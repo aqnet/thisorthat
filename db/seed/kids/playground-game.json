@@ -1,0 +1,262 @@
+{
+  "slug": "playground-game",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Tag",
+      "popular": true,
+      "aliases": [
+        "Tag You're It"
+      ]
+    },
+    {
+      "name": "Hide and Seek",
+      "popular": true,
+      "aliases": [
+        "Hide & Seek"
+      ]
+    },
+    {
+      "name": "Four Square",
+      "popular": true,
+      "aliases": [
+        "4 Square"
+      ]
+    },
+    {
+      "name": "Hopscotch",
+      "popular": true
+    },
+    {
+      "name": "Red Light Green Light",
+      "popular": true
+    },
+    {
+      "name": "Freeze Tag",
+      "popular": true
+    },
+    {
+      "name": "Duck Duck Goose",
+      "popular": true
+    },
+    {
+      "name": "Tetherball",
+      "popular": true
+    },
+    {
+      "name": "Kickball",
+      "popular": true
+    },
+    {
+      "name": "Jump Rope",
+      "popular": true,
+      "aliases": [
+        "Skipping Rope"
+      ]
+    },
+    {
+      "name": "Dodgeball",
+      "popular": true
+    },
+    {
+      "name": "Simon Says",
+      "popular": true
+    },
+    {
+      "name": "Capture the Flag",
+      "popular": true
+    },
+    {
+      "name": "Tug of War",
+      "popular": true
+    },
+    {
+      "name": "The Floor Is Lava",
+      "popular": true,
+      "aliases": [
+        "Floor Is Lava",
+        "Hot Lava",
+        "Lava Monster"
+      ]
+    },
+    {
+      "name": "Sharks and Minnows",
+      "popular": true,
+      "aliases": [
+        "Sharks & Minnows"
+      ]
+    },
+    {
+      "name": "Red Rover",
+      "popular": true
+    },
+    {
+      "name": "Wall Ball",
+      "popular": true
+    },
+    {
+      "name": "Gaga Ball",
+      "popular": true,
+      "aliases": [
+        "Gaga"
+      ]
+    },
+    {
+      "name": "Rock Paper Scissors",
+      "popular": true,
+      "aliases": [
+        "Roshambo"
+      ]
+    },
+    {
+      "name": "Cops and Robbers",
+      "popular": false,
+      "aliases": [
+        "Cops & Robbers"
+      ]
+    },
+    {
+      "name": "Mother May I",
+      "popular": false
+    },
+    {
+      "name": "What Time Is It Mr. Fox",
+      "popular": false,
+      "aliases": [
+        "Mr. Fox",
+        "What's the Time Mr. Wolf",
+        "Mr. Wolf"
+      ]
+    },
+    {
+      "name": "Sardines",
+      "popular": false
+    },
+    {
+      "name": "Kick the Can",
+      "popular": false
+    },
+    {
+      "name": "Ghost in the Graveyard",
+      "popular": false
+    },
+    {
+      "name": "Statues",
+      "popular": false,
+      "aliases": [
+        "Freeze Statues"
+      ]
+    },
+    {
+      "name": "Musical Chairs",
+      "popular": false
+    },
+    {
+      "name": "Follow the Leader",
+      "popular": false
+    },
+    {
+      "name": "Leapfrog",
+      "popular": false
+    },
+    {
+      "name": "Tunnel Tag",
+      "popular": false
+    },
+    {
+      "name": "Zombie Tag",
+      "popular": false
+    },
+    {
+      "name": "Shadow Tag",
+      "popular": false
+    },
+    {
+      "name": "Everybody's It",
+      "popular": false
+    },
+    {
+      "name": "Steal the Bacon",
+      "popular": false
+    },
+    {
+      "name": "Spud",
+      "popular": false
+    },
+    {
+      "name": "Double Dutch",
+      "popular": false
+    },
+    {
+      "name": "Patty Cake",
+      "popular": false,
+      "aliases": [
+        "Pat-a-Cake"
+      ]
+    },
+    {
+      "name": "Miss Mary Mack",
+      "popular": false
+    },
+    {
+      "name": "Cat's Cradle",
+      "popular": false
+    },
+    {
+      "name": "Jacks",
+      "popular": false
+    },
+    {
+      "name": "Marbles",
+      "popular": false
+    },
+    {
+      "name": "Hula Hoop",
+      "popular": false
+    },
+    {
+      "name": "Hot Potato",
+      "popular": false
+    },
+    {
+      "name": "Two Square",
+      "popular": false
+    },
+    {
+      "name": "Handball",
+      "popular": false
+    },
+    {
+      "name": "Horse",
+      "popular": false
+    },
+    {
+      "name": "Knockout",
+      "popular": false,
+      "aliases": [
+        "Lightning"
+      ]
+    },
+    {
+      "name": "Ring Around the Rosie",
+      "popular": false,
+      "aliases": [
+        "Ring Around the Rosy"
+      ]
+    },
+    {
+      "name": "London Bridge",
+      "popular": false,
+      "aliases": [
+        "London Bridge Is Falling Down"
+      ]
+    },
+    {
+      "name": "Heads Up Seven Up",
+      "popular": false,
+      "aliases": [
+        "Heads Up 7 Up"
+      ]
+    }
+  ]
+}
