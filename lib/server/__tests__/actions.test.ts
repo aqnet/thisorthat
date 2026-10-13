@@ -389,16 +389,17 @@ describe('§5 the Computer player setting (spec v0.8)', () => {
 });
 
 describe('mode spec v0.4 the champion reign cap in the lobby', () => {
-  it('stores 3, 5 or never for the room, refuses anything else, and carries it into the game', async () => {
+  it('defaults to never, stores 3 or 5 when chosen, refuses anything else, and carries it into the game', async () => {
     const r = await room(1);
-    expect((await snapshot(r.host, r.code)).championReignCap).toBe(3);
+    // Mode spec v0.5: a new room's champions hold until beaten.
+    expect((await snapshot(r.host, r.code)).championReignCap).toBeNull();
     expect(await actions.setChampionReignCap(r.host, r.code, 4)).toMatchObject({ ok: false, code: 'invalid_cap' });
-    ok(await actions.setChampionReignCap(r.host, r.code, null));
-    expect((await snapshot(r.guests[0], r.code)).championReignCap).toBeNull();
+    ok(await actions.setChampionReignCap(r.host, r.code, 5));
+    expect((await snapshot(r.guests[0], r.code)).championReignCap).toBe(5);
     ok(await actions.startGame(r.host, r.code));
     const [game] = await h.admin((s) => s`
       select g.champion_reign_cap from this_or_that.games g
         join this_or_that.sessions s on s.current_game_id = g.id where s.room_code = ${r.code}`);
-    expect(game.champion_reign_cap).toBeNull();
+    expect(game.champion_reign_cap).toBe(5);
   });
 });

@@ -2,8 +2,8 @@ import 'server-only';
 import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 import type postgres from 'postgres';
 import {
-  CHAMPION_REIGN_CAP,
   COMPUTER_COLOR_SLOT,
+  DEFAULT_CHAMPION_REIGN_CAP,
   COMPUTER_VARIETY_WINDOW,
   ROOM_CODE_ALPHABET,
   ROOM_CODE_LENGTH,
@@ -497,7 +497,8 @@ export async function createRoom(userId: string, name: string): Promise<SessionS
           relaxedTimers: false,
           categoryVoteEnabled: false,
           computerPlayer: true,
-          championReignCap: CHAMPION_REIGN_CAP,
+          // Mode spec v0.5: a champion holds until beaten, unless the host sets a cap.
+          championReignCap: DEFAULT_CHAMPION_REIGN_CAP,
           players: [
             {
               id: randomUUID(),

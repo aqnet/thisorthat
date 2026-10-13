@@ -152,7 +152,7 @@ export function Lobby({ snap, room, roomCode }: PhaseProps) {
               </span>
             </span>
             <div className={styles.row} role="group" aria-label="Champion retires after">
-              {([3, 5, null] as const).map((cap) => (
+              {([null, 3, 5] as const).map((cap) => (
                 <button
                   key={String(cap)}
                   type="button"
