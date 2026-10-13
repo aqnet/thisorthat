@@ -447,17 +447,27 @@ export async function saveState(
     await upsert(sql, spec, changed);
   }
 
+  // Deletions only ever happen within one game. When Play Again starts the
+  // next game, the previous game's cards and favorites simply aren't in the
+  // new state -- they're history, not removals, and must stay: results,
+  // replays and the Computer's 3-game variety window all read them.
+  const sameGame = before?.game != null && before.game.id === after.game?.id;
+
   // Pick and fwd: a fresh card merged into the champion when its round opened
   // (mode spec §4.1). It never had a vote; its owners moved to the champion card.
   const keptCards = new Set(newRows.ballot_cards.map((r) => r.id as string));
-  const mergedCards = oldRows.ballot_cards.map((r) => r.id as string).filter((id) => !keptCards.has(id));
+  const mergedCards = sameGame
+    ? oldRows.ballot_cards.map((r) => r.id as string).filter((id) => !keptCards.has(id))
+    : [];
   if (mergedCards.length) {
     await sql.unsafe(`delete from this_or_that.ballot_cards where id = any($1::uuid[])`, [mergedCards]);
   }
 
   // remove_item is the only intent that deletes a favorite.
   const keptFavorites = new Set(newRows.favorites.map((r) => r.id as string));
-  const removed = oldRows.favorites.map((r) => r.id as string).filter((id) => !keptFavorites.has(id));
+  const removed = sameGame
+    ? oldRows.favorites.map((r) => r.id as string).filter((id) => !keptFavorites.has(id))
+    : [];
   if (removed.length) {
     await sql.unsafe(`delete from this_or_that.favorites where id = any($1::uuid[])`, [removed]);
   }
