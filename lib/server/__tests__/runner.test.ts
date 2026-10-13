@@ -325,6 +325,8 @@ describe('Pick and fwd through the database (mode spec §8)', () => {
     let state = await act(code, () => ({ type: 'join', playerId: randomUUID(), userId: u2, name: 'Ben' }));
     const ben = state.players.find((p) => p.name === 'Ben')!;
     const computer = state.players.find((p) => p.isComputer)!;
+    // New rooms default to "never" (mode spec v0.5); this test needs the retirement.
+    await act(code, () => ({ type: 'update_settings', actorId: host.id, championReignCap: 3 }));
     await act(code, () => ({ type: 'start_game', actorId: host.id }));
     await act(code, () => ({ type: 'select_mode', actorId: host.id, mode: 'pick_and_fwd' }));
     const fruit = (await repo.loadCategories(h.sql)).find((c) => c.slug === 'fruit')!;

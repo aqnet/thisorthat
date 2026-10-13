@@ -18,12 +18,16 @@ import { itemKey } from './matchups';
 import type { BallotCard, Favorite, Game, Matchup } from './types';
 
 /**
- * Mode spec §4.2, decision F2: a champion retires after this many wins in a
- * row, so one great pick can't hold a whole game. A lobby setting since mode
- * spec v0.4: the host picks 3 (the default), 5 or never (null).
+ * Mode spec §4.2, decision F2: a champion can retire after a run of wins, so
+ * one great pick can't hold a whole game. A lobby setting since mode spec
+ * v0.4: never (null, the default since v0.5), 3 or 5.
+ *
+ * CHAMPION_REIGN_CAP is the cap games had before the setting existed; rows
+ * from then read as 3.
  */
 export const CHAMPION_REIGN_CAP = 3;
-export const CHAMPION_REIGN_CAPS = [3, 5, null] as const;
+export const DEFAULT_CHAMPION_REIGN_CAP = null;
+export const CHAMPION_REIGN_CAPS = [null, 3, 5] as const;
 export type ChampionReignCap = (typeof CHAMPION_REIGN_CAPS)[number];
 
 export function isChampionReignCap(value: unknown): value is ChampionReignCap {

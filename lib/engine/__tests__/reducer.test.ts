@@ -594,16 +594,15 @@ describe('mode spec v0.4 champion reign cap setting', () => {
       ],
     });
 
-  it('defaults to 3, only the host changes it, and it freezes at Start', () => {
-    expect(lobby().championReignCap).toBe(3);
-    expect(apply(lobby(), { type: 'update_settings', actorId: 'p2', championReignCap: null }, ctx(1)))
+  it('only the host changes it, and it freezes at Start', () => {
+    expect(apply(lobby(), { type: 'update_settings', actorId: 'p2', championReignCap: 3 }, ctx(1)))
       .toMatchObject({ ok: false, error: 'not_host' });
-    const never = ok(lobby(), { type: 'update_settings', actorId: 'p1', championReignCap: null }, 1_000);
-    expect(never.championReignCap).toBeNull();
-    const started = ok(never, { type: 'start_game', actorId: 'p1' }, 2_000);
-    expect(started.game!.championReignCap).toBeNull();
+    const three = ok(lobby(), { type: 'update_settings', actorId: 'p1', championReignCap: 3 }, 1_000);
+    expect(three.championReignCap).toBe(3);
+    const started = ok(three, { type: 'start_game', actorId: 'p1' }, 2_000);
+    expect(started.game!.championReignCap).toBe(3);
     // Changing the lobby setting can't happen mid-game.
-    expect(apply(started, { type: 'update_settings', actorId: 'p1', championReignCap: 3 }, ctx(3_000)))
+    expect(apply(started, { type: 'update_settings', actorId: 'p1', championReignCap: null }, ctx(3_000)))
       .toMatchObject({ ok: false, error: 'wrong_phase' });
   });
 });
