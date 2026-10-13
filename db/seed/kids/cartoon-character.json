@@ -1,0 +1,712 @@
+{
+  "slug": "cartoon-character",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "SpongeBob SquarePants",
+      "popular": true,
+      "aliases": [
+        "SpongeBob"
+      ]
+    },
+    {
+      "name": "Patrick Star",
+      "popular": true,
+      "aliases": [
+        "Patrick"
+      ]
+    },
+    {
+      "name": "Squidward Tentacles",
+      "popular": false,
+      "aliases": [
+        "Squidward"
+      ]
+    },
+    {
+      "name": "Mr. Krabs",
+      "popular": false,
+      "aliases": [
+        "Mister Krabs"
+      ]
+    },
+    {
+      "name": "Sandy Cheeks",
+      "popular": false,
+      "aliases": [
+        "Sandy"
+      ]
+    },
+    {
+      "name": "Plankton",
+      "popular": false
+    },
+    {
+      "name": "Gary the Snail",
+      "popular": false,
+      "aliases": [
+        "Gary"
+      ]
+    },
+    {
+      "name": "Mickey Mouse",
+      "popular": true,
+      "aliases": [
+        "Mickey"
+      ]
+    },
+    {
+      "name": "Minnie Mouse",
+      "popular": false,
+      "aliases": [
+        "Minnie"
+      ]
+    },
+    {
+      "name": "Donald Duck",
+      "popular": false,
+      "aliases": [
+        "Donald"
+      ]
+    },
+    {
+      "name": "Goofy",
+      "popular": false
+    },
+    {
+      "name": "Pluto",
+      "popular": false
+    },
+    {
+      "name": "Winnie the Pooh",
+      "popular": false,
+      "aliases": [
+        "Pooh",
+        "Pooh Bear"
+      ]
+    },
+    {
+      "name": "Tigger",
+      "popular": false
+    },
+    {
+      "name": "Stitch",
+      "popular": true
+    },
+    {
+      "name": "Lilo",
+      "popular": false
+    },
+    {
+      "name": "Elsa",
+      "popular": true
+    },
+    {
+      "name": "Anna",
+      "popular": false
+    },
+    {
+      "name": "Olaf",
+      "popular": false
+    },
+    {
+      "name": "Moana",
+      "popular": true
+    },
+    {
+      "name": "Maui",
+      "popular": false
+    },
+    {
+      "name": "Simba",
+      "popular": false
+    },
+    {
+      "name": "Timon",
+      "popular": false
+    },
+    {
+      "name": "Pumbaa",
+      "popular": false
+    },
+    {
+      "name": "Woody",
+      "popular": true,
+      "aliases": [
+        "Sheriff Woody"
+      ]
+    },
+    {
+      "name": "Buzz Lightyear",
+      "popular": false,
+      "aliases": [
+        "Buzz"
+      ]
+    },
+    {
+      "name": "Jessie",
+      "popular": false
+    },
+    {
+      "name": "Lightning McQueen",
+      "popular": false,
+      "aliases": [
+        "McQueen"
+      ]
+    },
+    {
+      "name": "Mater",
+      "popular": false,
+      "aliases": [
+        "Tow Mater"
+      ]
+    },
+    {
+      "name": "Nemo",
+      "popular": false
+    },
+    {
+      "name": "Dory",
+      "popular": false
+    },
+    {
+      "name": "Mike Wazowski",
+      "popular": false,
+      "aliases": [
+        "Mike"
+      ]
+    },
+    {
+      "name": "Sulley",
+      "popular": false
+    },
+    {
+      "name": "Baymax",
+      "popular": false
+    },
+    {
+      "name": "Wall-E",
+      "popular": false
+    },
+    {
+      "name": "Joy",
+      "popular": false
+    },
+    {
+      "name": "Judy Hopps",
+      "popular": true,
+      "aliases": [
+        "Judy"
+      ]
+    },
+    {
+      "name": "Nick Wilde",
+      "popular": false
+    },
+    {
+      "name": "Mirabel",
+      "popular": false
+    },
+    {
+      "name": "Ariel",
+      "popular": false
+    },
+    {
+      "name": "Cinderella",
+      "popular": false
+    },
+    {
+      "name": "Belle",
+      "popular": false
+    },
+    {
+      "name": "Rapunzel",
+      "popular": false
+    },
+    {
+      "name": "Snow White",
+      "popular": false
+    },
+    {
+      "name": "Tiana",
+      "popular": false
+    },
+    {
+      "name": "Mulan",
+      "popular": false
+    },
+    {
+      "name": "Jasmine",
+      "popular": false
+    },
+    {
+      "name": "Aladdin",
+      "popular": false
+    },
+    {
+      "name": "Genie",
+      "popular": false
+    },
+    {
+      "name": "Tinker Bell",
+      "popular": false
+    },
+    {
+      "name": "Shrek",
+      "popular": true
+    },
+    {
+      "name": "Donkey",
+      "popular": false
+    },
+    {
+      "name": "Puss in Boots",
+      "popular": false
+    },
+    {
+      "name": "Po",
+      "popular": false,
+      "aliases": [
+        "Kung Fu Panda"
+      ]
+    },
+    {
+      "name": "Gru",
+      "popular": false
+    },
+    {
+      "name": "Minions",
+      "popular": false,
+      "aliases": [
+        "Minion"
+      ]
+    },
+    {
+      "name": "The Grinch",
+      "popular": false,
+      "aliases": [
+        "Grinch"
+      ]
+    },
+    {
+      "name": "Poppy",
+      "popular": false
+    },
+    {
+      "name": "Branch",
+      "popular": false
+    },
+    {
+      "name": "Toothless",
+      "popular": false
+    },
+    {
+      "name": "Roz",
+      "popular": false,
+      "aliases": [
+        "Roz the Robot"
+      ]
+    },
+    {
+      "name": "Dog Man",
+      "popular": true
+    },
+    {
+      "name": "Captain Underpants",
+      "popular": false
+    },
+    {
+      "name": "Bluey",
+      "popular": true
+    },
+    {
+      "name": "Bingo",
+      "popular": true
+    },
+    {
+      "name": "Bandit",
+      "popular": false
+    },
+    {
+      "name": "Peppa Pig",
+      "popular": false,
+      "aliases": [
+        "Peppa"
+      ]
+    },
+    {
+      "name": "George Pig",
+      "popular": false
+    },
+    {
+      "name": "Chase",
+      "popular": true
+    },
+    {
+      "name": "Marshall",
+      "popular": false
+    },
+    {
+      "name": "Skye",
+      "popular": false
+    },
+    {
+      "name": "Rubble",
+      "popular": false
+    },
+    {
+      "name": "Gabby",
+      "popular": true
+    },
+    {
+      "name": "Pandy Paws",
+      "popular": false,
+      "aliases": [
+        "Pandy"
+      ]
+    },
+    {
+      "name": "Rumi",
+      "popular": true
+    },
+    {
+      "name": "Mira",
+      "popular": false
+    },
+    {
+      "name": "Zoey",
+      "popular": false
+    },
+    {
+      "name": "Daniel Tiger",
+      "popular": false
+    },
+    {
+      "name": "Curious George",
+      "popular": false
+    },
+    {
+      "name": "Clifford",
+      "popular": false,
+      "aliases": [
+        "Clifford the Big Red Dog"
+      ]
+    },
+    {
+      "name": "Dora",
+      "popular": false,
+      "aliases": [
+        "Dora the Explorer"
+      ]
+    },
+    {
+      "name": "Blue",
+      "popular": false
+    },
+    {
+      "name": "Thomas the Tank Engine",
+      "popular": false,
+      "aliases": [
+        "Thomas"
+      ]
+    },
+    {
+      "name": "Baby Shark",
+      "popular": false
+    },
+    {
+      "name": "Hello Kitty",
+      "popular": false
+    },
+    {
+      "name": "Kuromi",
+      "popular": false
+    },
+    {
+      "name": "Cinnamoroll",
+      "popular": false
+    },
+    {
+      "name": "Mario",
+      "popular": true
+    },
+    {
+      "name": "Luigi",
+      "popular": true
+    },
+    {
+      "name": "Princess Peach",
+      "popular": false,
+      "aliases": [
+        "Peach"
+      ]
+    },
+    {
+      "name": "Bowser",
+      "popular": false
+    },
+    {
+      "name": "Yoshi",
+      "popular": false
+    },
+    {
+      "name": "Toad",
+      "popular": false
+    },
+    {
+      "name": "Rosalina",
+      "popular": false
+    },
+    {
+      "name": "Donkey Kong",
+      "popular": false,
+      "aliases": [
+        "DK"
+      ]
+    },
+    {
+      "name": "Kirby",
+      "popular": false
+    },
+    {
+      "name": "Link",
+      "popular": false
+    },
+    {
+      "name": "Princess Zelda",
+      "popular": false,
+      "aliases": [
+        "Zelda"
+      ]
+    },
+    {
+      "name": "Sonic the Hedgehog",
+      "popular": true,
+      "aliases": [
+        "Sonic"
+      ]
+    },
+    {
+      "name": "Tails",
+      "popular": false
+    },
+    {
+      "name": "Knuckles",
+      "popular": false
+    },
+    {
+      "name": "Shadow the Hedgehog",
+      "popular": false,
+      "aliases": [
+        "Shadow"
+      ]
+    },
+    {
+      "name": "Dr. Eggman",
+      "popular": false,
+      "aliases": [
+        "Eggman",
+        "Dr. Robotnik",
+        "Robotnik"
+      ]
+    },
+    {
+      "name": "Pac-Man",
+      "popular": false
+    },
+    {
+      "name": "Pikachu",
+      "popular": true
+    },
+    {
+      "name": "Ash Ketchum",
+      "popular": false,
+      "aliases": [
+        "Ash"
+      ]
+    },
+    {
+      "name": "Scooby-Doo",
+      "popular": true,
+      "aliases": [
+        "Scooby"
+      ]
+    },
+    {
+      "name": "Shaggy",
+      "popular": false
+    },
+    {
+      "name": "Velma",
+      "popular": false
+    },
+    {
+      "name": "Bugs Bunny",
+      "popular": false,
+      "aliases": [
+        "Bugs"
+      ]
+    },
+    {
+      "name": "Daffy Duck",
+      "popular": false,
+      "aliases": [
+        "Daffy"
+      ]
+    },
+    {
+      "name": "Tweety",
+      "popular": false,
+      "aliases": [
+        "Tweety Bird"
+      ]
+    },
+    {
+      "name": "Sylvester",
+      "popular": false,
+      "aliases": [
+        "Sylvester the Cat"
+      ]
+    },
+    {
+      "name": "Road Runner",
+      "popular": false
+    },
+    {
+      "name": "Wile E. Coyote",
+      "popular": false
+    },
+    {
+      "name": "Tom",
+      "popular": false,
+      "aliases": [
+        "Tom Cat"
+      ]
+    },
+    {
+      "name": "Jerry",
+      "popular": false,
+      "aliases": [
+        "Jerry Mouse"
+      ]
+    },
+    {
+      "name": "Garfield",
+      "popular": false
+    },
+    {
+      "name": "Snoopy",
+      "popular": false
+    },
+    {
+      "name": "Charlie Brown",
+      "popular": false
+    },
+    {
+      "name": "Gumball",
+      "popular": false,
+      "aliases": [
+        "Gumball Watterson"
+      ]
+    },
+    {
+      "name": "Finn",
+      "popular": false,
+      "aliases": [
+        "Finn the Human"
+      ]
+    },
+    {
+      "name": "Jake the Dog",
+      "popular": false,
+      "aliases": [
+        "Jake"
+      ]
+    },
+    {
+      "name": "Blossom",
+      "popular": false
+    },
+    {
+      "name": "Bubbles",
+      "popular": false
+    },
+    {
+      "name": "Buttercup",
+      "popular": false
+    },
+    {
+      "name": "Phineas",
+      "popular": false
+    },
+    {
+      "name": "Ferb",
+      "popular": false
+    },
+    {
+      "name": "Perry the Platypus",
+      "popular": false,
+      "aliases": [
+        "Perry",
+        "Agent P"
+      ]
+    },
+    {
+      "name": "Ladybug",
+      "popular": false,
+      "aliases": [
+        "Miraculous Ladybug",
+        "Marinette"
+      ]
+    },
+    {
+      "name": "Cat Noir",
+      "popular": false,
+      "aliases": [
+        "Chat Noir"
+      ]
+    },
+    {
+      "name": "Aang",
+      "popular": false,
+      "aliases": [
+        "Avatar Aang"
+      ]
+    },
+    {
+      "name": "Lincoln Loud",
+      "popular": false,
+      "aliases": [
+        "Lincoln"
+      ]
+    },
+    {
+      "name": "Leonardo",
+      "popular": false,
+      "aliases": [
+        "Leo"
+      ]
+    },
+    {
+      "name": "Michelangelo",
+      "popular": false,
+      "aliases": [
+        "Mikey"
+      ]
+    },
+    {
+      "name": "Donatello",
+      "popular": false,
+      "aliases": [
+        "Donnie"
+      ]
+    },
+    {
+      "name": "Raphael",
+      "popular": false,
+      "aliases": [
+        "Raph"
+      ]
+    }
+  ]
+}

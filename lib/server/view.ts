@@ -2,8 +2,11 @@ import 'server-only';
 import {
   ALLOWED_LENGTHS_BY_SIZE_CLASS,
   DISCONNECT_AFTER_MS,
+  LIST_LENGTHS,
   REQUIRED_DICTIONARY_SIZE,
   SHOWDOWN_ROUNDS,
+  everyBallotHadThree,
+  roundCount,
   beatTheComputer,
   computerWon,
   leaderAfterEachRound,
@@ -17,12 +20,13 @@ import {
   scoreMatchup,
   standings,
   topHuman,
+  type GameMode,
   type ListLength,
   type Player,
   type SessionState,
   type SizeClass,
 } from '@/lib/engine';
-import type { CategoryRow } from './repo';
+import type { CategoryRow, CategoryUsage } from './repo';
 import type {
   CategoryOption,
   CrownCallout,
@@ -42,19 +46,66 @@ export function viewerSeat(state: SessionState, userId: string): Player | null {
 const SIZE_ORDER: SizeClass[] = ['small', 'medium', 'large'];
 
 /**
- * §7: a category whose dictionary falls short of its size requirement is
- * capped at the next size down until it has grown. A category below even the
- * small requirement can't be offered at all.
+ * §7, as changed by custom-category spec v0.5: every category offers 5, 10 and
+ * 15. Its size class -- capped at the next size down while the dictionary is
+ * short -- only sets `suggestedMax`, past which Setup warns that players may
+ * run out of ideas. A built-in below even the small requirement can't be
+ * offered at all.
  */
 export function categoryOption(category: CategoryRow): CategoryOption | null {
+  const option = (sized: readonly ListLength[]): CategoryOption => ({
+    id: category.id,
+    name: category.name,
+    allowedLengths: [...LIST_LENGTHS],
+    suggestedMax: Math.max(...sized) as ListLength,
+    audience: category.audience,
+    isCustom: category.isCustom,
+    itemCount: category.dictionarySize,
+    borrowSuggestionId: category.borrowSuggestionId ?? null,
+  });
+  // A custom category played without a build was never sized: learned items
+  // (§5.4) shouldn't shrink what the host could pick before.
+  if (category.isCustom && !category.generated) return option(LIST_LENGTHS);
   const declared = SIZE_ORDER.indexOf(category.sizeClass);
   for (let i = declared; i >= 0; i--) {
     const size = SIZE_ORDER[i];
     if (category.dictionarySize >= REQUIRED_DICTIONARY_SIZE[size]) {
-      return { id: category.id, name: category.name, allowedLengths: [...ALLOWED_LENGTHS_BY_SIZE_CLASS[size]] };
+      return option(ALLOWED_LENGTHS_BY_SIZE_CLASS[size]);
     }
   }
+  // Custom-category spec §3.4: a custom category is never refused for being
+  // thin. With some items it's capped at 5; with none, the game can't judge
+  // its size, so the host picks any length.
+  if (category.isCustom) return option(category.dictionarySize > 0 ? [5] : LIST_LENGTHS);
   return null;
+}
+
+
+/** Custom-category spec §3.5: the singular/plural a prompt uses, guessed when unset. */
+export function labelsFor(category: Pick<CategoryRow, 'name' | 'singularLabel' | 'pluralLabel'>) {
+  const lower = category.name.toLocaleLowerCase('en-US');
+  return {
+    singular: category.singularLabel ?? lower,
+    plural: category.pluralLabel ?? (lower.endsWith('s') ? lower : `${lower}s`),
+  };
+}
+
+/** How many built-in categories the setup screen shows as chips. */
+export const TOP_CATEGORY_COUNT = 5;
+
+/**
+ * The most-played built-in categories for a mode, for the chips in setup.
+ * Ties fall back to plays in either mode, then the default order, so a fresh
+ * database still shows 5 sensible chips.
+ */
+export function topCategoryIds(categories: readonly CategoryRow[], usage: CategoryUsage, mode: GameMode): number[] {
+  const plays = (id: number) => usage.get(id) ?? { pick_your_fav: 0, pick_and_fwd: 0 };
+  return categories
+    .filter((c) => !c.isCustom && categoryOption(c) !== null)
+    .map((c, index) => ({ id: c.id, index, mode: plays(c.id)[mode], total: plays(c.id).pick_your_fav + plays(c.id).pick_and_fwd }))
+    .sort((a, b) => b.mode - a.mode || b.total - a.total || a.index - b.index)
+    .slice(0, TOP_CATEGORY_COUNT)
+    .map((c) => c.id);
 }
 
 export function buildSnapshot(
@@ -64,6 +115,7 @@ export function buildSnapshot(
   now: number,
   /** The game's numeric seed: Pick and fwd's coin flips replay from it. */
   seed = 1,
+  usage: CategoryUsage = new Map(),
 ): RoomSnapshot {
   const seat = viewerSeat(state, userId);
   const isHost = seat !== null && state.hostPlayerId === seat.id;
@@ -78,6 +130,7 @@ export function buildSnapshot(
     hostPlayerId: state.hostPlayerId,
     relaxedTimers: state.relaxedTimers,
     computerPlayer: state.computerPlayer,
+    championReignCap: state.championReignCap,
     computerPlays: computerPlays(state),
     me: seat
       ? { playerId: seat.id, isHost, queued: seat.queued, left: seat.leftAt !== null }
@@ -95,6 +148,10 @@ export function buildSnapshot(
     categories:
       isHost && state.status === 'setup'
         ? categories.map(categoryOption).filter((c): c is CategoryOption => c !== null)
+        : [],
+    topCategoryIds:
+      isHost && state.status === 'setup' && state.game
+        ? topCategoryIds(categories, usage, state.game.mode)
         : [],
     game: buildGame(state, seat, categories, seed),
   };
@@ -168,7 +225,13 @@ function buildGame(
   }
 
   const listLength = game.listLength;
-  const categoryName = categories.find((c) => c.id === game.categoryId)?.name ?? null;
+  const category = categories.find((c) => c.id === game.categoryId) ?? null;
+  const categoryName = category?.name ?? null;
+  const labels = category ? labelsFor(category) : null;
+  // §4.5: a short custom category can top up from a built-in.
+  const borrowed = categories.find((c) => c.id === game.borrowCategoryId) ?? null;
+  const suggestionPool = (category?.dictionarySize ?? 0) + (borrowed?.dictionarySize ?? 0);
+  const rounds = roundCount(game);
 
   return {
     number: game.number,
@@ -177,9 +240,25 @@ function buildGame(
     categoryName,
     listLength,
     round: game.currentRound,
-    totalRounds: listLength ?? 0,
+    singularLabel: labels?.singular ?? null,
+    pluralLabel: labels?.plural ?? null,
+    isCustom: category?.isCustom ?? false,
+    spellCheck: game.spellCheck,
+    // Surprise me is hidden when there's nothing relevant to suggest (§6).
+    hasDictionary: suggestionPool > 0,
+    borrowedFrom: borrowed?.name ?? null,
+    // §4.2: the timer can't fill a list the dictionary is smaller than.
+    thin: Boolean(category && listLength && suggestionPool < listLength),
+    buildingCategory: game.buildingCategory,
+    totalRounds: rounds,
     multiplier: matchup?.multiplier ?? 1,
-    showdownRounds: listLength ? [...SHOWDOWN_ROUNDS[listLength as ListLength]] : [],
+    // The double-points rounds as actually built: thin games can drop rounds (§4.1).
+    showdownRounds:
+      game.matchups.length > 0
+        ? game.matchups.filter((m) => m.multiplier > 1).map((m) => m.roundNumber)
+        : listLength
+          ? [...SHOWDOWN_ROUNDS[listLength as ListLength]]
+          : [],
     endedEarly: game.endedEarly,
     myList: seat
       ? game.favorites
@@ -231,6 +310,8 @@ function buildResults(state: SessionState, rows: StandingRow[], crowns: RoundCro
     topHumanId: withComputer ? (top?.playerId ?? null) : null,
     beatComputerIds: withComputer ? beatTheComputer(engineRows) : [],
     funStats: [...funStats(state, rows), ...crownStats(state, rows, crowns)],
+    // Custom-category spec §4.4: why a finished game won't reach the boards.
+    unrankedTwoCards: !state.game!.endedEarly && !everyBallotHadThree(state.game!),
   };
 }
 

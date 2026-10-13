@@ -1,0 +1,705 @@
+{
+  "slug": "animated-movie",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Frozen",
+      "popular": true
+    },
+    {
+      "name": "Frozen II",
+      "popular": true,
+      "aliases": [
+        "Frozen 2"
+      ]
+    },
+    {
+      "name": "Toy Story",
+      "popular": true
+    },
+    {
+      "name": "Toy Story 2",
+      "popular": false
+    },
+    {
+      "name": "Toy Story 3",
+      "popular": false
+    },
+    {
+      "name": "Toy Story 4",
+      "popular": false
+    },
+    {
+      "name": "Toy Story 5",
+      "popular": false
+    },
+    {
+      "name": "Moana",
+      "popular": true
+    },
+    {
+      "name": "Moana 2",
+      "popular": true
+    },
+    {
+      "name": "Encanto",
+      "popular": true
+    },
+    {
+      "name": "Shrek",
+      "popular": true
+    },
+    {
+      "name": "Shrek 2",
+      "popular": false
+    },
+    {
+      "name": "Shrek the Third",
+      "popular": false
+    },
+    {
+      "name": "Shrek Forever After",
+      "popular": false
+    },
+    {
+      "name": "Puss in Boots",
+      "popular": false
+    },
+    {
+      "name": "Puss in Boots: The Last Wish",
+      "popular": false,
+      "aliases": [
+        "The Last Wish"
+      ]
+    },
+    {
+      "name": "Inside Out",
+      "popular": false
+    },
+    {
+      "name": "Inside Out 2",
+      "popular": true
+    },
+    {
+      "name": "Zootopia",
+      "popular": true
+    },
+    {
+      "name": "Zootopia 2",
+      "popular": true
+    },
+    {
+      "name": "KPop Demon Hunters",
+      "popular": true,
+      "aliases": [
+        "Demon Hunters"
+      ]
+    },
+    {
+      "name": "The Super Mario Bros. Movie",
+      "popular": true,
+      "aliases": [
+        "Super Mario Bros. Movie",
+        "Mario Movie"
+      ]
+    },
+    {
+      "name": "The Super Mario Galaxy Movie",
+      "popular": false,
+      "aliases": [
+        "Super Mario Galaxy Movie",
+        "Mario Galaxy Movie"
+      ]
+    },
+    {
+      "name": "The Wild Robot",
+      "popular": true,
+      "aliases": [
+        "Wild Robot"
+      ]
+    },
+    {
+      "name": "Despicable Me",
+      "popular": true
+    },
+    {
+      "name": "Despicable Me 2",
+      "popular": false
+    },
+    {
+      "name": "Despicable Me 3",
+      "popular": false
+    },
+    {
+      "name": "Despicable Me 4",
+      "popular": false
+    },
+    {
+      "name": "Minions",
+      "popular": true
+    },
+    {
+      "name": "Minions: The Rise of Gru",
+      "popular": false,
+      "aliases": [
+        "Rise of Gru",
+        "Minions 2"
+      ]
+    },
+    {
+      "name": "Into the Spider-Verse",
+      "popular": false,
+      "aliases": [
+        "Spider-Verse"
+      ]
+    },
+    {
+      "name": "Across the Spider-Verse",
+      "popular": true
+    },
+    {
+      "name": "Coco",
+      "popular": true
+    },
+    {
+      "name": "Finding Nemo",
+      "popular": true
+    },
+    {
+      "name": "Finding Dory",
+      "popular": false
+    },
+    {
+      "name": "The Lion King",
+      "popular": true,
+      "aliases": [
+        "Lion King"
+      ]
+    },
+    {
+      "name": "Mufasa: The Lion King",
+      "popular": false,
+      "aliases": [
+        "Mufasa"
+      ]
+    },
+    {
+      "name": "Cars",
+      "popular": false
+    },
+    {
+      "name": "Cars 2",
+      "popular": false
+    },
+    {
+      "name": "Cars 3",
+      "popular": false
+    },
+    {
+      "name": "Monsters, Inc.",
+      "popular": false,
+      "aliases": [
+        "Monsters Incorporated"
+      ]
+    },
+    {
+      "name": "Monsters University",
+      "popular": false
+    },
+    {
+      "name": "The Incredibles",
+      "popular": false,
+      "aliases": [
+        "Incredibles"
+      ]
+    },
+    {
+      "name": "Incredibles 2",
+      "popular": false
+    },
+    {
+      "name": "Up",
+      "popular": false
+    },
+    {
+      "name": "WALL-E",
+      "popular": false
+    },
+    {
+      "name": "Ratatouille",
+      "popular": false,
+      "aliases": [
+        "Ratatoullie"
+      ]
+    },
+    {
+      "name": "A Bug's Life",
+      "popular": false
+    },
+    {
+      "name": "Luca",
+      "popular": false
+    },
+    {
+      "name": "Turning Red",
+      "popular": false
+    },
+    {
+      "name": "Soul",
+      "popular": false
+    },
+    {
+      "name": "Onward",
+      "popular": false
+    },
+    {
+      "name": "Elemental",
+      "popular": false
+    },
+    {
+      "name": "Elio",
+      "popular": false
+    },
+    {
+      "name": "Lightyear",
+      "popular": false
+    },
+    {
+      "name": "Hoppers",
+      "popular": false
+    },
+    {
+      "name": "Brave",
+      "popular": false
+    },
+    {
+      "name": "Tangled",
+      "popular": false
+    },
+    {
+      "name": "Wreck-It Ralph",
+      "popular": false
+    },
+    {
+      "name": "Ralph Breaks the Internet",
+      "popular": false
+    },
+    {
+      "name": "Big Hero 6",
+      "popular": false,
+      "aliases": [
+        "Big Hero Six"
+      ]
+    },
+    {
+      "name": "Bolt",
+      "popular": false
+    },
+    {
+      "name": "The Princess and the Frog",
+      "popular": false,
+      "aliases": [
+        "Princess and the Frog"
+      ]
+    },
+    {
+      "name": "Raya and the Last Dragon",
+      "popular": false,
+      "aliases": [
+        "Raya"
+      ]
+    },
+    {
+      "name": "Wish",
+      "popular": false
+    },
+    {
+      "name": "Lilo & Stitch",
+      "popular": true,
+      "aliases": [
+        "Lilo and Stitch"
+      ]
+    },
+    {
+      "name": "The Little Mermaid",
+      "popular": false,
+      "aliases": [
+        "Little Mermaid"
+      ]
+    },
+    {
+      "name": "Beauty and the Beast",
+      "popular": false
+    },
+    {
+      "name": "Aladdin",
+      "popular": false
+    },
+    {
+      "name": "Cinderella",
+      "popular": false
+    },
+    {
+      "name": "Snow White",
+      "popular": false
+    },
+    {
+      "name": "Sleeping Beauty",
+      "popular": false
+    },
+    {
+      "name": "Peter Pan",
+      "popular": false
+    },
+    {
+      "name": "Pinocchio",
+      "popular": false
+    },
+    {
+      "name": "Dumbo",
+      "popular": false
+    },
+    {
+      "name": "Bambi",
+      "popular": false
+    },
+    {
+      "name": "101 Dalmatians",
+      "popular": false,
+      "aliases": [
+        "One Hundred and One Dalmatians"
+      ]
+    },
+    {
+      "name": "Lady and the Tramp",
+      "popular": false
+    },
+    {
+      "name": "The Jungle Book",
+      "popular": false,
+      "aliases": [
+        "Jungle Book"
+      ]
+    },
+    {
+      "name": "Mulan",
+      "popular": false
+    },
+    {
+      "name": "Hercules",
+      "popular": false
+    },
+    {
+      "name": "Pocahontas",
+      "popular": false
+    },
+    {
+      "name": "Kung Fu Panda",
+      "popular": false
+    },
+    {
+      "name": "Kung Fu Panda 2",
+      "popular": false
+    },
+    {
+      "name": "Kung Fu Panda 3",
+      "popular": false
+    },
+    {
+      "name": "Kung Fu Panda 4",
+      "popular": false
+    },
+    {
+      "name": "How to Train Your Dragon",
+      "popular": false,
+      "aliases": [
+        "HTTYD"
+      ]
+    },
+    {
+      "name": "How to Train Your Dragon 2",
+      "popular": false
+    },
+    {
+      "name": "Madagascar",
+      "popular": false
+    },
+    {
+      "name": "Penguins of Madagascar",
+      "popular": false
+    },
+    {
+      "name": "Ice Age",
+      "popular": false
+    },
+    {
+      "name": "The Boss Baby",
+      "popular": false,
+      "aliases": [
+        "Boss Baby"
+      ]
+    },
+    {
+      "name": "Megamind",
+      "popular": false
+    },
+    {
+      "name": "Trolls",
+      "popular": false
+    },
+    {
+      "name": "Trolls World Tour",
+      "popular": false
+    },
+    {
+      "name": "Trolls Band Together",
+      "popular": false
+    },
+    {
+      "name": "The Bad Guys",
+      "popular": false,
+      "aliases": [
+        "Bad Guys"
+      ]
+    },
+    {
+      "name": "The Bad Guys 2",
+      "popular": false,
+      "aliases": [
+        "Bad Guys 2"
+      ]
+    },
+    {
+      "name": "Sing",
+      "popular": false
+    },
+    {
+      "name": "Sing 2",
+      "popular": false
+    },
+    {
+      "name": "The Secret Life of Pets",
+      "popular": false,
+      "aliases": [
+        "Secret Life of Pets"
+      ]
+    },
+    {
+      "name": "The Secret Life of Pets 2",
+      "popular": false,
+      "aliases": [
+        "Secret Life of Pets 2"
+      ]
+    },
+    {
+      "name": "Hotel Transylvania",
+      "popular": false
+    },
+    {
+      "name": "Hotel Transylvania 2",
+      "popular": false
+    },
+    {
+      "name": "The Grinch",
+      "popular": false,
+      "aliases": [
+        "Grinch",
+        "Dr. Seuss' The Grinch"
+      ]
+    },
+    {
+      "name": "The Lorax",
+      "popular": false,
+      "aliases": [
+        "Lorax"
+      ]
+    },
+    {
+      "name": "The Lego Movie",
+      "popular": false,
+      "aliases": [
+        "Lego Movie"
+      ]
+    },
+    {
+      "name": "The Lego Batman Movie",
+      "popular": false,
+      "aliases": [
+        "Lego Batman Movie"
+      ]
+    },
+    {
+      "name": "The Lego Ninjago Movie",
+      "popular": false,
+      "aliases": [
+        "Lego Ninjago Movie",
+        "Ninjago Movie"
+      ]
+    },
+    {
+      "name": "TMNT: Mutant Mayhem",
+      "popular": false,
+      "aliases": [
+        "Mutant Mayhem",
+        "Ninja Turtles Mutant Mayhem"
+      ]
+    },
+    {
+      "name": "PAW Patrol: The Movie",
+      "popular": false,
+      "aliases": [
+        "Paw Patrol Movie"
+      ]
+    },
+    {
+      "name": "PAW Patrol: The Mighty Movie",
+      "popular": false,
+      "aliases": [
+        "Paw Patrol Mighty Movie"
+      ]
+    },
+    {
+      "name": "Dog Man",
+      "popular": false
+    },
+    {
+      "name": "Captain Underpants",
+      "popular": false
+    },
+    {
+      "name": "The Garfield Movie",
+      "popular": false,
+      "aliases": [
+        "Garfield Movie",
+        "Garfield"
+      ]
+    },
+    {
+      "name": "Transformers One",
+      "popular": false
+    },
+    {
+      "name": "Migration",
+      "popular": false
+    },
+    {
+      "name": "Leo",
+      "popular": false
+    },
+    {
+      "name": "Nimona",
+      "popular": false
+    },
+    {
+      "name": "The Mitchells vs. the Machines",
+      "popular": false,
+      "aliases": [
+        "Mitchells vs the Machines"
+      ]
+    },
+    {
+      "name": "Teen Titans Go! To the Movies",
+      "popular": false,
+      "aliases": [
+        "Teen Titans Go Movie"
+      ]
+    },
+    {
+      "name": "Klaus",
+      "popular": false
+    },
+    {
+      "name": "The Sea Beast",
+      "popular": false,
+      "aliases": [
+        "Sea Beast"
+      ]
+    },
+    {
+      "name": "Abominable",
+      "popular": false
+    },
+    {
+      "name": "Storks",
+      "popular": false
+    },
+    {
+      "name": "Rio",
+      "popular": false
+    },
+    {
+      "name": "Happy Feet",
+      "popular": false
+    },
+    {
+      "name": "Ferdinand",
+      "popular": false
+    },
+    {
+      "name": "Coraline",
+      "popular": false
+    },
+    {
+      "name": "The Nightmare Before Christmas",
+      "popular": false,
+      "aliases": [
+        "Nightmare Before Christmas"
+      ]
+    },
+    {
+      "name": "The Polar Express",
+      "popular": false,
+      "aliases": [
+        "Polar Express"
+      ]
+    },
+    {
+      "name": "My Neighbor Totoro",
+      "popular": false,
+      "aliases": [
+        "Totoro"
+      ]
+    },
+    {
+      "name": "Spirited Away",
+      "popular": false
+    },
+    {
+      "name": "Ponyo",
+      "popular": false
+    },
+    {
+      "name": "Kiki's Delivery Service",
+      "popular": false
+    },
+    {
+      "name": "Howl's Moving Castle",
+      "popular": false
+    },
+    {
+      "name": "The Peanuts Movie",
+      "popular": false,
+      "aliases": [
+        "Peanuts Movie"
+      ]
+    },
+    {
+      "name": "The Angry Birds Movie",
+      "popular": false,
+      "aliases": [
+        "Angry Birds Movie"
+      ]
+    },
+    {
+      "name": "The Smurfs",
+      "popular": false,
+      "aliases": [
+        "Smurfs"
+      ]
+    },
+    {
+      "name": "Smurfs: The Lost Village",
+      "popular": false
+    }
+  ]
+}

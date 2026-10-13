@@ -1,0 +1,454 @@
+{
+  "slug": "superhero",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Spider-Man",
+      "popular": true,
+      "aliases": [
+        "Spidey",
+        "Peter Parker"
+      ]
+    },
+    {
+      "name": "Miles Morales",
+      "popular": true
+    },
+    {
+      "name": "Spider-Gwen",
+      "popular": true,
+      "aliases": [
+        "Ghost-Spider",
+        "Gwen Stacy"
+      ]
+    },
+    {
+      "name": "Spider-Ham",
+      "popular": false,
+      "aliases": [
+        "Peter Porker"
+      ]
+    },
+    {
+      "name": "Spider-Punk",
+      "popular": false
+    },
+    {
+      "name": "Spider-Woman",
+      "popular": false
+    },
+    {
+      "name": "Iron Man",
+      "popular": true,
+      "aliases": [
+        "Tony Stark"
+      ]
+    },
+    {
+      "name": "Captain America",
+      "popular": true,
+      "aliases": [
+        "Cap"
+      ]
+    },
+    {
+      "name": "Hulk",
+      "popular": true,
+      "aliases": [
+        "The Incredible Hulk",
+        "Bruce Banner"
+      ]
+    },
+    {
+      "name": "She-Hulk",
+      "popular": false
+    },
+    {
+      "name": "Thor",
+      "popular": true
+    },
+    {
+      "name": "Black Widow",
+      "popular": false
+    },
+    {
+      "name": "Hawkeye",
+      "popular": false
+    },
+    {
+      "name": "Black Panther",
+      "popular": true,
+      "aliases": [
+        "T'Challa"
+      ]
+    },
+    {
+      "name": "Shuri",
+      "popular": false
+    },
+    {
+      "name": "Doctor Strange",
+      "popular": false,
+      "aliases": [
+        "Dr. Strange"
+      ]
+    },
+    {
+      "name": "Captain Marvel",
+      "popular": true,
+      "aliases": [
+        "Carol Danvers"
+      ]
+    },
+    {
+      "name": "Ms. Marvel",
+      "popular": false,
+      "aliases": [
+        "Kamala Khan"
+      ]
+    },
+    {
+      "name": "Ant-Man",
+      "popular": false
+    },
+    {
+      "name": "Wasp",
+      "popular": false,
+      "aliases": [
+        "The Wasp"
+      ]
+    },
+    {
+      "name": "Scarlet Witch",
+      "popular": false,
+      "aliases": [
+        "Wanda"
+      ]
+    },
+    {
+      "name": "Vision",
+      "popular": false
+    },
+    {
+      "name": "Falcon",
+      "popular": false
+    },
+    {
+      "name": "War Machine",
+      "popular": false
+    },
+    {
+      "name": "Star-Lord",
+      "popular": false
+    },
+    {
+      "name": "Groot",
+      "popular": true
+    },
+    {
+      "name": "Rocket Raccoon",
+      "popular": false,
+      "aliases": [
+        "Rocket"
+      ]
+    },
+    {
+      "name": "Gamora",
+      "popular": false
+    },
+    {
+      "name": "Wolverine",
+      "popular": false,
+      "aliases": [
+        "Logan"
+      ]
+    },
+    {
+      "name": "Storm",
+      "popular": false
+    },
+    {
+      "name": "Cyclops",
+      "popular": false
+    },
+    {
+      "name": "Jean Grey",
+      "popular": false
+    },
+    {
+      "name": "Professor X",
+      "popular": false,
+      "aliases": [
+        "Professor Xavier"
+      ]
+    },
+    {
+      "name": "Nightcrawler",
+      "popular": false
+    },
+    {
+      "name": "Rogue",
+      "popular": false
+    },
+    {
+      "name": "Iceman",
+      "popular": false
+    },
+    {
+      "name": "Mister Fantastic",
+      "popular": false,
+      "aliases": [
+        "Mr. Fantastic",
+        "Reed Richards"
+      ]
+    },
+    {
+      "name": "Invisible Woman",
+      "popular": false,
+      "aliases": [
+        "Sue Storm"
+      ]
+    },
+    {
+      "name": "Human Torch",
+      "popular": false,
+      "aliases": [
+        "Johnny Storm"
+      ]
+    },
+    {
+      "name": "The Thing",
+      "popular": false,
+      "aliases": [
+        "Thing"
+      ]
+    },
+    {
+      "name": "Silver Surfer",
+      "popular": false
+    },
+    {
+      "name": "Squirrel Girl",
+      "popular": false
+    },
+    {
+      "name": "Moon Girl",
+      "popular": false
+    },
+    {
+      "name": "Shang-Chi",
+      "popular": false
+    },
+    {
+      "name": "Superman",
+      "popular": true,
+      "aliases": [
+        "Clark Kent"
+      ]
+    },
+    {
+      "name": "Batman",
+      "popular": true,
+      "aliases": [
+        "Bruce Wayne"
+      ]
+    },
+    {
+      "name": "Wonder Woman",
+      "popular": true,
+      "aliases": [
+        "Diana Prince"
+      ]
+    },
+    {
+      "name": "The Flash",
+      "popular": true,
+      "aliases": [
+        "Flash",
+        "Barry Allen"
+      ]
+    },
+    {
+      "name": "Aquaman",
+      "popular": true
+    },
+    {
+      "name": "Green Lantern",
+      "popular": false
+    },
+    {
+      "name": "Cyborg",
+      "popular": false
+    },
+    {
+      "name": "Supergirl",
+      "popular": false
+    },
+    {
+      "name": "Batgirl",
+      "popular": false
+    },
+    {
+      "name": "Robin",
+      "popular": true
+    },
+    {
+      "name": "Nightwing",
+      "popular": false
+    },
+    {
+      "name": "Martian Manhunter",
+      "popular": false
+    },
+    {
+      "name": "Shazam",
+      "popular": false
+    },
+    {
+      "name": "Green Arrow",
+      "popular": false
+    },
+    {
+      "name": "Hawkgirl",
+      "popular": false
+    },
+    {
+      "name": "Hawkman",
+      "popular": false
+    },
+    {
+      "name": "Black Canary",
+      "popular": false
+    },
+    {
+      "name": "Beast Boy",
+      "popular": false
+    },
+    {
+      "name": "Raven",
+      "popular": false
+    },
+    {
+      "name": "Starfire",
+      "popular": false
+    },
+    {
+      "name": "Blue Beetle",
+      "popular": false
+    },
+    {
+      "name": "Krypto",
+      "popular": true,
+      "aliases": [
+        "Krypto the Superdog"
+      ]
+    },
+    {
+      "name": "Superboy",
+      "popular": false
+    },
+    {
+      "name": "Kid Flash",
+      "popular": false
+    },
+    {
+      "name": "Mr. Incredible",
+      "popular": true,
+      "aliases": [
+        "Mister Incredible"
+      ]
+    },
+    {
+      "name": "Elastigirl",
+      "popular": false
+    },
+    {
+      "name": "Dash",
+      "popular": false
+    },
+    {
+      "name": "Violet",
+      "popular": false
+    },
+    {
+      "name": "Jack-Jack",
+      "popular": false
+    },
+    {
+      "name": "Frozone",
+      "popular": false
+    },
+    {
+      "name": "Baymax",
+      "popular": false
+    },
+    {
+      "name": "Hiro Hamada",
+      "popular": false,
+      "aliases": [
+        "Hiro"
+      ]
+    },
+    {
+      "name": "Captain Underpants",
+      "popular": false
+    },
+    {
+      "name": "Dog Man",
+      "popular": false
+    },
+    {
+      "name": "Ladybug",
+      "popular": true,
+      "aliases": [
+        "Miraculous Ladybug",
+        "Marinette"
+      ]
+    },
+    {
+      "name": "Cat Noir",
+      "popular": false,
+      "aliases": [
+        "Chat Noir"
+      ]
+    },
+    {
+      "name": "Catboy",
+      "popular": true
+    },
+    {
+      "name": "Owlette",
+      "popular": false
+    },
+    {
+      "name": "Gekko",
+      "popular": false
+    },
+    {
+      "name": "Teenage Mutant Ninja Turtles",
+      "popular": false,
+      "aliases": [
+        "TMNT",
+        "Ninja Turtles"
+      ]
+    },
+    {
+      "name": "Power Rangers",
+      "popular": false,
+      "aliases": [
+        "Power Ranger"
+      ]
+    },
+    {
+      "name": "Ben 10",
+      "popular": false,
+      "aliases": [
+        "Ben Tennyson"
+      ]
+    },
+    {
+      "name": "Sailor Moon",
+      "popular": false
+    }
+  ]
+}

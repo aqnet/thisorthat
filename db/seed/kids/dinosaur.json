@@ -1,0 +1,386 @@
+{
+  "slug": "dinosaur",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "T. Rex",
+      "popular": true,
+      "aliases": [
+        "Tyrannosaurus Rex",
+        "Tyrannosaurus"
+      ]
+    },
+    {
+      "name": "Triceratops",
+      "popular": true
+    },
+    {
+      "name": "Velociraptor",
+      "popular": true,
+      "aliases": [
+        "Raptor"
+      ]
+    },
+    {
+      "name": "Stegosaurus",
+      "popular": true
+    },
+    {
+      "name": "Brachiosaurus",
+      "popular": true
+    },
+    {
+      "name": "Spinosaurus",
+      "popular": true,
+      "aliases": [
+        "Spino"
+      ]
+    },
+    {
+      "name": "Ankylosaurus",
+      "popular": true
+    },
+    {
+      "name": "Pteranodon",
+      "popular": true
+    },
+    {
+      "name": "Diplodocus",
+      "popular": true
+    },
+    {
+      "name": "Parasaurolophus",
+      "popular": true
+    },
+    {
+      "name": "Mosasaurus",
+      "popular": true
+    },
+    {
+      "name": "Dilophosaurus",
+      "popular": true
+    },
+    {
+      "name": "Allosaurus",
+      "popular": true
+    },
+    {
+      "name": "Pachycephalosaurus",
+      "popular": true
+    },
+    {
+      "name": "Giganotosaurus",
+      "popular": true
+    },
+    {
+      "name": "Brontosaurus",
+      "popular": true
+    },
+    {
+      "name": "Carnotaurus",
+      "popular": true
+    },
+    {
+      "name": "Iguanodon",
+      "popular": true
+    },
+    {
+      "name": "Therizinosaurus",
+      "popular": true
+    },
+    {
+      "name": "Quetzalcoatlus",
+      "popular": true
+    },
+    {
+      "name": "Pterodactyl",
+      "popular": false,
+      "aliases": [
+        "Pterodactylus"
+      ]
+    },
+    {
+      "name": "Apatosaurus",
+      "popular": false
+    },
+    {
+      "name": "Gallimimus",
+      "popular": false
+    },
+    {
+      "name": "Compsognathus",
+      "popular": false
+    },
+    {
+      "name": "Baryonyx",
+      "popular": false
+    },
+    {
+      "name": "Plesiosaurus",
+      "popular": false
+    },
+    {
+      "name": "Archaeopteryx",
+      "popular": false
+    },
+    {
+      "name": "Ichthyosaurus",
+      "popular": false
+    },
+    {
+      "name": "Dimetrodon",
+      "popular": false
+    },
+    {
+      "name": "Argentinosaurus",
+      "popular": false
+    },
+    {
+      "name": "Utahraptor",
+      "popular": false
+    },
+    {
+      "name": "Deinonychus",
+      "popular": false
+    },
+    {
+      "name": "Microraptor",
+      "popular": false
+    },
+    {
+      "name": "Oviraptor",
+      "popular": false
+    },
+    {
+      "name": "Protoceratops",
+      "popular": false
+    },
+    {
+      "name": "Styracosaurus",
+      "popular": false
+    },
+    {
+      "name": "Pachyrhinosaurus",
+      "popular": false
+    },
+    {
+      "name": "Maiasaura",
+      "popular": false
+    },
+    {
+      "name": "Edmontosaurus",
+      "popular": false
+    },
+    {
+      "name": "Corythosaurus",
+      "popular": false
+    },
+    {
+      "name": "Lambeosaurus",
+      "popular": false
+    },
+    {
+      "name": "Hadrosaurus",
+      "popular": false
+    },
+    {
+      "name": "Troodon",
+      "popular": false
+    },
+    {
+      "name": "Albertosaurus",
+      "popular": false
+    },
+    {
+      "name": "Gorgosaurus",
+      "popular": false
+    },
+    {
+      "name": "Tarbosaurus",
+      "popular": false
+    },
+    {
+      "name": "Carcharodontosaurus",
+      "popular": false
+    },
+    {
+      "name": "Acrocanthosaurus",
+      "popular": false
+    },
+    {
+      "name": "Ceratosaurus",
+      "popular": false
+    },
+    {
+      "name": "Megalosaurus",
+      "popular": false
+    },
+    {
+      "name": "Suchomimus",
+      "popular": false
+    },
+    {
+      "name": "Sinoceratops",
+      "popular": false
+    },
+    {
+      "name": "Kentrosaurus",
+      "popular": false
+    },
+    {
+      "name": "Nodosaurus",
+      "popular": false
+    },
+    {
+      "name": "Euoplocephalus",
+      "popular": false
+    },
+    {
+      "name": "Camarasaurus",
+      "popular": false
+    },
+    {
+      "name": "Mamenchisaurus",
+      "popular": false
+    },
+    {
+      "name": "Supersaurus",
+      "popular": false
+    },
+    {
+      "name": "Titanosaurus",
+      "popular": false
+    },
+    {
+      "name": "Dreadnoughtus",
+      "popular": false
+    },
+    {
+      "name": "Patagotitan",
+      "popular": false
+    },
+    {
+      "name": "Amargasaurus",
+      "popular": false
+    },
+    {
+      "name": "Nigersaurus",
+      "popular": false
+    },
+    {
+      "name": "Plateosaurus",
+      "popular": false
+    },
+    {
+      "name": "Coelophysis",
+      "popular": false
+    },
+    {
+      "name": "Herrerasaurus",
+      "popular": false
+    },
+    {
+      "name": "Eoraptor",
+      "popular": false
+    },
+    {
+      "name": "Stygimoloch",
+      "popular": false
+    },
+    {
+      "name": "Stegoceras",
+      "popular": false
+    },
+    {
+      "name": "Ouranosaurus",
+      "popular": false
+    },
+    {
+      "name": "Psittacosaurus",
+      "popular": false
+    },
+    {
+      "name": "Majungasaurus",
+      "popular": false
+    },
+    {
+      "name": "Dimorphodon",
+      "popular": false
+    },
+    {
+      "name": "Rhamphorhynchus",
+      "popular": false
+    },
+    {
+      "name": "Elasmosaurus",
+      "popular": false
+    },
+    {
+      "name": "Liopleurodon",
+      "popular": false
+    },
+    {
+      "name": "Kronosaurus",
+      "popular": false
+    },
+    {
+      "name": "Tylosaurus",
+      "popular": false
+    },
+    {
+      "name": "Sarcosuchus",
+      "popular": false,
+      "aliases": [
+        "SuperCroc"
+      ]
+    },
+    {
+      "name": "Deinosuchus",
+      "popular": false
+    },
+    {
+      "name": "Postosuchus",
+      "popular": false
+    },
+    {
+      "name": "Chasmosaurus",
+      "popular": false
+    },
+    {
+      "name": "Centrosaurus",
+      "popular": false
+    },
+    {
+      "name": "Torosaurus",
+      "popular": false
+    },
+    {
+      "name": "Nasutoceratops",
+      "popular": false
+    },
+    {
+      "name": "Ornithomimus",
+      "popular": false
+    },
+    {
+      "name": "Struthiomimus",
+      "popular": false
+    },
+    {
+      "name": "Deinocheirus",
+      "popular": false
+    },
+    {
+      "name": "Gigantoraptor",
+      "popular": false
+    },
+    {
+      "name": "Tenontosaurus",
+      "popular": false
+    },
+    {
+      "name": "Mapusaurus",
+      "popular": false
+    }
+  ]
+}

@@ -1,0 +1,617 @@
+{
+  "slug": "toy",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Lego",
+      "popular": true,
+      "aliases": [
+        "Legos"
+      ]
+    },
+    {
+      "name": "Hot Wheels",
+      "popular": true
+    },
+    {
+      "name": "Barbie",
+      "popular": true
+    },
+    {
+      "name": "Nerf Blaster",
+      "popular": true,
+      "aliases": [
+        "Nerf",
+        "Nerf Gun"
+      ]
+    },
+    {
+      "name": "Play-Doh",
+      "popular": true,
+      "aliases": [
+        "Playdough"
+      ]
+    },
+    {
+      "name": "Slime",
+      "popular": true
+    },
+    {
+      "name": "Rubik's Cube",
+      "popular": true,
+      "aliases": [
+        "Rubiks"
+      ]
+    },
+    {
+      "name": "Teddy Bear",
+      "popular": true
+    },
+    {
+      "name": "Squishmallows",
+      "popular": true,
+      "aliases": [
+        "Squishmallow"
+      ]
+    },
+    {
+      "name": "Pokémon Cards",
+      "popular": true
+    },
+    {
+      "name": "Pop It",
+      "popular": true
+    },
+    {
+      "name": "Magna-Tiles",
+      "popular": true,
+      "aliases": [
+        "Magnetic Tiles"
+      ]
+    },
+    {
+      "name": "Beyblade",
+      "popular": true,
+      "aliases": [
+        "Beyblade X"
+      ]
+    },
+    {
+      "name": "Labubu",
+      "popular": true
+    },
+    {
+      "name": "NeeDoh",
+      "popular": true
+    },
+    {
+      "name": "Uno",
+      "popular": true
+    },
+    {
+      "name": "Scooter",
+      "popular": true
+    },
+    {
+      "name": "Remote Control Car",
+      "popular": true,
+      "aliases": [
+        "RC Car"
+      ]
+    },
+    {
+      "name": "Kinetic Sand",
+      "popular": true
+    },
+    {
+      "name": "Fidget Spinner",
+      "popular": true
+    },
+    {
+      "name": "Stuffed Animal",
+      "popular": false,
+      "aliases": [
+        "Plushie",
+        "Plush"
+      ]
+    },
+    {
+      "name": "Action Figure",
+      "popular": false
+    },
+    {
+      "name": "Doll",
+      "popular": false
+    },
+    {
+      "name": "Baby Doll",
+      "popular": false
+    },
+    {
+      "name": "Dollhouse",
+      "popular": false
+    },
+    {
+      "name": "American Girl Doll",
+      "popular": false
+    },
+    {
+      "name": "L.O.L. Surprise!",
+      "popular": false
+    },
+    {
+      "name": "Polly Pocket",
+      "popular": false
+    },
+    {
+      "name": "My Little Pony",
+      "popular": false
+    },
+    {
+      "name": "Care Bears",
+      "popular": false
+    },
+    {
+      "name": "Furby",
+      "popular": false
+    },
+    {
+      "name": "Tamagotchi",
+      "popular": false
+    },
+    {
+      "name": "Hatchimals",
+      "popular": false
+    },
+    {
+      "name": "Shopkins",
+      "popular": false
+    },
+    {
+      "name": "Rainbow High",
+      "popular": false
+    },
+    {
+      "name": "Monster High",
+      "popular": false
+    },
+    {
+      "name": "Cabbage Patch Kids",
+      "popular": false
+    },
+    {
+      "name": "Build-A-Bear",
+      "popular": false
+    },
+    {
+      "name": "Beanie Babies",
+      "popular": false
+    },
+    {
+      "name": "Funko Pop",
+      "popular": false
+    },
+    {
+      "name": "Transformers",
+      "popular": false
+    },
+    {
+      "name": "Army Men",
+      "popular": false
+    },
+    {
+      "name": "Bakugan",
+      "popular": false
+    },
+    {
+      "name": "Yu-Gi-Oh! Cards",
+      "popular": false
+    },
+    {
+      "name": "Etch A Sketch",
+      "popular": false
+    },
+    {
+      "name": "Lite-Brite",
+      "popular": false
+    },
+    {
+      "name": "Spirograph",
+      "popular": false
+    },
+    {
+      "name": "View-Master",
+      "popular": false
+    },
+    {
+      "name": "Easy-Bake Oven",
+      "popular": false
+    },
+    {
+      "name": "Slinky",
+      "popular": false
+    },
+    {
+      "name": "Mr. Potato Head",
+      "popular": false
+    },
+    {
+      "name": "Jack-in-the-Box",
+      "popular": false
+    },
+    {
+      "name": "Kaleidoscope",
+      "popular": false
+    },
+    {
+      "name": "Pinwheel",
+      "popular": false
+    },
+    {
+      "name": "Kite",
+      "popular": false
+    },
+    {
+      "name": "Frisbee",
+      "popular": false
+    },
+    {
+      "name": "Hula Hoop",
+      "popular": false
+    },
+    {
+      "name": "Jump Rope",
+      "popular": false
+    },
+    {
+      "name": "Bouncy Ball",
+      "popular": false
+    },
+    {
+      "name": "Water Gun",
+      "popular": false,
+      "aliases": [
+        "Squirt Gun"
+      ]
+    },
+    {
+      "name": "Super Soaker",
+      "popular": false
+    },
+    {
+      "name": "Water Balloons",
+      "popular": false
+    },
+    {
+      "name": "Bubble Wand",
+      "popular": false,
+      "aliases": [
+        "Bubbles"
+      ]
+    },
+    {
+      "name": "Sidewalk Chalk",
+      "popular": false
+    },
+    {
+      "name": "Skateboard",
+      "popular": false
+    },
+    {
+      "name": "Tech Deck",
+      "popular": false,
+      "aliases": [
+        "Fingerboard"
+      ]
+    },
+    {
+      "name": "Roller Skates",
+      "popular": false
+    },
+    {
+      "name": "Bike",
+      "popular": false,
+      "aliases": [
+        "Bicycle"
+      ]
+    },
+    {
+      "name": "Pogo Stick",
+      "popular": false
+    },
+    {
+      "name": "Trampoline",
+      "popular": false
+    },
+    {
+      "name": "Wagon",
+      "popular": false
+    },
+    {
+      "name": "Sled",
+      "popular": false
+    },
+    {
+      "name": "Hoverboard",
+      "popular": false
+    },
+    {
+      "name": "Heelys",
+      "popular": false
+    },
+    {
+      "name": "Stomp Rocket",
+      "popular": false
+    },
+    {
+      "name": "Glow Sticks",
+      "popular": false
+    },
+    {
+      "name": "Jigsaw Puzzle",
+      "popular": false,
+      "aliases": [
+        "Puzzle"
+      ]
+    },
+    {
+      "name": "Building Blocks",
+      "popular": false,
+      "aliases": [
+        "Blocks"
+      ]
+    },
+    {
+      "name": "Duplo",
+      "popular": false
+    },
+    {
+      "name": "Mega Bloks",
+      "popular": false
+    },
+    {
+      "name": "Lincoln Logs",
+      "popular": false
+    },
+    {
+      "name": "K'Nex",
+      "popular": false
+    },
+    {
+      "name": "Playmobil",
+      "popular": false
+    },
+    {
+      "name": "Marble Run",
+      "popular": false
+    },
+    {
+      "name": "Marbles",
+      "popular": false
+    },
+    {
+      "name": "Dominoes",
+      "popular": false
+    },
+    {
+      "name": "Train Set",
+      "popular": false
+    },
+    {
+      "name": "Tonka Truck",
+      "popular": false
+    },
+    {
+      "name": "Matchbox Cars",
+      "popular": false
+    },
+    {
+      "name": "Play Kitchen",
+      "popular": false
+    },
+    {
+      "name": "Tea Set",
+      "popular": false
+    },
+    {
+      "name": "Puppet",
+      "popular": false
+    },
+    {
+      "name": "Robot",
+      "popular": false
+    },
+    {
+      "name": "Drone",
+      "popular": false
+    },
+    {
+      "name": "Walkie-Talkie",
+      "popular": false
+    },
+    {
+      "name": "Magic 8 Ball",
+      "popular": false
+    },
+    {
+      "name": "Magic Kit",
+      "popular": false
+    },
+    {
+      "name": "Chemistry Set",
+      "popular": false
+    },
+    {
+      "name": "Ant Farm",
+      "popular": false
+    },
+    {
+      "name": "Lightsaber",
+      "popular": false
+    },
+    {
+      "name": "Toy Sword",
+      "popular": false
+    },
+    {
+      "name": "Spinning Top",
+      "popular": false
+    },
+    {
+      "name": "Bop It",
+      "popular": false
+    },
+    {
+      "name": "Simon",
+      "popular": false
+    },
+    {
+      "name": "Kendama",
+      "popular": false
+    },
+    {
+      "name": "Squishy",
+      "popular": false
+    },
+    {
+      "name": "Stress Ball",
+      "popular": false
+    },
+    {
+      "name": "Silly Putty",
+      "popular": false
+    },
+    {
+      "name": "Orbeez",
+      "popular": false,
+      "aliases": [
+        "Water Beads"
+      ]
+    },
+    {
+      "name": "Rainbow Loom",
+      "popular": false
+    },
+    {
+      "name": "Perler Beads",
+      "popular": false
+    },
+    {
+      "name": "Snap Circuits",
+      "popular": false
+    },
+    {
+      "name": "Rubber Duck",
+      "popular": false
+    },
+    {
+      "name": "Rocking Horse",
+      "popular": false
+    },
+    {
+      "name": "Karaoke Machine",
+      "popular": false
+    },
+    {
+      "name": "Gel Blaster",
+      "popular": false,
+      "aliases": [
+        "Gel Ball Blaster"
+      ]
+    },
+    {
+      "name": "Jenga",
+      "popular": false
+    },
+    {
+      "name": "Connect 4",
+      "popular": false,
+      "aliases": [
+        "Connect Four"
+      ]
+    },
+    {
+      "name": "Operation",
+      "popular": false
+    },
+    {
+      "name": "Candy Land",
+      "popular": false
+    },
+    {
+      "name": "Chutes and Ladders",
+      "popular": false
+    },
+    {
+      "name": "Hungry Hungry Hippos",
+      "popular": false
+    },
+    {
+      "name": "Guess Who?",
+      "popular": false
+    },
+    {
+      "name": "Monopoly",
+      "popular": false
+    },
+    {
+      "name": "Sorry!",
+      "popular": false
+    },
+    {
+      "name": "Twister",
+      "popular": false
+    },
+    {
+      "name": "Clue",
+      "popular": false
+    },
+    {
+      "name": "Scrabble",
+      "popular": false
+    },
+    {
+      "name": "Checkers",
+      "popular": false
+    },
+    {
+      "name": "Chess",
+      "popular": false
+    },
+    {
+      "name": "Trouble",
+      "popular": false
+    },
+    {
+      "name": "Mouse Trap",
+      "popular": false
+    },
+    {
+      "name": "Yahtzee",
+      "popular": false
+    },
+    {
+      "name": "Spot It!",
+      "popular": false
+    },
+    {
+      "name": "Exploding Kittens",
+      "popular": false
+    },
+    {
+      "name": "Air Hockey",
+      "popular": false
+    },
+    {
+      "name": "Foosball",
+      "popular": false
+    },
+    {
+      "name": "Crayons",
+      "popular": false,
+      "aliases": [
+        "Crayola"
+      ]
+    }
+  ]
+}

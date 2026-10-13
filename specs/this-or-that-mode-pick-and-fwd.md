@@ -1,9 +1,10 @@
 # This or That — Game Mode: Pick and fwd
 
-**Status:** v0.3, implemented · **Date:** 2026-09-26 · **Owner:** Anderson
+**Status:** v0.4, implemented · **Date:** 2026-10-13 · **Owner:** Anderson
 **Builds on:** [Game Mechanics Spec v0.7](this-or-that-game-mechanics.md) (the "original spec"). Everything there applies unless this document changes it. Section references (§) point to the original spec; references to this document say "this spec".
 
 **Changelog**
+- v0.4 (2026-10-13) — **The reign cap is a lobby setting** (decision F2): the host picks whether a champion retires after **3** wins in a row (the default), **5**, or **never**, in which case it holds until a fresh card beats it outright. Frozen at Start, like the Computer setting, and stored on the game so the champion still derives from the game's own record.
 - v0.3 — Implemented, with the recommended answer to every open decision (F1–F7). Each is isolated in the code, so a different call is a small change: F2 is `CHAMPION_REIGN_CAP` in `lib/engine/champion.ts`; F6 is the fresh-appearance check in the runner's `item_stats` update.
 - v0.2 — Review fixes: the champion rules split into "who holds the crown" and "retirement", so they no longer contradict each other; a champion card no longer reveals the owner of a merged duplicate; "reign" defined; the champion is derived from the round record rather than stored; the coin flip is seeded per round; champion rounds don't feed `item_stats`; Computer tuning and reveal pacing per mode; consistent mode names; acceptance criteria and decision F6 added.
 - v0.1 — First draft.
@@ -96,7 +97,7 @@ After each reveal, the next round's champion is decided in two steps.
 4. **Several fresh cards tie for most votes, and the champion isn't among them.** A **coin flip** picks one of them as the new champion at reign 1, and the reveal says so: "KIWI wins the coin flip." The flip is seeded from the game's seed plus the round number (§14.8), so it replays exactly and doesn't depend on how many other random draws the game made.
 
 **Step 2 — retirement and the end of the game.**
-- **Reign cap.** If the crown-holder has now reached **reign 3**, it retires: "MANGO retires undefeated." The next round has **no champion**, even if a fresh card tied with it that round; that tied card keeps its round-win bonus, but not the crown. A champion therefore appears on at most 2 more ballots after its first win (decision F2).
+- **Reign cap.** If the crown-holder has now reached the game's **reign cap** (a lobby setting: 3 by default, 5, or never; v0.4), it retires: "MANGO retires undefeated." The next round has **no champion**, even if a fresh card tied with it that round; that tied card keeps its round-win bonus, but not the crown. A champion therefore appears on at most 2 more ballots after its first win (decision F2).
 - **The last round** has no next round. Its winner is simply the winner.
 
 **The champion is derived, never stored as state.** The engine already computes scores from the match-up record rather than keeping running totals (`lib/engine/scoring.ts`), and the champion works the same way. Replaying the revealed rounds in order through steps 1 and 2 gives the champion and its reign at any point. A replayed or repaired game therefore always agrees with itself.
@@ -171,7 +172,7 @@ Scores aren't comparable across modes, so **every board is split by mode**, and 
 **Testing (additions to §14.10):**
 - **Property:** every ballot holds one card per active list plus **at most one** champion.
 - **Property:** no human score exceeds `max_possible` in either mode.
-- **Property:** a champion never passes reign 3, and never outlives the game.
+- **Property:** a champion never passes the game's reign cap (3 by default), and never outlives the game.
 - **Property:** deriving the champion from the round record twice gives the same result, coin flips included.
 - **Unit:** each rule in this spec §4.2, including retiring on a tie; the one-bonus-per-player rule; merging a duplicate into the champion without exposing the merged-in owner before the reveal.
 - **Simulation:** each mode is tuned separately toward the 20–30% Computer win rate.
@@ -184,7 +185,7 @@ Scores aren't comparable across modes, so **every board is split by mode**, and 
 | # | Decision | Options | Recommendation |
 |---|---|---|---|
 | F1 | Fresh cards tie and the champion isn't among them | Coin flip · nobody carries · all tied cards carry | **Coin flip.** "Nobody carries" means 2-player games almost never have a champion, because most 2-player rounds are ties (§9.5). "All carry" can push the ballot past 6 cards. |
-| F2 | Reign cap | None · 3 · 5 | **3.** Without a cap one great pick can hold a 15-round game, and the leader snowballs. Tune from playtests. |
+| F2 | Reign cap | None · 3 · 5 | **Host's choice in the lobby, default 3** (v0.4). Without a cap one great pick can hold a 15-round game and the leader snowballs; some groups would rather let a champion stand until it's beaten. |
 | F3 | Reward for defending the crown | None · +1 per defense | **None in v1.** Staying on the ballot is already the reward: more rounds to earn votes. A defense bonus would also break `max_possible` (this spec §4.4). |
 | F4 | Show the champion's owner during voting | Show · hide | **Show.** Everyone saw the owner at the last reveal; hiding it would be pretend secrecy. |
 | F5 | Does the Computer pick with the champion in mind? | No · pick items likely to beat it | **No in v1.** Revisit if champions reign too easily in playtests. |
@@ -198,7 +199,7 @@ Scores aren't comparable across modes, so **every board is split by mode**, and 
 - [ ] Setup offers Mode before Category. The default is the room's last mode, otherwise Pick your fav. The confirm card names the mode, and the mode can't change after Start.
 - [ ] A mode is always pre-selected, so the setup timer and the category vote never wait on the mode step.
 - [ ] Pick your fav plays exactly as the original spec, with no regressions. Its `item_stats` aren't affected by Pick and fwd games beyond fresh appearances.
-- [ ] In Pick and fwd, each round's winner appears on the next ballot as the champion, pinned first with its reign and original owner, until a fresh card beats it outright or it retires at reign 3.
+- [ ] In Pick and fwd, each round's winner appears on the next ballot as the champion, pinned first with its reign and original owner, until a fresh card beats it outright or it retires at the reign cap the host set in the lobby (3 by default, 5, or never).
 - [ ] Ties, no-vote rounds, the reign cap (including retiring on a tie) and the last round follow this spec §4.2. Each has its reveal callout, in the order this spec §4.4 gives, within a 5s reveal hold.
 - [ ] Coin flips replay exactly from the game seed and round number.
 - [ ] Re-deriving the champion from the round record always matches what players saw.

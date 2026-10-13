@@ -341,3 +341,48 @@ describe('mutation-hardened rules (test gap review)', () => {
     }
   });
 });
+
+describe('mode spec v0.4 the reign cap is a lobby setting', () => {
+  it('never retires a champion when the cap is off, and retires at 5 when it is 5', () => {
+    const defended = round({ u1: 'ch', u2: 'ch' }, 2);
+    expect(crownForRound(defended, favorites, champ(2), 1, false, null)).toMatchObject({ retired: false, next: { reign: 3 } });
+    expect(crownForRound(defended, favorites, champ(9), 1, false, null)).toMatchObject({ retired: false, next: { reign: 10 } });
+    expect(crownForRound(defended, favorites, champ(2), 1, false, 5)).toMatchObject({ retired: false });
+    expect(crownForRound(defended, favorites, champ(4), 1, false, 5)).toMatchObject({ retired: true, next: null });
+  });
+});
+
+describe('mode spec v0.4 the reign cap across whole games', () => {
+  /** Everyone backs the champion whenever they can, so reigns run as long as the cap allows. */
+  const backTheChampion = (cap: number | null, seed: number) =>
+    simulateGame({
+      humanCount: 3,
+      listLength: 15,
+      seed,
+      mode: 'pick_and_fwd',
+      championReignCap: cap,
+      chooseCard: ({ options }) => (options.find(isChampionCard) ?? options[0]).id,
+    }).state;
+
+  const longestReign = (cap: number | null, seed: number) =>
+    Math.max(0, ...crownHistory(backTheChampion(cap, seed).game!, seed).map((c) => c.holder?.reign ?? 0));
+
+  it('respects whichever cap the game froze at Start', () => {
+    fc.assert(
+      fc.property(fc.integer({ min: 1, max: 10_000 }), (seed) => {
+        expect(longestReign(3, seed)).toBeLessThanOrEqual(3);
+        expect(longestReign(5, seed)).toBeLessThanOrEqual(5);
+        const never = crownHistory(backTheChampion(null, seed).game!, seed);
+        expect(never.some((c) => c.retired)).toBe(false);
+      }),
+      { numRuns: 25 },
+    );
+  });
+
+  it('lets a well-loved champion reign past 5 when the cap is off', () => {
+    // With every voter backing it, a champion only falls when its owner's vote
+    // can't reach it -- so across seeds, some reign runs long.
+    const best = Math.max(...[1, 2, 3, 4, 5, 6, 7, 8].map((seed) => longestReign(null, seed)));
+    expect(best).toBeGreaterThan(5);
+  });
+});

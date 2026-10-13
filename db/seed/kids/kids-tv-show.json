@@ -1,0 +1,744 @@
+{
+  "slug": "kids-tv-show",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Bluey",
+      "popular": true
+    },
+    {
+      "name": "SpongeBob SquarePants",
+      "popular": true,
+      "aliases": [
+        "SpongeBob"
+      ]
+    },
+    {
+      "name": "Pokémon",
+      "popular": true,
+      "aliases": [
+        "Pokémon Horizons"
+      ]
+    },
+    {
+      "name": "Paw Patrol",
+      "popular": true
+    },
+    {
+      "name": "The Loud House",
+      "popular": true,
+      "aliases": [
+        "Loud House"
+      ]
+    },
+    {
+      "name": "Gabby's Dollhouse",
+      "popular": true
+    },
+    {
+      "name": "Spidey and His Amazing Friends",
+      "popular": true,
+      "aliases": [
+        "Spidey",
+        "Spidey and Friends"
+      ]
+    },
+    {
+      "name": "Teen Titans Go!",
+      "popular": true
+    },
+    {
+      "name": "Phineas and Ferb",
+      "popular": true,
+      "aliases": [
+        "Phineas & Ferb"
+      ]
+    },
+    {
+      "name": "Gravity Falls",
+      "popular": true
+    },
+    {
+      "name": "Miraculous",
+      "popular": true,
+      "aliases": [
+        "Miraculous Ladybug",
+        "Ladybug and Cat Noir"
+      ]
+    },
+    {
+      "name": "Ninjago",
+      "popular": true,
+      "aliases": [
+        "Lego Ninjago",
+        "Ninjago Dragons Rising"
+      ]
+    },
+    {
+      "name": "Scooby-Doo",
+      "popular": true,
+      "aliases": [
+        "Scooby Doo Where Are You",
+        "Scooby"
+      ]
+    },
+    {
+      "name": "Teenage Mutant Ninja Turtles",
+      "popular": true,
+      "aliases": [
+        "TMNT",
+        "Ninja Turtles"
+      ]
+    },
+    {
+      "name": "Avatar: The Last Airbender",
+      "popular": true,
+      "aliases": [
+        "Avatar",
+        "ATLA",
+        "The Last Airbender"
+      ]
+    },
+    {
+      "name": "Big City Greens",
+      "popular": true
+    },
+    {
+      "name": "The Amazing World of Gumball",
+      "popular": true,
+      "aliases": [
+        "Amazing World of Gumball",
+        "Gumball",
+        "Wonderfully Weird Gumball"
+      ]
+    },
+    {
+      "name": "Peppa Pig",
+      "popular": true,
+      "aliases": [
+        "Peppa"
+      ]
+    },
+    {
+      "name": "Tom and Jerry",
+      "popular": true,
+      "aliases": [
+        "Tom & Jerry"
+      ]
+    },
+    {
+      "name": "Dragon Ball",
+      "popular": true,
+      "aliases": [
+        "Dragon Ball Z",
+        "DBZ",
+        "Dragon Ball Super",
+        "Dragon Ball Daima"
+      ]
+    },
+    {
+      "name": "Kiff",
+      "popular": false
+    },
+    {
+      "name": "Hailey's On It!",
+      "popular": false
+    },
+    {
+      "name": "Moon Girl and Devil Dinosaur",
+      "popular": false,
+      "aliases": [
+        "Moon Girl"
+      ]
+    },
+    {
+      "name": "Amphibia",
+      "popular": false
+    },
+    {
+      "name": "The Owl House",
+      "popular": false,
+      "aliases": [
+        "Owl House"
+      ]
+    },
+    {
+      "name": "Mickey Mouse Clubhouse",
+      "popular": false
+    },
+    {
+      "name": "Mickey Mouse Funhouse",
+      "popular": false
+    },
+    {
+      "name": "DuckTales",
+      "popular": false
+    },
+    {
+      "name": "Kim Possible",
+      "popular": false
+    },
+    {
+      "name": "Star vs. the Forces of Evil",
+      "popular": false
+    },
+    {
+      "name": "Milo Murphy's Law",
+      "popular": false
+    },
+    {
+      "name": "Puppy Dog Pals",
+      "popular": false
+    },
+    {
+      "name": "Doc McStuffins",
+      "popular": false
+    },
+    {
+      "name": "Sofia the First",
+      "popular": false
+    },
+    {
+      "name": "PJ Masks",
+      "popular": false
+    },
+    {
+      "name": "The Casagrandes",
+      "popular": false,
+      "aliases": [
+        "Casagrandes"
+      ]
+    },
+    {
+      "name": "The Patrick Star Show",
+      "popular": false,
+      "aliases": [
+        "Patrick Star Show"
+      ]
+    },
+    {
+      "name": "Kamp Koral",
+      "popular": false
+    },
+    {
+      "name": "The Fairly OddParents",
+      "popular": false,
+      "aliases": [
+        "Fairly OddParents",
+        "Fairly OddParents A New Wish"
+      ]
+    },
+    {
+      "name": "Danny Phantom",
+      "popular": false
+    },
+    {
+      "name": "Rugrats",
+      "popular": false
+    },
+    {
+      "name": "Blaze and the Monster Machines",
+      "popular": false,
+      "aliases": [
+        "Blaze"
+      ]
+    },
+    {
+      "name": "Dora the Explorer",
+      "popular": false,
+      "aliases": [
+        "Dora"
+      ]
+    },
+    {
+      "name": "Blue's Clues",
+      "popular": false,
+      "aliases": [
+        "Blue's Clues & You"
+      ]
+    },
+    {
+      "name": "Bubble Guppies",
+      "popular": false
+    },
+    {
+      "name": "Rubble & Crew",
+      "popular": false,
+      "aliases": [
+        "Rubble and Crew"
+      ]
+    },
+    {
+      "name": "Santiago of the Seas",
+      "popular": false
+    },
+    {
+      "name": "Adventure Time",
+      "popular": false
+    },
+    {
+      "name": "Regular Show",
+      "popular": false
+    },
+    {
+      "name": "Steven Universe",
+      "popular": false
+    },
+    {
+      "name": "We Bare Bears",
+      "popular": false
+    },
+    {
+      "name": "Craig of the Creek",
+      "popular": false
+    },
+    {
+      "name": "The Powerpuff Girls",
+      "popular": false,
+      "aliases": [
+        "Powerpuff Girls"
+      ]
+    },
+    {
+      "name": "Ben 10",
+      "popular": false,
+      "aliases": [
+        "Ben Ten"
+      ]
+    },
+    {
+      "name": "Looney Tunes",
+      "popular": false,
+      "aliases": [
+        "Looney Tunes Cartoons"
+      ]
+    },
+    {
+      "name": "Teen Titans",
+      "popular": false
+    },
+    {
+      "name": "Batwheels",
+      "popular": false
+    },
+    {
+      "name": "Transformers",
+      "popular": false,
+      "aliases": [
+        "Transformers EarthSpark"
+      ]
+    },
+    {
+      "name": "Sonic Prime",
+      "popular": false,
+      "aliases": [
+        "Sonic",
+        "Sonic the Hedgehog"
+      ]
+    },
+    {
+      "name": "The Legend of Korra",
+      "popular": false,
+      "aliases": [
+        "Legend of Korra",
+        "Korra"
+      ]
+    },
+    {
+      "name": "Trollhunters",
+      "popular": false
+    },
+    {
+      "name": "Jurassic World Camp Cretaceous",
+      "popular": false,
+      "aliases": [
+        "Camp Cretaceous"
+      ]
+    },
+    {
+      "name": "Jurassic World: Chaos Theory",
+      "popular": false,
+      "aliases": [
+        "Chaos Theory"
+      ]
+    },
+    {
+      "name": "Hilda",
+      "popular": false
+    },
+    {
+      "name": "The Cuphead Show!",
+      "popular": false,
+      "aliases": [
+        "Cuphead Show"
+      ]
+    },
+    {
+      "name": "Gigantosaurus",
+      "popular": false
+    },
+    {
+      "name": "Dino Ranch",
+      "popular": false
+    },
+    {
+      "name": "Dinosaur Train",
+      "popular": false
+    },
+    {
+      "name": "Wild Kratts",
+      "popular": false
+    },
+    {
+      "name": "Octonauts",
+      "popular": false
+    },
+    {
+      "name": "Curious George",
+      "popular": false
+    },
+    {
+      "name": "Arthur",
+      "popular": false
+    },
+    {
+      "name": "Daniel Tiger's Neighborhood",
+      "popular": false,
+      "aliases": [
+        "Daniel Tiger"
+      ]
+    },
+    {
+      "name": "Sesame Street",
+      "popular": false
+    },
+    {
+      "name": "Cyberchase",
+      "popular": false
+    },
+    {
+      "name": "Odd Squad",
+      "popular": false
+    },
+    {
+      "name": "Molly of Denali",
+      "popular": false
+    },
+    {
+      "name": "The Magic School Bus",
+      "popular": false,
+      "aliases": [
+        "Magic School Bus",
+        "Magic School Bus Rides Again"
+      ]
+    },
+    {
+      "name": "Clifford the Big Red Dog",
+      "popular": false,
+      "aliases": [
+        "Clifford"
+      ]
+    },
+    {
+      "name": "Pinkalicious & Peterrific",
+      "popular": false,
+      "aliases": [
+        "Pinkalicious and Peterrific"
+      ]
+    },
+    {
+      "name": "StoryBots",
+      "popular": false,
+      "aliases": [
+        "Ask the StoryBots"
+      ]
+    },
+    {
+      "name": "CoComelon",
+      "popular": false
+    },
+    {
+      "name": "Thomas & Friends",
+      "popular": false,
+      "aliases": [
+        "Thomas and Friends",
+        "Thomas the Tank Engine"
+      ]
+    },
+    {
+      "name": "Masha and the Bear",
+      "popular": false,
+      "aliases": [
+        "Masha & the Bear"
+      ]
+    },
+    {
+      "name": "Shaun the Sheep",
+      "popular": false
+    },
+    {
+      "name": "Ben and Holly's Little Kingdom",
+      "popular": false,
+      "aliases": [
+        "Ben and Holly"
+      ]
+    },
+    {
+      "name": "Max & Ruby",
+      "popular": false,
+      "aliases": [
+        "Max and Ruby"
+      ]
+    },
+    {
+      "name": "Power Rangers",
+      "popular": false
+    },
+    {
+      "name": "Yu-Gi-Oh!",
+      "popular": false
+    },
+    {
+      "name": "Beyblade",
+      "popular": false,
+      "aliases": [
+        "Beyblade X",
+        "Beyblade Burst"
+      ]
+    },
+    {
+      "name": "Naruto",
+      "popular": false
+    },
+    {
+      "name": "Sailor Moon",
+      "popular": false
+    },
+    {
+      "name": "Digimon",
+      "popular": false
+    },
+    {
+      "name": "Bakugan",
+      "popular": false
+    },
+    {
+      "name": "Yo-kai Watch",
+      "popular": false
+    },
+    {
+      "name": "My Little Pony",
+      "popular": false,
+      "aliases": [
+        "MLP",
+        "My Little Pony Tell Your Tale"
+      ]
+    },
+    {
+      "name": "Barbie Dreamhouse Adventures",
+      "popular": false,
+      "aliases": [
+        "Barbie Dreamhouse"
+      ]
+    },
+    {
+      "name": "Monster High",
+      "popular": false
+    },
+    {
+      "name": "Polly Pocket",
+      "popular": false
+    },
+    {
+      "name": "Strawberry Shortcake",
+      "popular": false
+    },
+    {
+      "name": "Care Bears",
+      "popular": false,
+      "aliases": [
+        "Care Bears Unlock the Magic"
+      ]
+    },
+    {
+      "name": "The Smurfs",
+      "popular": false,
+      "aliases": [
+        "Smurfs"
+      ]
+    },
+    {
+      "name": "Garfield",
+      "popular": false,
+      "aliases": [
+        "The Garfield Show",
+        "Garfield and Friends"
+      ]
+    },
+    {
+      "name": "Alvin and the Chipmunks",
+      "popular": false,
+      "aliases": [
+        "Alvinnn and the Chipmunks"
+      ]
+    },
+    {
+      "name": "The Boss Baby",
+      "popular": false,
+      "aliases": [
+        "Boss Baby",
+        "Boss Baby: Back in Business"
+      ]
+    },
+    {
+      "name": "The Penguins of Madagascar",
+      "popular": false,
+      "aliases": [
+        "Penguins of Madagascar"
+      ]
+    },
+    {
+      "name": "Lego City Adventures",
+      "popular": false,
+      "aliases": [
+        "Lego City"
+      ]
+    },
+    {
+      "name": "Lego Dreamzzz",
+      "popular": false
+    },
+    {
+      "name": "Dragons: Race to the Edge",
+      "popular": false,
+      "aliases": [
+        "Dragons",
+        "Race to the Edge"
+      ]
+    },
+    {
+      "name": "Young Jedi Adventures",
+      "popular": false,
+      "aliases": [
+        "Star Wars Young Jedi"
+      ]
+    },
+    {
+      "name": "Star Wars: The Clone Wars",
+      "popular": false,
+      "aliases": [
+        "Clone Wars"
+      ]
+    },
+    {
+      "name": "Spider-Man",
+      "popular": false,
+      "aliases": [
+        "Ultimate Spider-Man",
+        "Marvel's Spider-Man"
+      ]
+    },
+    {
+      "name": "Avengers Assemble",
+      "popular": false
+    },
+    {
+      "name": "iCarly",
+      "popular": false
+    },
+    {
+      "name": "Henry Danger",
+      "popular": false
+    },
+    {
+      "name": "Danger Force",
+      "popular": false
+    },
+    {
+      "name": "The Thundermans",
+      "popular": false,
+      "aliases": [
+        "Thundermans"
+      ]
+    },
+    {
+      "name": "Bunk'd",
+      "popular": false
+    },
+    {
+      "name": "Raven's Home",
+      "popular": false
+    },
+    {
+      "name": "Hannah Montana",
+      "popular": false
+    },
+    {
+      "name": "Wizards of Waverly Place",
+      "popular": false
+    },
+    {
+      "name": "Wizards Beyond Waverly Place",
+      "popular": false
+    },
+    {
+      "name": "Good Luck Charlie",
+      "popular": false
+    },
+    {
+      "name": "Jessie",
+      "popular": false
+    },
+    {
+      "name": "Austin & Ally",
+      "popular": false,
+      "aliases": [
+        "Austin and Ally"
+      ]
+    },
+    {
+      "name": "Liv and Maddie",
+      "popular": false,
+      "aliases": [
+        "Liv & Maddie"
+      ]
+    },
+    {
+      "name": "Girl Meets World",
+      "popular": false
+    },
+    {
+      "name": "Victorious",
+      "popular": false
+    },
+    {
+      "name": "Sam & Cat",
+      "popular": false,
+      "aliases": [
+        "Sam and Cat"
+      ]
+    },
+    {
+      "name": "Drake & Josh",
+      "popular": false,
+      "aliases": [
+        "Drake and Josh"
+      ]
+    },
+    {
+      "name": "Big Time Rush",
+      "popular": false
+    },
+    {
+      "name": "Full House",
+      "popular": false,
+      "aliases": [
+        "Fuller House"
+      ]
+    },
+    {
+      "name": "Goosebumps",
+      "popular": false
+    }
+  ]
+}

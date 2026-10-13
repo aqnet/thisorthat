@@ -2,7 +2,7 @@
  * Pick and fwd: the champion (mode spec §4.2).
  *
  * Each round's winner carries onto the next ballot as the champion, until a
- * fresh card beats it outright or it retires at CHAMPION_REIGN_CAP.
+ * fresh card beats it outright or it retires at the game's reign cap.
  *
  * The champion is DERIVED from the match-up record, never stored as state --
  * the same principle as scoring.ts. Replaying the revealed rounds in order
@@ -13,11 +13,22 @@
  */
 
 import { createRng } from './rng';
-import { scoreMatchup } from './scoring';
+import { roundCount, scoreMatchup } from './scoring';
 import { itemKey } from './matchups';
 import type { BallotCard, Favorite, Game, Matchup } from './types';
 
+/**
+ * Mode spec §4.2, decision F2: a champion retires after this many wins in a
+ * row, so one great pick can't hold a whole game. A lobby setting since mode
+ * spec v0.4: the host picks 3 (the default), 5 or never (null).
+ */
 export const CHAMPION_REIGN_CAP = 3;
+export const CHAMPION_REIGN_CAPS = [3, 5, null] as const;
+export type ChampionReignCap = (typeof CHAMPION_REIGN_CAPS)[number];
+
+export function isChampionReignCap(value: unknown): value is ChampionReignCap {
+  return (CHAMPION_REIGN_CAPS as readonly unknown[]).includes(value);
+}
 
 export interface Champion {
   /** The favorites the winning card belonged to. */
@@ -78,6 +89,8 @@ export function crownForRound(
   previous: Champion | null,
   seed: number,
   isLastRound: boolean,
+  /** null = the champion never retires; it holds until a fresh card beats it. */
+  reignCap: number | null = CHAMPION_REIGN_CAP,
 ): RoundCrown {
   const outcome = scoreMatchup(matchup, favorites);
   const championCard = matchup.cards.find(isChampionCard) ?? null;
@@ -104,7 +117,7 @@ export function crownForRound(
   }
 
   // Step 2: retirement, then the end of the game.
-  const retired = holder !== null && holder.reign >= CHAMPION_REIGN_CAP;
+  const retired = holder !== null && reignCap !== null && holder.reign >= reignCap;
   const next = retired || isLastRound ? null : holder;
   return { roundNumber: matchup.roundNumber, outcome: kind, previous, holder, retired, next };
 }
@@ -118,8 +131,8 @@ export function crownHistory(game: Game, seed: number): RoundCrown[] {
     .filter((m) => m.status === 'revealed')
     .sort((a, b) => a.roundNumber - b.roundNumber);
   for (const matchup of revealed) {
-    const isLast = game.listLength !== null && matchup.roundNumber >= game.listLength;
-    const crown = crownForRound(matchup, game.favorites, carried, seed, isLast);
+    const isLast = matchup.roundNumber >= roundCount(game);
+    const crown = crownForRound(matchup, game.favorites, carried, seed, isLast, game.championReignCap);
     history.push(crown);
     carried = crown.next;
   }

@@ -43,6 +43,8 @@ export const REQUIRED_DICTIONARY_SIZE: Record<SizeClass, number> = {
 // --- Timers (milliseconds) ------------------------------------------------
 
 export const HOST_SETUP_MS = 45_000;
+/** Custom-category spec §3.6: the first custom build of a game gets at least this long. */
+export const SETUP_HOLD_MS = 30_000;
 export const CATEGORY_VOTE_MS = 15_000;
 
 /** §8: longer lists get proportionally more time. */
@@ -107,6 +109,20 @@ export function multiplierForRound(listLength: ListLength, roundNumber: number):
   // reveal. TypeScript blocks this, but the value also arrives from the DB.
   const showdownRounds = SHOWDOWN_ROUNDS[listLength] ?? [];
   return showdownRounds.includes(roundNumber) ? SHOWDOWN_MULTIPLIER : 1;
+}
+
+/**
+ * Custom-category spec §4.1: a thin category can drop rounds, so the showdown
+ * is "the last rounds actually played", sized by the list length (1, 1 or 3).
+ * With every round played this matches multiplierForRound exactly.
+ */
+export function multiplierForPlayedRound(
+  listLength: ListLength,
+  roundCount: number,
+  roundNumber: number,
+): 1 | 2 {
+  const size = (SHOWDOWN_ROUNDS[listLength] ?? []).length;
+  return roundNumber > roundCount - size ? SHOWDOWN_MULTIPLIER : 1;
 }
 
 // --- Room codes (§4) ------------------------------------------------------

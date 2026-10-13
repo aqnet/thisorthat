@@ -83,18 +83,17 @@ export function pickComputerItems(input: ComputerPickInput): ComputerPickResult 
   // §9.1: the Computer never duplicates a human's item. This is what makes the
   // "Computer never collides" guarantee in §9.2 hold.
   const eligible = dictionary.filter((entry) => !excludedItemIds.has(entry.id));
-  if (eligible.length < listLength) {
-    throw new Error(
-      `category dictionary has ${eligible.length} eligible items, need ${listLength}`,
-    );
-  }
+  // A thin custom category can't fill the list: the Computer plays what it
+  // has and sits the other rounds out, never padding with off-topic items
+  // (custom-category spec §4.3). Full and built-in categories always fill it.
+  const count = Math.min(listLength, eligible.length);
 
   const hasStats = eligible.some((entry) => entry.appearances > 0);
   const usedColdStart = !hasStats;
 
   // Cold start: lean on the curated popular tier until real stats exist.
   const mainPool = usedColdStart
-    ? (eligible.filter((e) => e.popularTier).length >= listLength
+    ? (eligible.filter((e) => e.popularTier).length >= count
         ? eligible.filter((e) => e.popularTier)
         : eligible)
     : eligible;
@@ -114,7 +113,7 @@ export function pickComputerItems(input: ComputerPickInput): ComputerPickResult 
     return rng.weighted(candidates, (entry) => selectionWeight(entry, strength));
   };
 
-  for (let i = 0; i < listLength; i++) {
+  for (let i = 0; i < count; i++) {
     // ~10% of picks are player-originated, so the Computer can't be spotted by
     // its uniformly "generic" taste.
     const wantWildcard = wildcardPool.length > 0 && rng.next() < WILDCARD_PICK_RATE;

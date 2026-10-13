@@ -2,6 +2,7 @@ import 'server-only';
 import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 import type postgres from 'postgres';
 import {
+  CHAMPION_REIGN_CAP,
   COMPUTER_COLOR_SLOT,
   COMPUTER_VARIETY_WINDOW,
   ROOM_CODE_ALPHABET,
@@ -10,6 +11,7 @@ import {
   apply,
   createRng,
   dedupeKey,
+  everyBallotHadThree,
   pickComputerItems,
   scoreMatchup,
   seedFromBytes,
@@ -170,6 +172,7 @@ async function loadDictionary(tx: Tx, categoryId: number): Promise<DictionaryEnt
       from this_or_that.dictionary d
       left join this_or_that.item_stats s on s.dictionary_id = d.id
      where d.category_id = ${categoryId}
+       and d.retired_at is null   -- retired items are never auto-filled or played (§B5)
      order by d.id`;
   return rows.map((r) => ({
     id: Number(r.id),
@@ -212,11 +215,22 @@ export function dictionaryFavorite(
  * §8 and §9.1: fill every short human list from the dictionary, then build the
  * Computer's list from what's left. The Computer never plays an item that is
  * on a human list, auto-filled ones included.
+ *
+ * Custom-category spec §4.5: a short custom category may borrow a built-in's
+ * dictionary. Its own items always come first; borrowed ones only top up.
  */
 async function lockListsIntent(tx: Tx, state: SessionState, seedHex: string | null): Promise<Intent> {
   const game = state.game!;
   const listLength = game.listLength as ListLength;
-  const dictionary = await loadDictionary(tx, game.categoryId!);
+  const ownDictionary = await loadDictionary(tx, game.categoryId!);
+  const borrowed =
+    game.borrowCategoryId !== null && game.borrowCategoryId !== game.categoryId
+      ? await loadDictionary(tx, game.borrowCategoryId)
+      : [];
+  const ownKeys = new Set(ownDictionary.map((d) => dedupeKey(d.canonicalName)));
+  // A borrowed item the category already has under the same name adds nothing.
+  const borrowedExtra = borrowed.filter((d) => !ownKeys.has(dedupeKey(d.canonicalName)));
+  const dictionary = [...ownDictionary, ...borrowedExtra];
   const rng = createRng(seedFor(seedHex) ^ 0x9e3779b9);
 
   const all = [...game.favorites];
@@ -225,9 +239,13 @@ async function lockListsIntent(tx: Tx, state: SessionState, seedHex: string | nu
     const own = all.filter((f) => f.playerId === player.id);
     const takenIds = new Set(own.map((f) => f.canonicalItemId).filter((id) => id !== null));
     const takenKeys = new Set(own.map((f) => dedupeKey(f.displayText)));
-    const pool = rng.shuffle(
-      dictionary.filter((d) => !takenIds.has(d.id) && !takenKeys.has(dedupeKey(d.canonicalName))),
-    );
+    const available = (entries: DictionaryEntry[]) =>
+      entries.filter((d) => !takenIds.has(d.id) && !takenKeys.has(dedupeKey(d.canonicalName)));
+    // pop() takes from the end: own items last in the array, so they're used first.
+    const pool = [
+      ...(borrowedExtra.length ? rng.shuffle(available(borrowedExtra)) : []),
+      ...rng.shuffle(available(ownDictionary)),
+    ];
     for (let missing = listLength - own.length; missing > 0; missing--) {
       const entry = pool.pop();
       if (!entry) break;
@@ -260,13 +278,25 @@ async function lockListsIntent(tx: Tx, state: SessionState, seedHex: string | nu
        and f.player_id = ${computer.id}
        and f.canonical_item_id is not null`;
 
+  const recentItemIds = new Set(recent.map((r) => Number(r.id)));
   const picked = pickComputerItems({
-    dictionary,
+    dictionary: ownDictionary,
     listLength,
     excludedItemIds: excluded,
-    recentItemIds: new Set(recent.map((r) => Number(r.id))),
+    recentItemIds,
     rng,
   });
+  // §4.5: top up from the borrowed category only when its own items run out.
+  if (picked.items.length < listLength && borrowedExtra.length > 0) {
+    const topUp = pickComputerItems({
+      dictionary: borrowedExtra,
+      listLength: (listLength - picked.items.length) as ListLength,
+      excludedItemIds: excluded,
+      recentItemIds,
+      rng,
+    });
+    picked.items.push(...topUp.items);
+  }
   const computerFavorites = picked.items.map((entry, i) => dictionaryFavorite(entry, computer.id, i + 1));
 
   return {
@@ -284,7 +314,8 @@ async function autoConfirmIntent(tx: Tx, state: SessionState, seedHex: string | 
   if (options.length === 0) return null;
   const rng = createRng(seedFor(seedHex) ^ 0x51ed270b);
   const category = options[rng.int(options.length)];
-  const listLength = Math.max(...category.allowedLengths.filter((l) => l <= 10)) as ListLength;
+  // A comfortable length: never past what the category's dictionary supports.
+  const listLength = Math.min(category.suggestedMax, 10) as ListLength;
   return { type: 'confirm_setup', actorId: state.hostPlayerId, categoryId: category.id, listLength };
 }
 
@@ -328,6 +359,9 @@ async function recordSideEffects(
         insert into this_or_that.item_stats as s (dictionary_id, appearances, votes_received, round_wins, updated_at)
         select r.dictionary_id, 1, r.votes, r.won, now()
           from jsonb_to_recordset(${tx.json(rows)}) as r(dictionary_id bigint, votes int, won int)
+          -- Custom-category spec §4.5: borrowed items were voted on in another
+          -- category's context; only the game's own items learn from it.
+          join this_or_that.dictionary d on d.id = r.dictionary_id and d.category_id = ${game.categoryId}
         on conflict (dictionary_id) do update
           set appearances = s.appearances + 1,
               votes_received = s.votes_received + excluded.votes_received,
@@ -337,6 +371,8 @@ async function recordSideEffects(
   }
 
   if (before.status === 'results' || after.status !== 'results') return;
+
+  await learnFromPlayers(tx, after);
 
   // Final standings, written once (§14.7).
   const rows = standings(after);
@@ -359,6 +395,8 @@ async function recordSideEffects(
 
   // §12: humans only, completed games only, computed here and never by a client.
   if (game.endedEarly || game.listLength === null || game.humanCount === null || game.categoryId === null) return;
+  // Custom-category spec §4.4: a 2-card round makes percentages meaningless.
+  if (!everyBallotHadThree(game)) return;
   const players = new Map(after.players.map((p) => [p.id, p]));
   const scores = rows
     .filter((r) => !r.isComputer && r.maxPossible !== null && players.get(r.playerId)?.leftAt === null)
@@ -384,9 +422,48 @@ async function recordSideEffects(
              date_trunc('week', now() at time zone 'America/Los_Angeles')::date
         from jsonb_to_recordset(${tx.json(scores)}) as r(
           game_id uuid, player_name text, score int, max_possible int, pct smallint,
-          list_length smallint, human_count smallint, category_id smallint, device_group_id uuid, mode text,
+          list_length smallint, human_count smallint, category_id integer, device_group_id uuid, mode text,
           with_computer boolean)`;
   }
+}
+
+/**
+ * Custom-category spec §5.4: every finished game in a custom category teaches
+ * it. Items humans typed join its dictionary as player-originated items; the
+ * game's own picks (auto-fill, Surprise me, the Computer's) don't. Lists must
+ * have locked, so a game ended during setup or entry teaches nothing.
+ */
+async function learnFromPlayers(tx: Tx, state: SessionState): Promise<void> {
+  const game = state.game!;
+  if (game.categoryId === null || game.matchups.length === 0) return;
+  const [category] = await tx`
+    select is_custom from this_or_that.categories where id = ${game.categoryId}`;
+  if (!category?.is_custom) return;
+
+  const existing = await tx`
+    select canonical_name from this_or_that.dictionary where category_id = ${game.categoryId}`;
+  const seen = new Set(existing.map((r) => dedupeKey(r.canonical_name as string)));
+  const learned: string[] = [];
+  // Seat order, then entry order: when two players type the same new item
+  // differently, the same spelling wins every time.
+  const seat = new Map(
+    state.players.filter((p) => !p.isComputer).map((p) => [p.id, p.joinedAt] as const),
+  );
+  const typed = game.favorites
+    .filter((f) => seat.has(f.playerId) && !f.autoPicked && !f.surprisePicked)
+    .sort((a, b) => seat.get(a.playerId)! - seat.get(b.playerId)! || a.entryPosition - b.entryPosition);
+  for (const favorite of typed) {
+    const key = dedupeKey(favorite.displayText);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    learned.push(favorite.displayText);
+  }
+  if (learned.length === 0) return;
+  await tx`
+    insert into this_or_that.dictionary (category_id, canonical_name, popular_tier, player_originated)
+    select ${game.categoryId}, r.name, false, true
+      from jsonb_to_recordset(${tx.json(learned.map((name) => ({ name })))}) as r(name text)
+    on conflict do nothing`;
 }
 
 // --- Creating a room -------------------------------------------------------------
@@ -420,6 +497,7 @@ export async function createRoom(userId: string, name: string): Promise<SessionS
           relaxedTimers: false,
           categoryVoteEnabled: false,
           computerPlayer: true,
+          championReignCap: CHAMPION_REIGN_CAP,
           players: [
             {
               id: randomUUID(),

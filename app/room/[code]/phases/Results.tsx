@@ -68,6 +68,9 @@ export function Results({ snap, room, roomCode }: PhaseProps) {
       )}
 
       {game.endedEarly && <p className={styles.hint}>Early endings don&apos;t count toward high scores.</p>}
+      {results?.unrankedTwoCards && (
+        <p className={styles.hint}>Some rounds had only 2 cards, so this game doesn&apos;t count for high scores.</p>
+      )}
 
       <section className={styles.stack} style={{ marginTop: 'auto' }}>
         {me.isHost ? (

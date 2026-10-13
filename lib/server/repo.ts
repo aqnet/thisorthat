@@ -197,6 +197,11 @@ function toLoaded(row: Row): LoadedRoom {
       number: g.number as number,
       mode: ((g.mode as string | null) ?? 'pick_your_fav') as Game['mode'],
       withComputer: (g.with_computer as boolean | null) ?? true,
+      spellCheck: (g.spell_check as boolean | null) ?? true,
+      championReignCap: g.champion_reign_cap === undefined ? 3 : ((g.champion_reign_cap as number | null) ?? null),
+      buildingCategory: (g.building_category as string | null) ?? null,
+      setupHeld: (g.setup_held as boolean | null) ?? false,
+      borrowCategoryId: (g.borrow_category_id as number | null) ?? null,
       offeredCategoryIds: (g.offered_category_ids as number[] | null) ?? [],
       categoryId: (g.category_id as number | null) ?? null,
       listLength: (g.list_length as ListLength | null) ?? null,
@@ -225,6 +230,8 @@ function toLoaded(row: Row): LoadedRoom {
     relaxedTimers: row.relaxed_timers as boolean,
     categoryVoteEnabled: row.category_vote as boolean,
     computerPlayer: (row.computer_player as boolean | null) ?? true,
+    // Absent before the column existed: the old fixed cap.
+    championReignCap: row.champion_reign_cap === undefined ? 3 : ((row.champion_reign_cap as number | null) ?? null),
     players,
     game,
     lastActivityAt: ms(row.last_activity_at)!,
@@ -306,6 +313,11 @@ function rowsOf(state: SessionState | null, seedHex: string | null): Record<Tabl
       number: game.number,
       mode: game.mode,
       with_computer: game.withComputer,
+      spell_check: game.spellCheck,
+      champion_reign_cap: game.championReignCap,
+      building_category: game.buildingCategory,
+      setup_held: game.setupHeld,
+      borrow_category_id: game.borrowCategoryId,
       offered_category_ids: game.offeredCategoryIds,
       category_id: game.categoryId,
       list_length: game.listLength,
@@ -410,6 +422,7 @@ export async function saveState(
     relaxed_timers: after.relaxedTimers,
     category_vote: after.categoryVoteEnabled,
     computer_player: after.computerPlayer,
+    champion_reign_cap: after.championReignCap,
     last_activity_at: iso(after.lastActivityAt),
     closed_at: iso(after.closedAt),
     paused_until: iso(after.pausedUntil),
@@ -434,17 +447,27 @@ export async function saveState(
     await upsert(sql, spec, changed);
   }
 
+  // Deletions only ever happen within one game. When Play Again starts the
+  // next game, the previous game's cards and favorites simply aren't in the
+  // new state -- they're history, not removals, and must stay: results,
+  // replays and the Computer's 3-game variety window all read them.
+  const sameGame = before?.game != null && before.game.id === after.game?.id;
+
   // Pick and fwd: a fresh card merged into the champion when its round opened
   // (mode spec §4.1). It never had a vote; its owners moved to the champion card.
   const keptCards = new Set(newRows.ballot_cards.map((r) => r.id as string));
-  const mergedCards = oldRows.ballot_cards.map((r) => r.id as string).filter((id) => !keptCards.has(id));
+  const mergedCards = sameGame
+    ? oldRows.ballot_cards.map((r) => r.id as string).filter((id) => !keptCards.has(id))
+    : [];
   if (mergedCards.length) {
     await sql.unsafe(`delete from this_or_that.ballot_cards where id = any($1::uuid[])`, [mergedCards]);
   }
 
   // remove_item is the only intent that deletes a favorite.
   const keptFavorites = new Set(newRows.favorites.map((r) => r.id as string));
-  const removed = oldRows.favorites.map((r) => r.id as string).filter((id) => !keptFavorites.has(id));
+  const removed = sameGame
+    ? oldRows.favorites.map((r) => r.id as string).filter((id) => !keptFavorites.has(id))
+    : [];
   if (removed.length) {
     await sql.unsafe(`delete from this_or_that.favorites where id = any($1::uuid[])`, [removed]);
   }
@@ -485,22 +508,86 @@ export interface CategoryRow {
   name: string;
   sizeClass: 'small' | 'medium' | 'large';
   allowedLengths: ListLength[];
+  /** Active items only: retired ones don't count toward lengths (custom-category spec §B5). */
   dictionarySize: number;
+  /** Setup grouping (§B6). */
+  audience: 'everyone' | 'kids';
+  isCustom: boolean;
+  /** Custom only: a build ran. False = played without one, so its size was never judged (§3.4). */
+  generated: boolean;
+  /** "board game" / "board games"; null = guess from the name. */
+  singularLabel: string | null;
+  pluralLabel: string | null;
+  /** Custom categories with a short dictionary: the closest built-in to borrow from (§4.5). */
+  borrowSuggestionId?: number | null;
 }
 
-export async function loadCategories(sql: Sql): Promise<CategoryRow[]> {
+const CATEGORY_COLUMNS = `
+  c.id, c.slug, c.name, c.size_class, c.allowed_lengths, c.audience, c.is_custom, c.generated,
+  c.singular_label, c.plural_label,
+  (select count(*)::int from this_or_that.dictionary d
+    where d.category_id = c.id and d.retired_at is null) as dictionary_size`;
+
+function toCategoryRow(r: Row): CategoryRow {
+  return {
+    id: r.id as number,
+    slug: r.slug as string,
+    name: r.name as string,
+    sizeClass: r.size_class as CategoryRow['sizeClass'],
+    allowedLengths: r.allowed_lengths as ListLength[],
+    dictionarySize: r.dictionary_size as number,
+    audience: r.audience as CategoryRow['audience'],
+    isCustom: r.is_custom as boolean,
+    generated: r.generated as boolean,
+    singularLabel: (r.singular_label as string | null) ?? null,
+    pluralLabel: (r.plural_label as string | null) ?? null,
+  };
+}
+
+/** Games played per built-in category and mode, for the top-5 row in setup. */
+export type CategoryUsage = Map<number, Record<'pick_your_fav' | 'pick_and_fwd', number>>;
+
+export async function loadCategoryUsage(sql: Sql): Promise<CategoryUsage> {
   const rows = await sql`
-    select c.id, c.slug, c.name, c.size_class, c.allowed_lengths,
-           (select count(*)::int from this_or_that.dictionary d where d.category_id = c.id) as dictionary_size
-      from this_or_that.categories c
-     where c.is_active
-     order by c.id`;
-  return rows.map((r) => ({
-    id: r.id,
-    slug: r.slug,
-    name: r.name,
-    sizeClass: r.size_class,
-    allowedLengths: r.allowed_lengths,
-    dictionarySize: r.dictionary_size,
-  }));
+    select g.category_id, g.mode, count(*)::int as games
+      from this_or_that.games g
+      join this_or_that.categories c on c.id = g.category_id
+     where not c.is_custom
+     group by g.category_id, g.mode`;
+  const usage: CategoryUsage = new Map();
+  for (const row of rows) {
+    const id = row.category_id as number;
+    const entry = usage.get(id) ?? { pick_your_fav: 0, pick_and_fwd: 0 };
+    entry[row.mode as keyof typeof entry] = row.games as number;
+    usage.set(id, entry);
+  }
+  return usage;
+}
+
+/** The built-in categories offered in setup. Custom ones are never listed (§7.3). */
+export async function loadCategories(sql: Sql): Promise<CategoryRow[]> {
+  const rows = await sql.unsafe(
+    `select ${CATEGORY_COLUMNS} from this_or_that.categories c where c.is_active and not c.is_custom order by c.id`,
+  );
+  return rows.map(toCategoryRow);
+}
+
+/**
+ * A room's own custom categories (custom-category spec §3.7, §9.2): the ones it
+ * built or reused, plus whatever its current game is playing.
+ */
+export async function loadRoomCategories(
+  sql: Sql,
+  sessionId: string,
+  currentCategoryId: number | null,
+): Promise<CategoryRow[]> {
+  const rows = await sql.unsafe(
+    `select ${CATEGORY_COLUMNS} from this_or_that.categories c
+      where c.is_custom
+        and (c.id in (select category_id from this_or_that.session_categories where session_id = $1)
+             or c.id = $2)
+      order by c.id`,
+    [sessionId, currentCategoryId],
+  );
+  return rows.map(toCategoryRow);
 }

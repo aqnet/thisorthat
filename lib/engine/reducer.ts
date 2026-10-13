@@ -24,6 +24,7 @@ import {
   REVEAL_HOLD_FWD_MS,
   REVEAL_HOLD_MS,
   ROOM_IDLE_EXPIRY_MS,
+  SETUP_HOLD_MS,
   VOTE_MS,
   applyRelaxed,
   multiplierForRound,
@@ -32,7 +33,7 @@ import {
 import { createRng } from './rng';
 import { buildMatchups, ownCardIds } from './matchups';
 import { addChampionCard, championForRound } from './champion';
-import { activeHumans, computerPlays, leaderAfterEachRound, scoreGame } from './scoring';
+import { activeHumans, computerPlays, leaderAfterEachRound, roundCount, scoreGame } from './scoring';
 import type {
   EngineContext,
   EngineErrorCode,
@@ -154,7 +155,8 @@ function finishGame(state: SessionState, now: number, endedEarly: boolean, event
 function advanceAfterReveal(state: SessionState, ctx: EngineContext, events: EngineEvent[]): void {
   const game = state.game!;
   const next = game.currentRound + 1;
-  if (game.listLength !== null && next <= game.listLength) {
+  // A thin custom category can have fewer rounds than its list length (§4.1).
+  if (game.listLength !== null && next <= roundCount(game)) {
     openRound(state, next, ctx);
   } else {
     finishGame(state, ctx.now, false, events);
@@ -302,6 +304,12 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
         mode: previous?.mode ?? 'pick_your_fav',
         // Frozen now, so a player leaving mid-game doesn't bring it back.
         withComputer: computerPlays(state),
+        spellCheck: true,
+        // Frozen now, like the Computer: the reign cap can't change mid-game.
+        championReignCap: state.championReignCap,
+        buildingCategory: null,
+        setupHeld: false,
+        borrowCategoryId: null,
         offeredCategoryIds: [],
         categoryId: null,
         listLength: null,
@@ -341,11 +349,28 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       return commit(state, now, events);
     }
 
+    case 'hold_setup': {
+      // Custom-category spec §3.6: a build is running. Everyone sees it, and the
+      // first build of a game gets enough time to finish.
+      if (!isHost(state, intent.actorId)) return fail('not_host');
+      if (state.status !== 'setup') return fail('wrong_phase');
+      const game = state.game!;
+      game.buildingCategory = intent.name;
+      if (intent.name !== null && !game.setupHeld) {
+        game.setupHeld = true;
+        state.phaseDeadline = Math.max(state.phaseDeadline ?? now, now + SETUP_HOLD_MS);
+      }
+      return commit(state, now, events);
+    }
+
     case 'confirm_setup': {
       if (!isHost(state, intent.actorId)) return fail('not_host');
       if (state.status !== 'setup') return fail('wrong_phase');
       const game = state.game!;
       if (intent.mode) game.mode = intent.mode;
+      game.spellCheck = intent.spellCheck ?? true;
+      game.borrowCategoryId = intent.borrowCategoryId ?? null;
+      game.buildingCategory = null;
       game.categoryId = intent.categoryId;
       game.listLength = intent.listLength;
       state.status = 'entering';
@@ -407,6 +432,10 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       const computer = state.players.find((p) => p.isComputer);
       const seated = activeHumans(state.players);
       game.humanCount = seated.length;
+
+      // Custom-category spec §4.3: a thin category can leave the Computer with
+      // nothing to play. It sits out, even with 2 humans.
+      if (game.withComputer && intent.computerFavorites.length === 0) game.withComputer = false;
 
       const playerIds = [...seated.map((p) => p.id)];
       if (computer && game.withComputer) playerIds.push(computer.id);
@@ -496,6 +525,7 @@ export function apply(input: SessionState, intent: Intent, ctx: EngineContext): 
       if (state.status !== 'lobby') return fail('wrong_phase');
       if (intent.relaxedTimers !== undefined) state.relaxedTimers = intent.relaxedTimers;
       if (intent.computerPlayer !== undefined) state.computerPlayer = intent.computerPlayer;
+      if (intent.championReignCap !== undefined) state.championReignCap = intent.championReignCap;
       return commit(state, now, events);
     }
 
@@ -708,7 +738,7 @@ export function publicState(state: SessionState) {
     phaseDeadline: state.phaseDeadline,
     hostPlayerId: state.hostPlayerId,
     round: game?.currentRound ?? 0,
-    totalRounds: game?.listLength ?? 0,
+    totalRounds: game ? roundCount(game) : 0,
     multiplier: matchup?.multiplier ?? 1,
     categoryId: game?.categoryId ?? null,
     players: state.players

@@ -52,7 +52,7 @@ try {
   check(true, "other players see the Computer 'Sitting out'");
   await host.getByRole('button', { name: 'Start', exact: true }).click();
   await host.getByRole('button', { name: /^Pick your fav/ }).click();
-  await host.getByRole('button', { name: 'Sport', exact: true }).click();
+  await pickCategory(host, 'Sport');
   await host.getByRole('button', { name: '5', exact: true }).click();
   await host.getByRole('button', { name: 'Sport · 5 items' }).click();
   await host.getByRole('button', { name: 'Start', exact: true }).click();
@@ -95,4 +95,11 @@ try {
   await browser.close();
   console.log(failed ? 'THREE-PLAYER TEST FAILED' : 'three-player test passed');
   process.exit(failed ? 1 : 0);
+}
+
+/** Setup shows the top 5 categories as chips and the rest in a dropdown. */
+async function pickCategory(page, name) {
+  const chip = page.getByRole('button', { name, exact: true });
+  if (await chip.count()) await chip.click();
+  else await page.getByLabel('More categories').selectOption({ label: name });
 }

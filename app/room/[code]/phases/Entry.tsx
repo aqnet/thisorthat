@@ -6,10 +6,9 @@ import { styles } from '@/components/game/ui';
 import { accessToken } from '@/lib/client/supabase';
 import type { PhaseProps } from '../RoomClient';
 
-function plural(category: string | null): string {
-  if (!category) return 'items';
-  const lower = category.toLocaleLowerCase('en-US');
-  return lower.endsWith('s') ? lower : `${lower}s`;
+/** "a board game", "an ice cream flavor". */
+function withArticle(noun: string): string {
+  return `${/^[aeiou]/i.test(noun) ? 'An' : 'A'} ${noun}`;
 }
 
 /**
@@ -71,9 +70,16 @@ export function Entry({ snap, room, roomCode }: PhaseProps) {
     <>
       <div className={styles.stack}>
         <h1 className={styles.title}>
-          List {target} {plural(game.categoryName)} you&apos;ll defend
+          List {target} {game.pluralLabel ?? 'items'} you&apos;ll defend
         </h1>
         <p className={styles.body}>Points go to the picks everyone else loves.</p>
+        {/* Custom-category spec §4.2: the timer can't fill a thin category's lists. */}
+        {game.borrowedFrom && !submitted && (
+          <p className={styles.hint}>Surprise me tops up from {game.borrowedFrom}.</p>
+        )}
+        {game.thin && !submitted && (
+          <p className={styles.hint}>Fill your whole list — the game can&apos;t fill it for you.</p>
+        )}
       </div>
 
       {!submitted && (
@@ -95,7 +101,7 @@ export function Entry({ snap, room, roomCode }: PhaseProps) {
               }}
               maxLength={40}
               disabled={full}
-              placeholder={full ? 'List full' : `A ${game.categoryName?.toLowerCase() ?? 'item'}…`}
+              placeholder={full ? 'List full' : `${withArticle(game.singularLabel ?? 'item')}…`}
               autoComplete="off"
               enterKeyHint="done"
               aria-label="Add an item"
@@ -131,14 +137,19 @@ export function Entry({ snap, room, roomCode }: PhaseProps) {
             </div>
           )}
           <div className={styles.spread}>
-            <button
-              type="button"
-              className={`${styles.chip}`}
-              disabled={busy || full}
-              onClick={() => run(() => room.act((t) => surpriseMe(t, roomCode)))}
-            >
-              🎲 Surprise me
-            </button>
+            {/* §6: with no dictionary there's nothing relevant to suggest. */}
+            {game.hasDictionary ? (
+              <button
+                type="button"
+                className={`${styles.chip}`}
+                disabled={busy || full}
+                onClick={() => run(() => room.act((t) => surpriseMe(t, roomCode)))}
+              >
+                🎲 Surprise me
+              </button>
+            ) : (
+              <span />
+            )}
             <span className={`${styles.score}`} aria-live="polite">
               {count} / {target}
             </span>

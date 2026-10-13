@@ -578,3 +578,25 @@
   padding: 8px;
   justify-self: center;
 }
+
+/* --- Custom category build (custom-category spec §3.6) ------------------------- */
+
+.building {
+  animation: building-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes building-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .building { animation: none; }
+}
+
+/* A category picked from the "More categories" dropdown (custom-category spec v0.6). */
+.selectActive {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+  font-weight: 700;
+}

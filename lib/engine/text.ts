@@ -79,9 +79,16 @@ export function toDisplayText(input: string): string {
     .join(' ');
 }
 
-/** Case- and punctuation-insensitive key for duplicate detection within a list. */
+/**
+ * Case-, accent- and punctuation-insensitive key for duplicate detection.
+ * Accents fold rather than drop, so "Pokémon" and "Pokemon" share a key
+ * (custom-category spec §B8.4).
+ */
 export function dedupeKey(input: string): string {
-  return toBallotText(input).replace(/[^A-Z0-9]/gi, '');
+  return toBallotText(input)
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^A-Z0-9]/gi, '');
 }
 
 export type EntryRejection =

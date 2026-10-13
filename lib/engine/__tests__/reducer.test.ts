@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { apply, publicState } from '../reducer';
 import { ownCardId } from '../matchups';
 import { simulateGame } from './simulate';
-import { standings } from '../scoring';
+import { everyBallotHadThree, roundCount, standings } from '../scoring';
 import { session, player } from './fixtures';
 import {
   DEPART_AFTER_MS,
@@ -11,6 +11,8 @@ import {
   PAUSE_GRACE_MS,
   REVEAL_HOLD_MS,
   ROOM_IDLE_EXPIRY_MS,
+  SETUP_HOLD_MS,
+  HOST_SETUP_MS,
   VOTE_MS,
 } from '../constants';
 import type { EngineContext, SessionState } from '../types';
@@ -469,5 +471,139 @@ describe('§5 / §9.1 the Computer sitting out (spec v0.8)', () => {
       expect(owners).not.toContain('cpu');
     }
     expect(standings(state).some((r) => r.isComputer)).toBe(false);
+  });
+});
+
+describe('custom-category spec §3.6 / §5.3 setup holds and spell check', () => {
+  const twoUp = () =>
+    session({
+      hostPlayerId: 'p1',
+      players: [
+        player('cpu', { isComputer: true, colorSlot: 0, name: 'Computer', userId: null }),
+        player('p1', { colorSlot: 1, isHost: true }),
+        player('p2', { colorSlot: 2, joinedAt: 1 }),
+      ],
+    });
+
+  it('extends the setup timer once a game while a custom category builds', () => {
+    let state = ok(twoUp(), { type: 'start_game', actorId: 'p1' }, 1_000);
+    expect(state.phaseDeadline).toBe(1_000 + HOST_SETUP_MS);
+    // 40s in, only 5s left: the build gets a full 30s.
+    state = ok(state, { type: 'hold_setup', actorId: 'p1', name: 'Board Games' }, 41_000);
+    expect(state.game!.buildingCategory).toBe('Board Games');
+    expect(state.phaseDeadline).toBe(41_000 + SETUP_HOLD_MS);
+    state = ok(state, { type: 'hold_setup', actorId: 'p1', name: null }, 50_000);
+    expect(state.game!.buildingCategory).toBeNull();
+    // A second build doesn't get another extension.
+    state = ok(state, { type: 'hold_setup', actorId: 'p1', name: 'Pizza Toppings' }, 60_000);
+    expect(state.phaseDeadline).toBe(41_000 + SETUP_HOLD_MS);
+  });
+
+  it('only lets the host hold setup, and only in setup', () => {
+    const lobby = twoUp();
+    expect(apply(lobby, { type: 'hold_setup', actorId: 'p1', name: 'X' }, ctx(1))).toMatchObject({ ok: false, error: 'wrong_phase' });
+    const setup = ok(lobby, { type: 'start_game', actorId: 'p1' }, 1_000);
+    expect(apply(setup, { type: 'hold_setup', actorId: 'p2', name: 'X' }, ctx(2_000))).toMatchObject({ ok: false, error: 'not_host' });
+  });
+
+  it('freezes spell check at Start and clears the build banner', () => {
+    let state = ok(twoUp(), { type: 'start_game', actorId: 'p1' }, 1_000);
+    state = ok(state, { type: 'hold_setup', actorId: 'p1', name: 'Board Games' }, 2_000);
+    state = ok(state, { type: 'confirm_setup', actorId: 'p1', categoryId: 99, listLength: 5, spellCheck: false }, 3_000);
+    expect(state.game!.spellCheck).toBe(false);
+    expect(state.game!.buildingCategory).toBeNull();
+    const plain = ok(ok(twoUp(), { type: 'start_game', actorId: 'p1' }, 1_000), {
+      type: 'confirm_setup', actorId: 'p1', categoryId: 1, listLength: 5,
+    }, 2_000);
+    expect(plain.game!.spellCheck).toBe(true);
+  });
+});
+
+describe('custom-category spec §4 thin categories', () => {
+  const item = (playerId: string, i: number) => ({
+    id: `${playerId}-${i}`, playerId, entryPosition: i, displayText: `${playerId} ${i}`, ballotText: `${playerId} ${i}`.toUpperCase(),
+    canonicalItemId: null, autoPicked: false, surprisePicked: false, shuffledPosition: null,
+  });
+
+  /** Both humans heart-beat, so the advance doesn't pause the game for them. */
+  const beat = (state: SessionState, at: number) =>
+    ['p1', 'p2'].reduce((s, playerId) => ok(s, { type: 'heartbeat', playerId }, at), state);
+
+  /** Two humans at list lock: p1 filled 5, p2 only `p2Count`, and the Computer got `cpuCount`. */
+  function locked(p2Count: number, cpuCount: number) {
+    let state = ok(
+      session({
+        hostPlayerId: 'p1',
+        players: [
+          player('cpu', { isComputer: true, colorSlot: 0, name: 'Computer', userId: null }),
+          player('p1', { colorSlot: 1, isHost: true, lastSeenAt: 1_000 }),
+          player('p2', { colorSlot: 2, joinedAt: 1, lastSeenAt: 1_000 }),
+        ],
+      }),
+      { type: 'start_game', actorId: 'p1' },
+      1_000,
+    );
+    state = ok(state, { type: 'confirm_setup', actorId: 'p1', categoryId: 99, listLength: 5 }, 1_000);
+    for (let i = 1; i <= 5; i++) state = ok(state, { type: 'add_item', playerId: 'p1', favorite: item('p1', i) }, 1_000);
+    for (let i = 1; i <= p2Count; i++) state = ok(state, { type: 'add_item', playerId: 'p2', favorite: item('p2', i) }, 1_000);
+    // The entry timer runs out with p2's list short.
+    state = beat(state, 1_000 + ENTRY_MS_BY_LENGTH[5]);
+    state = ok(state, { type: 'advance' }, 1_000 + ENTRY_MS_BY_LENGTH[5]);
+    expect(state.status).toBe('computer_picking');
+    const computerFavorites = Array.from({ length: cpuCount }, (_, i) => item('cpu', i + 1));
+    return ok(state, { type: 'lock_lists', autoFill: [], computerFavorites, computerItemIds: [] }, 1_000 + ENTRY_MS_BY_LENGTH[5]);
+  }
+
+  it('sits the Computer out when a thin category leaves it nothing, even with 2 humans', () => {
+    const state = locked(5, 0);
+    expect(state.game!.withComputer).toBe(false);
+    expect(state.game!.matchups.every((m) => m.cards.length === 2)).toBe(true);
+    expect(everyBallotHadThree({ matchups: state.game!.matchups.map((m) => ({ ...m, status: 'revealed' as const })) })).toBe(false);
+    expect(standings(state).some((r) => r.isComputer)).toBe(false);
+  });
+
+  it('plays fewer rounds when short lists leave rounds without a choice, and ends after the last', () => {
+    const now = 1_000 + ENTRY_MS_BY_LENGTH[5];
+    let state = locked(2, 0);
+    expect(roundCount(state.game!)).toBe(2);
+    expect(publicState(state).totalRounds).toBe(2);
+    // Showdown moves to the last round actually played.
+    expect(state.game!.matchups.map((m) => m.multiplier)).toEqual([1, 2]);
+    let at = now;
+    for (let round = 1; round <= 2; round++) {
+      at += VOTE_MS;
+      state = ok(beat(state, at), { type: 'advance' }, at);
+      expect(state.status).toBe('matchup_reveal');
+      at += REVEAL_HOLD_MS;
+      state = ok(beat(state, at), { type: 'advance' }, at);
+    }
+    expect(state.status).toBe('results');
+    // max_possible follows the 2 rounds played: (1 + 2) x 2 humans.
+    expect(standings(state).find((r) => r.playerId === 'p1')!.maxPossible).toBe(6);
+  });
+});
+
+describe('mode spec v0.4 champion reign cap setting', () => {
+  const lobby = () =>
+    session({
+      hostPlayerId: 'p1',
+      players: [
+        player('cpu', { isComputer: true, colorSlot: 0, name: 'Computer', userId: null }),
+        player('p1', { colorSlot: 1, isHost: true }),
+        player('p2', { colorSlot: 2, joinedAt: 1 }),
+      ],
+    });
+
+  it('defaults to 3, only the host changes it, and it freezes at Start', () => {
+    expect(lobby().championReignCap).toBe(3);
+    expect(apply(lobby(), { type: 'update_settings', actorId: 'p2', championReignCap: null }, ctx(1)))
+      .toMatchObject({ ok: false, error: 'not_host' });
+    const never = ok(lobby(), { type: 'update_settings', actorId: 'p1', championReignCap: null }, 1_000);
+    expect(never.championReignCap).toBeNull();
+    const started = ok(never, { type: 'start_game', actorId: 'p1' }, 2_000);
+    expect(started.game!.championReignCap).toBeNull();
+    // Changing the lobby setting can't happen mid-game.
+    expect(apply(started, { type: 'update_settings', actorId: 'p1', championReignCap: 3 }, ctx(3_000)))
+      .toMatchObject({ ok: false, error: 'wrong_phase' });
   });
 });

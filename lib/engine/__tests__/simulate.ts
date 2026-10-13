@@ -33,6 +33,8 @@ export interface SimulationOptions {
   mode?: GameMode;
   /** The lobby's Computer setting; it only sits out with 3+ humans. */
   computerPlayer?: boolean;
+  /** Pick and fwd's lobby setting: wins in a row before a champion retires; null = never. */
+  championReignCap?: number | null;
   /**
    * How each human picks a card. Default: the first card they don't own.
    * Pass a strategy to shape outcomes (e.g. always back the champion).
@@ -47,7 +49,10 @@ export interface SimulationResult {
 }
 
 export function simulateGame(options: SimulationOptions): SimulationResult {
-  const { humanCount, listLength, seed, silentPlayerIds = [], mode = 'pick_your_fav', chooseCard, computerPlayer = true } = options;
+  const {
+    humanCount, listLength, seed, silentPlayerIds = [], mode = 'pick_your_fav', chooseCard, computerPlayer = true,
+    championReignCap = 3,
+  } = options;
   const rng = createRng(seed);
   let idCounter = 0;
   let now = 1_000;
@@ -65,6 +70,7 @@ export function simulateGame(options: SimulationOptions): SimulationResult {
     ],
     lastActivityAt: now,
     computerPlayer,
+    championReignCap,
   });
 
   const step = (intent: Intent): void => {

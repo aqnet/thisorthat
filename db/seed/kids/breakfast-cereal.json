@@ -1,0 +1,402 @@
+{
+  "slug": "breakfast-cereal",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Lucky Charms",
+      "popular": true
+    },
+    {
+      "name": "Froot Loops",
+      "popular": true,
+      "aliases": [
+        "Fruit Loops"
+      ]
+    },
+    {
+      "name": "Cheerios",
+      "popular": true
+    },
+    {
+      "name": "Honey Nut Cheerios",
+      "popular": true
+    },
+    {
+      "name": "Cinnamon Toast Crunch",
+      "popular": true,
+      "aliases": [
+        "Cinnamon Toast",
+        "CTC"
+      ]
+    },
+    {
+      "name": "Frosted Flakes",
+      "popular": true
+    },
+    {
+      "name": "Cocoa Puffs",
+      "popular": true
+    },
+    {
+      "name": "Fruity Pebbles",
+      "popular": true,
+      "aliases": [
+        "Fruity Pebble"
+      ]
+    },
+    {
+      "name": "Cocoa Pebbles",
+      "popular": true,
+      "aliases": [
+        "Coco Pebbles"
+      ]
+    },
+    {
+      "name": "Apple Jacks",
+      "popular": true
+    },
+    {
+      "name": "Cap'n Crunch",
+      "popular": true,
+      "aliases": [
+        "Captain Crunch"
+      ]
+    },
+    {
+      "name": "Trix",
+      "popular": true
+    },
+    {
+      "name": "Reese's Puffs",
+      "popular": true,
+      "aliases": [
+        "Reese Puffs"
+      ]
+    },
+    {
+      "name": "Golden Grahams",
+      "popular": true
+    },
+    {
+      "name": "Corn Pops",
+      "popular": true
+    },
+    {
+      "name": "Rice Krispies",
+      "popular": true,
+      "aliases": [
+        "Rice Crispies"
+      ]
+    },
+    {
+      "name": "Frosted Mini-Wheats",
+      "popular": true,
+      "aliases": [
+        "Mini-Wheats",
+        "Mini Wheat"
+      ]
+    },
+    {
+      "name": "Cookie Crisp",
+      "popular": true
+    },
+    {
+      "name": "Honey Bunches of Oats",
+      "popular": true
+    },
+    {
+      "name": "Kix",
+      "popular": true
+    },
+    {
+      "name": "Apple Cinnamon Cheerios",
+      "popular": false
+    },
+    {
+      "name": "Multi Grain Cheerios",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Cheerios",
+      "popular": false
+    },
+    {
+      "name": "Frosted Cheerios",
+      "popular": false
+    },
+    {
+      "name": "Cheerios Protein",
+      "popular": false
+    },
+    {
+      "name": "French Toast Crunch",
+      "popular": false
+    },
+    {
+      "name": "Cinnamon Toast Crunch Churros",
+      "popular": false,
+      "aliases": [
+        "Churros Cereal"
+      ]
+    },
+    {
+      "name": "Count Chocula",
+      "popular": false
+    },
+    {
+      "name": "Franken Berry",
+      "popular": false
+    },
+    {
+      "name": "Boo Berry",
+      "popular": false
+    },
+    {
+      "name": "Berry Berry Kix",
+      "popular": false
+    },
+    {
+      "name": "Rice Chex",
+      "popular": false
+    },
+    {
+      "name": "Corn Chex",
+      "popular": false
+    },
+    {
+      "name": "Wheat Chex",
+      "popular": false
+    },
+    {
+      "name": "Chocolate Chex",
+      "popular": false
+    },
+    {
+      "name": "Honey Nut Chex",
+      "popular": false
+    },
+    {
+      "name": "Cinnamon Chex",
+      "popular": false
+    },
+    {
+      "name": "Wheaties",
+      "popular": false
+    },
+    {
+      "name": "Bluey Cereal",
+      "popular": false
+    },
+    {
+      "name": "Cocoa Krispies",
+      "popular": false,
+      "aliases": [
+        "Cocoa Crispies"
+      ]
+    },
+    {
+      "name": "Raisin Bran",
+      "popular": false
+    },
+    {
+      "name": "Raisin Bran Crunch",
+      "popular": false
+    },
+    {
+      "name": "Special K",
+      "popular": false
+    },
+    {
+      "name": "Corn Flakes",
+      "popular": false
+    },
+    {
+      "name": "Crispix",
+      "popular": false
+    },
+    {
+      "name": "Krave",
+      "popular": false
+    },
+    {
+      "name": "Honey Smacks",
+      "popular": false,
+      "aliases": [
+        "Smacks"
+      ]
+    },
+    {
+      "name": "Cinnamon Pebbles",
+      "popular": false
+    },
+    {
+      "name": "Honeycomb",
+      "popular": false
+    },
+    {
+      "name": "Golden Crisp",
+      "popular": false
+    },
+    {
+      "name": "Grape-Nuts",
+      "popular": false
+    },
+    {
+      "name": "Shredded Wheat",
+      "popular": false
+    },
+    {
+      "name": "Oreo O's",
+      "popular": false,
+      "aliases": [
+        "Oreo Os Cereal"
+      ]
+    },
+    {
+      "name": "Alpha-Bits",
+      "popular": false,
+      "aliases": [
+        "Alphabet Cereal"
+      ]
+    },
+    {
+      "name": "Cap'n Crunch's Crunch Berries",
+      "popular": false,
+      "aliases": [
+        "Crunch Berries"
+      ]
+    },
+    {
+      "name": "Peanut Butter Crunch",
+      "popular": false
+    },
+    {
+      "name": "Oops! All Berries",
+      "popular": false,
+      "aliases": [
+        "All Berries"
+      ]
+    },
+    {
+      "name": "Life",
+      "popular": false,
+      "aliases": [
+        "Life Cereal"
+      ]
+    },
+    {
+      "name": "Cinnamon Life",
+      "popular": false
+    },
+    {
+      "name": "Oatmeal Squares",
+      "popular": false
+    },
+    {
+      "name": "Marshmallow Mateys",
+      "popular": false
+    },
+    {
+      "name": "Tootie Fruities",
+      "popular": false
+    },
+    {
+      "name": "Cocoa Dyno-Bites",
+      "popular": false
+    },
+    {
+      "name": "Fruity Dyno-Bites",
+      "popular": false
+    },
+    {
+      "name": "Cinnamon Toasters",
+      "popular": false
+    },
+    {
+      "name": "Puffins",
+      "popular": false
+    },
+    {
+      "name": "Magic Spoon",
+      "popular": false
+    },
+    {
+      "name": "Oatmeal",
+      "popular": false,
+      "aliases": [
+        "Oats"
+      ]
+    },
+    {
+      "name": "Instant Oatmeal",
+      "popular": false
+    },
+    {
+      "name": "Granola",
+      "popular": false
+    },
+    {
+      "name": "Cream of Wheat",
+      "popular": false
+    },
+    {
+      "name": "Grits",
+      "popular": false
+    },
+    {
+      "name": "Bran Flakes",
+      "popular": false
+    },
+    {
+      "name": "Puffed Rice",
+      "popular": false
+    },
+    {
+      "name": "Corn Puffs",
+      "popular": false
+    },
+    {
+      "name": "Muesli",
+      "popular": false
+    },
+    {
+      "name": "Fruity Yummy Mummy",
+      "popular": false
+    },
+    {
+      "name": "Strawberry Lucky Charms",
+      "popular": false
+    },
+    {
+      "name": "Blue Raspberry Trix",
+      "popular": false
+    },
+    {
+      "name": "Waffle Crisp",
+      "popular": false
+    },
+    {
+      "name": "Malt-O-Meal",
+      "popular": false
+    },
+    {
+      "name": "Frosted Mini Spooners",
+      "popular": false,
+      "aliases": [
+        "Mini Spooners"
+      ]
+    },
+    {
+      "name": "Golden Puffs",
+      "popular": false
+    },
+    {
+      "name": "Honey Buzzers",
+      "popular": false
+    },
+    {
+      "name": "Puffed Wheat",
+      "popular": false
+    }
+  ]
+}

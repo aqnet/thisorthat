@@ -1,0 +1,712 @@
+{
+  "slug": "dream-job",
+  "reviewed": "2026-10-13",
+  "items": [
+    {
+      "name": "Astronaut",
+      "popular": true
+    },
+    {
+      "name": "Veterinarian",
+      "popular": true,
+      "aliases": [
+        "Vet",
+        "Animal Doctor"
+      ]
+    },
+    {
+      "name": "YouTuber",
+      "popular": true,
+      "aliases": [
+        "YouTube Star"
+      ]
+    },
+    {
+      "name": "Chef",
+      "popular": true,
+      "aliases": [
+        "Cook"
+      ]
+    },
+    {
+      "name": "Firefighter",
+      "popular": true,
+      "aliases": [
+        "Fireman",
+        "Firewoman"
+      ]
+    },
+    {
+      "name": "Police Officer",
+      "popular": true,
+      "aliases": [
+        "Cop",
+        "Policeman",
+        "Policewoman"
+      ]
+    },
+    {
+      "name": "Doctor",
+      "popular": true
+    },
+    {
+      "name": "Teacher",
+      "popular": true
+    },
+    {
+      "name": "Scientist",
+      "popular": true
+    },
+    {
+      "name": "Artist",
+      "popular": true
+    },
+    {
+      "name": "Singer",
+      "popular": true,
+      "aliases": [
+        "Pop Star"
+      ]
+    },
+    {
+      "name": "Actor",
+      "popular": true,
+      "aliases": [
+        "Actress",
+        "Movie Star"
+      ]
+    },
+    {
+      "name": "Dancer",
+      "popular": true
+    },
+    {
+      "name": "Soccer Player",
+      "popular": true
+    },
+    {
+      "name": "Basketball Player",
+      "popular": true
+    },
+    {
+      "name": "Football Player",
+      "popular": true
+    },
+    {
+      "name": "Pro Gamer",
+      "popular": true,
+      "aliases": [
+        "Esports Player",
+        "Gamer"
+      ]
+    },
+    {
+      "name": "Video Game Designer",
+      "popular": true,
+      "aliases": [
+        "Game Designer",
+        "Game Developer"
+      ]
+    },
+    {
+      "name": "Baker",
+      "popular": true
+    },
+    {
+      "name": "Pilot",
+      "popular": true
+    },
+    {
+      "name": "Streamer",
+      "popular": false
+    },
+    {
+      "name": "Content Creator",
+      "popular": false,
+      "aliases": [
+        "Influencer"
+      ]
+    },
+    {
+      "name": "Nurse",
+      "popular": false
+    },
+    {
+      "name": "Dentist",
+      "popular": false
+    },
+    {
+      "name": "Surgeon",
+      "popular": false
+    },
+    {
+      "name": "Paramedic",
+      "popular": false,
+      "aliases": [
+        "EMT"
+      ]
+    },
+    {
+      "name": "Pharmacist",
+      "popular": false
+    },
+    {
+      "name": "Baseball Player",
+      "popular": false
+    },
+    {
+      "name": "Hockey Player",
+      "popular": false
+    },
+    {
+      "name": "Tennis Player",
+      "popular": false
+    },
+    {
+      "name": "Gymnast",
+      "popular": false
+    },
+    {
+      "name": "Swimmer",
+      "popular": false
+    },
+    {
+      "name": "Figure Skater",
+      "popular": false,
+      "aliases": [
+        "Ice Skater"
+      ]
+    },
+    {
+      "name": "Skateboarder",
+      "popular": false
+    },
+    {
+      "name": "Surfer",
+      "popular": false
+    },
+    {
+      "name": "Olympian",
+      "popular": false,
+      "aliases": [
+        "Olympic Athlete"
+      ]
+    },
+    {
+      "name": "Professional Wrestler",
+      "popular": false,
+      "aliases": [
+        "Wrestler"
+      ]
+    },
+    {
+      "name": "Boxer",
+      "popular": false
+    },
+    {
+      "name": "Martial Artist",
+      "popular": false,
+      "aliases": [
+        "Karate Master"
+      ]
+    },
+    {
+      "name": "Cheerleader",
+      "popular": false
+    },
+    {
+      "name": "Race Car Driver",
+      "popular": false
+    },
+    {
+      "name": "Monster Truck Driver",
+      "popular": false
+    },
+    {
+      "name": "Jockey",
+      "popular": false
+    },
+    {
+      "name": "Coach",
+      "popular": false
+    },
+    {
+      "name": "Referee",
+      "popular": false
+    },
+    {
+      "name": "Personal Trainer",
+      "popular": false
+    },
+    {
+      "name": "Engineer",
+      "popular": false
+    },
+    {
+      "name": "Architect",
+      "popular": false
+    },
+    {
+      "name": "Inventor",
+      "popular": false
+    },
+    {
+      "name": "Robotics Engineer",
+      "popular": false,
+      "aliases": [
+        "Robot Builder",
+        "Robot Engineer"
+      ]
+    },
+    {
+      "name": "Computer Programmer",
+      "popular": false,
+      "aliases": [
+        "Programmer",
+        "Coder",
+        "Software Engineer"
+      ]
+    },
+    {
+      "name": "App Developer",
+      "popular": false,
+      "aliases": [
+        "App Maker"
+      ]
+    },
+    {
+      "name": "Game Tester",
+      "popular": false,
+      "aliases": [
+        "Video Game Tester"
+      ]
+    },
+    {
+      "name": "Rocket Scientist",
+      "popular": false
+    },
+    {
+      "name": "Astronomer",
+      "popular": false
+    },
+    {
+      "name": "Paleontologist",
+      "popular": false,
+      "aliases": [
+        "Dinosaur Scientist"
+      ]
+    },
+    {
+      "name": "Archaeologist",
+      "popular": false
+    },
+    {
+      "name": "Marine Biologist",
+      "popular": false
+    },
+    {
+      "name": "Meteorologist",
+      "popular": false,
+      "aliases": [
+        "Weather Reporter",
+        "Weatherman"
+      ]
+    },
+    {
+      "name": "Storm Chaser",
+      "popular": false
+    },
+    {
+      "name": "Zookeeper",
+      "popular": false
+    },
+    {
+      "name": "Dolphin Trainer",
+      "popular": false
+    },
+    {
+      "name": "Dog Trainer",
+      "popular": false
+    },
+    {
+      "name": "Horse Trainer",
+      "popular": false
+    },
+    {
+      "name": "Pet Groomer",
+      "popular": false,
+      "aliases": [
+        "Dog Groomer"
+      ]
+    },
+    {
+      "name": "Dog Walker",
+      "popular": false
+    },
+    {
+      "name": "Animal Rescuer",
+      "popular": false,
+      "aliases": [
+        "Animal Rescue Worker"
+      ]
+    },
+    {
+      "name": "Park Ranger",
+      "popular": false
+    },
+    {
+      "name": "Farmer",
+      "popular": false
+    },
+    {
+      "name": "Gardener",
+      "popular": false
+    },
+    {
+      "name": "Florist",
+      "popular": false
+    },
+    {
+      "name": "Pastry Chef",
+      "popular": false
+    },
+    {
+      "name": "Candy Maker",
+      "popular": false,
+      "aliases": [
+        "Chocolatier"
+      ]
+    },
+    {
+      "name": "Pizza Maker",
+      "popular": false
+    },
+    {
+      "name": "Ice Cream Truck Driver",
+      "popular": false,
+      "aliases": [
+        "Ice Cream Man"
+      ]
+    },
+    {
+      "name": "Restaurant Owner",
+      "popular": false
+    },
+    {
+      "name": "Waiter",
+      "popular": false,
+      "aliases": [
+        "Waitress",
+        "Server"
+      ]
+    },
+    {
+      "name": "Author",
+      "popular": false,
+      "aliases": [
+        "Writer"
+      ]
+    },
+    {
+      "name": "Illustrator",
+      "popular": false
+    },
+    {
+      "name": "Comic Book Artist",
+      "popular": false,
+      "aliases": [
+        "Cartoonist"
+      ]
+    },
+    {
+      "name": "Animator",
+      "popular": false
+    },
+    {
+      "name": "Movie Director",
+      "popular": false,
+      "aliases": [
+        "Film Director",
+        "Director"
+      ]
+    },
+    {
+      "name": "Photographer",
+      "popular": false
+    },
+    {
+      "name": "Fashion Designer",
+      "popular": false
+    },
+    {
+      "name": "Model",
+      "popular": false
+    },
+    {
+      "name": "Hairstylist",
+      "popular": false,
+      "aliases": [
+        "Hairdresser"
+      ]
+    },
+    {
+      "name": "Makeup Artist",
+      "popular": false
+    },
+    {
+      "name": "Nail Artist",
+      "popular": false,
+      "aliases": [
+        "Nail Tech"
+      ]
+    },
+    {
+      "name": "Musician",
+      "popular": false
+    },
+    {
+      "name": "Rock Star",
+      "popular": false
+    },
+    {
+      "name": "Rapper",
+      "popular": false
+    },
+    {
+      "name": "DJ",
+      "popular": false,
+      "aliases": [
+        "Disc Jockey"
+      ]
+    },
+    {
+      "name": "Drummer",
+      "popular": false
+    },
+    {
+      "name": "Guitarist",
+      "popular": false,
+      "aliases": [
+        "Guitar Player"
+      ]
+    },
+    {
+      "name": "Ballerina",
+      "popular": false,
+      "aliases": [
+        "Ballet Dancer"
+      ]
+    },
+    {
+      "name": "Voice Actor",
+      "popular": false
+    },
+    {
+      "name": "Comedian",
+      "popular": false
+    },
+    {
+      "name": "TV Host",
+      "popular": false,
+      "aliases": [
+        "Talk Show Host"
+      ]
+    },
+    {
+      "name": "News Reporter",
+      "popular": false,
+      "aliases": [
+        "Reporter",
+        "Journalist"
+      ]
+    },
+    {
+      "name": "Magician",
+      "popular": false
+    },
+    {
+      "name": "Clown",
+      "popular": false
+    },
+    {
+      "name": "Circus Performer",
+      "popular": false,
+      "aliases": [
+        "Acrobat"
+      ]
+    },
+    {
+      "name": "Stunt Performer",
+      "popular": false,
+      "aliases": [
+        "Stuntman",
+        "Stunt Double"
+      ]
+    },
+    {
+      "name": "Toy Designer",
+      "popular": false
+    },
+    {
+      "name": "Toy Tester",
+      "popular": false
+    },
+    {
+      "name": "Lego Designer",
+      "popular": false,
+      "aliases": [
+        "Lego Builder"
+      ]
+    },
+    {
+      "name": "Roller Coaster Designer",
+      "popular": false
+    },
+    {
+      "name": "Spy",
+      "popular": false,
+      "aliases": [
+        "Secret Agent"
+      ]
+    },
+    {
+      "name": "Detective",
+      "popular": false
+    },
+    {
+      "name": "FBI Agent",
+      "popular": false
+    },
+    {
+      "name": "Lawyer",
+      "popular": false
+    },
+    {
+      "name": "Judge",
+      "popular": false
+    },
+    {
+      "name": "President",
+      "popular": false
+    },
+    {
+      "name": "Soldier",
+      "popular": false
+    },
+    {
+      "name": "Lifeguard",
+      "popular": false
+    },
+    {
+      "name": "Flight Attendant",
+      "popular": false
+    },
+    {
+      "name": "Train Conductor",
+      "popular": false
+    },
+    {
+      "name": "Truck Driver",
+      "popular": false
+    },
+    {
+      "name": "Bus Driver",
+      "popular": false
+    },
+    {
+      "name": "Boat Captain",
+      "popular": false,
+      "aliases": [
+        "Ship Captain",
+        "Sea Captain"
+      ]
+    },
+    {
+      "name": "Scuba Diver",
+      "popular": false,
+      "aliases": [
+        "Deep Sea Diver"
+      ]
+    },
+    {
+      "name": "Explorer",
+      "popular": false
+    },
+    {
+      "name": "Treasure Hunter",
+      "popular": false
+    },
+    {
+      "name": "Mail Carrier",
+      "popular": false,
+      "aliases": [
+        "Mailman"
+      ]
+    },
+    {
+      "name": "Garbage Collector",
+      "popular": false,
+      "aliases": [
+        "Garbage Truck Driver"
+      ]
+    },
+    {
+      "name": "Construction Worker",
+      "popular": false,
+      "aliases": [
+        "Builder"
+      ]
+    },
+    {
+      "name": "Mechanic",
+      "popular": false
+    },
+    {
+      "name": "Carpenter",
+      "popular": false
+    },
+    {
+      "name": "Librarian",
+      "popular": false
+    },
+    {
+      "name": "Principal",
+      "popular": false
+    },
+    {
+      "name": "Babysitter",
+      "popular": false
+    },
+    {
+      "name": "Business Owner",
+      "popular": false,
+      "aliases": [
+        "Boss",
+        "CEO"
+      ]
+    },
+    {
+      "name": "Princess",
+      "popular": false
+    },
+    {
+      "name": "Superhero",
+      "popular": false
+    },
+    {
+      "name": "Ninja",
+      "popular": false
+    },
+    {
+      "name": "Pirate",
+      "popular": false
+    },
+    {
+      "name": "Cowboy",
+      "popular": false,
+      "aliases": [
+        "Cowgirl"
+      ]
+    }
+  ]
+}
