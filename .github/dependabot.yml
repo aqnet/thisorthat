@@ -1,0 +1,39 @@
+# Version and security updates. Security fixes (enabled in repo settings) reuse
+# this config; anything patch/minor is auto-merged once CI passes, see
+# .github/workflows/dependabot-auto-merge.yml.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps
+      prefix-development: deps-dev
+    groups:
+      # One PR for all non-major dev tooling bumps instead of one per package.
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+      # next and eslint-config-next must move together.
+      next:
+        patterns: [next, eslint-config-next]
+      react:
+        patterns: [react, react-dom, "@types/react", "@types/react-dom"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Los_Angeles
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ["*"]
